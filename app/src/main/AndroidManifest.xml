@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.jonathan.badreviewmanager">
+          package="com.jonathan.foodorganizer">
 
     <application
         android:allowBackup="true"
@@ -10,12 +10,12 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.jonathan.foodorganizer.MainActivity"
             android:theme="@style/AppTheme">
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name="com.jonathan.foodorganizer.LoginActivity"
             android:theme="@style/NoActionBarTheme">
 
             <intent-filter>

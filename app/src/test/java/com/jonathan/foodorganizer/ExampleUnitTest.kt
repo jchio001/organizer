@@ -1,4 +1,4 @@
-package com.jonathan.badreviewmanager
+package com.jonathan.foodorganizer
 
 import org.junit.Test
 

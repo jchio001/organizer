@@ -1,4 +1,4 @@
-package com.jonathan.badreviewmanager
+package com.jonathan.foodorganizer
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

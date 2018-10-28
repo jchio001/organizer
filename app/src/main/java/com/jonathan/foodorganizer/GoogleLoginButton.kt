@@ -1,4 +1,4 @@
-package com.jonathan.badreviewmanager
+package com.jonathan.foodorganizer
 
 import android.app.Activity
 import android.content.Context
@@ -15,7 +15,7 @@ import com.google.android.gms.common.api.ApiException
 class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs)  {
 
     interface LoginListener {
-        fun onLoginSuccess()
+        fun onLoginSuccess(idToken: String)
         fun onLoginFailure()
         fun onLoginCancel()
     }
@@ -48,7 +48,7 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
             val signInTask = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = signInTask.getResult(ApiException::class.java)
-                loginListener?.onLoginSuccess()
+                loginListener?.onLoginSuccess(account.idToken!!)
             } catch (e: ApiException) {
                 loginListener?.onLoginFailure()
             }
