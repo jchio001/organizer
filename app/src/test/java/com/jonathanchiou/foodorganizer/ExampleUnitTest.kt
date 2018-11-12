@@ -1,4 +1,4 @@
-package com.jonathan.foodorganizer
+package com.jonathanchiou.foodorganizer
 
 import org.junit.Test
 

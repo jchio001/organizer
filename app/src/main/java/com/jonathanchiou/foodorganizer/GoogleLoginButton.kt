@@ -1,4 +1,4 @@
-package com.jonathan.foodorganizer
+package com.jonathanchiou.foodorganizer
 
 import android.app.Activity
 import android.content.Context
@@ -16,10 +16,11 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
 
     interface LoginListener {
         fun onLoginSuccess(idToken: String)
-        fun onLoginFailure()
+        fun onLoginFailure(e: ApiException)
         fun onLoginCancel()
     }
 
+    @JvmField
     protected val googleSignInClient : GoogleSignInClient
 
     private var loginListener : LoginListener? = null
@@ -28,6 +29,7 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
         View.inflate(context, R.layout.button_google, this)
         setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(context.getString(R.string.google_server_client_id))
                 .build()
         googleSignInClient = GoogleSignIn.getClient(context, signInOptions)
 
@@ -43,14 +45,14 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
 
     fun onActivityResult(requestCode: Int,
                          resultCode: Int,
-                         data: Intent) {
+                         data: Intent?) {
         if (requestCode == RC_SIGN_IN) {
             val signInTask = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = signInTask.getResult(ApiException::class.java)
-                loginListener?.onLoginSuccess(account.idToken!!)
+                loginListener?.onLoginSuccess(account!!.idToken!!)
             } catch (e: ApiException) {
-                loginListener?.onLoginFailure()
+                loginListener?.onLoginFailure(e)
             }
         }
     }
