@@ -11,19 +11,27 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import io.reactivex.Observer
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs)  {
 
     interface LoginListener {
-        fun onLoginSuccess(idToken: String)
-        fun onLoginFailure(e: ApiException)
+        fun onLoginPending()
+        fun onLoginSuccess()
+        fun onLoginFailure()
         fun onLoginCancel()
     }
 
     @JvmField
     protected val googleSignInClient : GoogleSignInClient
 
+    private lateinit var clientManager : ClientManager
+
     private var loginListener : LoginListener? = null
+
+    protected var compositeDisposable : CompositeDisposable = CompositeDisposable()
 
     init {
         View.inflate(context, R.layout.button_google, this)
@@ -39,7 +47,16 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
         }
     }
 
+    fun attachClient(clientManager: ClientManager) : GoogleLoginButton {
+        this.clientManager = clientManager
+        return this
+    }
+
     fun listen(loginListener: LoginListener) {
+        if (compositeDisposable.isDisposed) {
+            compositeDisposable = CompositeDisposable()
+        }
+
         this.loginListener = loginListener
     }
 
@@ -49,12 +66,36 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
         if (requestCode == RC_SIGN_IN) {
             val signInTask = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = signInTask.getResult(ApiException::class.java)
-                loginListener?.onLoginSuccess(account!!.idToken!!)
+                val account = signInTask.getResult(ApiException::class.java)!!
+                clientManager.foodOrganizerClient
+                        .connect(account.idToken!!)
+                        .subscribeWith(object: Observer<UIModel<Token>> {
+                            override fun onSubscribe(d: Disposable) {
+                                compositeDisposable.add(d)
+                            }
+
+                            override fun onNext(uiModel: UIModel<Token>) {
+                                when (uiModel.state) {
+                                    State.PENDING -> loginListener?.onLoginPending()
+                                    State.SUCCESS -> loginListener?.onLoginSuccess()
+                                    else -> loginListener?.onLoginFailure()
+                                }
+                            }
+
+                            override fun onError(e: Throwable) {
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
             } catch (e: ApiException) {
-                loginListener?.onLoginFailure(e)
+                loginListener?.onLoginFailure()
             }
         }
+    }
+
+    fun cancelPendingRequest() {
+        compositeDisposable.dispose()
     }
 
     companion object {

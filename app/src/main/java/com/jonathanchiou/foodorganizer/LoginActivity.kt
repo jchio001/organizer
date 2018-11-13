@@ -1,5 +1,6 @@
 package com.jonathanchiou.foodorganizer
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -16,7 +17,13 @@ class LoginActivity : AppCompatActivity() {
     @BindView(R.id.google_login_button)
     lateinit var googleLoginButton : GoogleLoginButton
 
-    var compositeDisposable = CompositeDisposable()
+    protected val progressDialog : ProgressDialog by lazy {
+        val progressDialog = ProgressDialog(this@LoginActivity)
+        progressDialog.isIndeterminate = true
+        progressDialog.setCancelable(false)
+        progressDialog.setMessage(getString(R.string.connecting))
+        progressDialog
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,37 +33,30 @@ class LoginActivity : AppCompatActivity() {
         ClientManager.initialize(this)
         val clientManager = ClientManager.get()
 
-        googleLoginButton.listen(object: GoogleLoginButton.LoginListener {
-            override fun onLoginSuccess(idToken : String) {
-                clientManager.foodOrganizerClient
-                        .connect(idToken)
-                        .subscribeWith(object: Observer<UIModel<Token>> {
-                            override fun onSubscribe(d: Disposable) {
-                                compositeDisposable.add(d)
-                            }
+        googleLoginButton
+                .attachClient(clientManager)
+                .listen(object: GoogleLoginButton.LoginListener {
+                    override fun onLoginPending() {
+                        progressDialog.show()
+                    }
 
-                            override fun onNext(uiModel: UIModel<Token>) {
-                                when (uiModel.state) {
-                                    State.SUCCESS -> startActivity(
-                                            Intent(this@LoginActivity,
-                                                   MainActivity::class.java))
-                                }
-                            }
+                    override fun onLoginSuccess() {
+                        progressDialog.dismiss()
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    }
 
-                            override fun onError(e: Throwable) {
-                            }
+                    override fun onLoginFailure() {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
 
-                            override fun onComplete() {
-                            }
-                        })
-            }
+                    override fun onLoginCancel() {
+                    }
+                })
+    }
 
-            override fun onLoginFailure(e: ApiException) {
-            }
-
-            override fun onLoginCancel() {
-            }
-        })
+    override fun onStop() {
+        super.onStop()
+        googleLoginButton.cancelPendingRequest()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
