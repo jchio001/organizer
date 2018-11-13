@@ -27,7 +27,7 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
     @JvmField
     protected val googleSignInClient : GoogleSignInClient
 
-    private lateinit var clientManager : ClientManager
+    protected lateinit var clientManager : ClientManager
 
     private var loginListener : LoginListener? = null
 
@@ -78,7 +78,10 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
                             override fun onNext(uiModel: UIModel<Token>) {
                                 when (uiModel.state) {
                                     State.PENDING -> loginListener?.onLoginPending()
-                                    State.SUCCESS -> loginListener?.onLoginSuccess()
+                                    State.SUCCESS -> {
+                                        clientManager.setToken(uiModel.model!!)
+                                        loginListener?.onLoginSuccess()
+                                    }
                                     else -> loginListener?.onLoginFailure()
                                 }
                             }

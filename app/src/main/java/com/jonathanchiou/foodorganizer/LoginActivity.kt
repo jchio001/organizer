@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.google.android.gms.common.api.ApiException
@@ -50,7 +51,10 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     override fun onLoginFailure() {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        Toast.makeText(this@LoginActivity,
+                                       "Failed to login. Try again later",
+                                       Toast.LENGTH_SHORT)
+                                .show()
                     }
 
                     override fun onLoginCancel() {

@@ -22,7 +22,7 @@ class ClientManager(context: Context) {
     }
 
     fun isAlreadyLoggedIn() : Boolean {
-        return tokenInterceptor.token == null
+        return tokenInterceptor.token != null
     }
 
     fun setToken(token: Token) {

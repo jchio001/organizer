@@ -16,7 +16,7 @@ import java.nio.charset.Charset
 
 fun String.toJwtPayload(jwtPayloadAdapter: JsonAdapter<JwtPayload>) : JwtPayload {
     try {
-        val jwtArray = this.split("\\.")
+        val jwtArray = this.split('.')
         val payloadData = Base64.decode(jwtArray[1], Base64.DEFAULT) //decode body
         val payloadJsonString = String(payloadData, Charset.forName("UTF-8"))
         return jwtPayloadAdapter.fromJson(payloadJsonString)!!
@@ -66,6 +66,6 @@ class TokenInterceptor(context: Context,
     }
 
     companion object {
-        val TOKEN_KEY = "food_organizer_token"
+        const val TOKEN_KEY = "food_organizer_token"
     }
 }
