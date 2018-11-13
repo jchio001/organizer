@@ -21,8 +21,12 @@ class ClientManager(context: Context) {
         FoodOrganizerClient(serviceFactory.create(FoodOrganizerService::class.java))
     }
 
+    fun isAlreadyLoggedIn() : Boolean {
+        return tokenInterceptor.token == null
+    }
+
     fun setToken(token: Token) {
-        tokenInterceptor.setToken(token.token)
+        tokenInterceptor.token = token.token
     }
 
     companion object {

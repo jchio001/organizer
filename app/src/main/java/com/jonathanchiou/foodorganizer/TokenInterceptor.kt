@@ -14,21 +14,39 @@ import java.lang.ref.WeakReference
 import java.nio.charset.Charset
 
 
+fun String.toJwtPayload(jwtPayloadAdapter: JsonAdapter<JwtPayload>) : JwtPayload {
+    try {
+        val jwtArray = this.split("\\.")
+        val payloadData = Base64.decode(jwtArray[1], Base64.DEFAULT) //decode body
+        val payloadJsonString = String(payloadData, Charset.forName("UTF-8"))
+        return jwtPayloadAdapter.fromJson(payloadJsonString)!!
+    } catch (e: IOException) {
+        Log.e("TokenInterceptor", "Failed to decode token")
+        throw Exceptions.propagate(e)
+    }
+}
+
 class TokenInterceptor(context: Context,
                        val jwtPayloadAdapter: JsonAdapter<JwtPayload>) : Interceptor {
 
     private val sharedPreferencesReference : WeakReference<SharedPreferences>
 
-    private var token : String? = null
+    var token: String? = null
+        set(value) {
+            field = value
+            this.jwtPayload = value?.toJwtPayload(jwtPayloadAdapter)
+            sharedPreferencesReference.get()?.edit()!!.putString(TOKEN_KEY, token).apply()
+        }
+
     private var jwtPayload : JwtPayload? = null
 
     init {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        token = sharedPreferences.getString(TOKEN_KEY, null)
-        token?.let(::convertStringToJwtPayload)
-
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPreferencesReference =
                 WeakReference(PreferenceManager.getDefaultSharedPreferences(context))
+
+        token = sharedPreferences.getString(TOKEN_KEY, null)
+        token?.let(::convertStringToJwtPayload)
     }
 
     private fun convertStringToJwtPayload(token: String) : JwtPayload {
@@ -45,12 +63,6 @@ class TokenInterceptor(context: Context,
 
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.proceed(chain.request())
-    }
-
-    fun setToken(token: String) {
-        this.token = token
-        this.jwtPayload = convertStringToJwtPayload(token)
-        sharedPreferencesReference.get()?.edit()!!.putString(TOKEN_KEY, token).apply()
     }
 
     companion object {

@@ -53,10 +53,6 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
     }
 
     fun listen(loginListener: LoginListener) {
-        if (compositeDisposable.isDisposed) {
-            compositeDisposable = CompositeDisposable()
-        }
-
         this.loginListener = loginListener
     }
 
@@ -67,6 +63,11 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
             val signInTask = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = signInTask.getResult(ApiException::class.java)!!
+
+                if (compositeDisposable.isDisposed) {
+                    compositeDisposable = CompositeDisposable()
+                }
+
                 clientManager.foodOrganizerClient
                         .connect(account.idToken!!)
                         .subscribeWith(object: Observer<UIModel<Token>> {

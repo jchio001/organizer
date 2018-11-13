@@ -33,6 +33,10 @@ class LoginActivity : AppCompatActivity() {
         ClientManager.initialize(this)
         val clientManager = ClientManager.get()
 
+        if (clientManager.isAlreadyLoggedIn()) {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        }
+
         googleLoginButton
                 .attachClient(clientManager)
                 .listen(object: GoogleLoginButton.LoginListener {
