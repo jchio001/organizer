@@ -16,8 +16,8 @@ import java.nio.charset.Charset
 
 fun String.toJwtPayload(jwtPayloadAdapter: JsonAdapter<JwtPayload>) : JwtPayload {
     try {
-        val jwtArray = this.split('.')
-        val payloadData = Base64.decode(jwtArray[1], Base64.DEFAULT) //decode body
+        val jwtArray = this.split(".")
+        val payloadData = Base64.decode(jwtArray[1], Base64.DEFAULT) // 2nd part is the payload!
         val payloadJsonString = String(payloadData, Charset.forName("UTF-8"))
         return jwtPayloadAdapter.fromJson(payloadJsonString)!!
     } catch (e: IOException) {
@@ -46,19 +46,7 @@ class TokenInterceptor(context: Context,
                 WeakReference(PreferenceManager.getDefaultSharedPreferences(context))
 
         token = sharedPreferences.getString(TOKEN_KEY, null)
-        token?.let(::convertStringToJwtPayload)
-    }
-
-    private fun convertStringToJwtPayload(token: String) : JwtPayload {
-        try {
-            val jwtArray = token.split("\\.")
-            val payloadData = Base64.decode(jwtArray[1], Base64.DEFAULT) //decode body
-            val payloadJsonString = String(payloadData, Charset.forName("UTF-8"))
-            return jwtPayloadAdapter.fromJson(payloadJsonString)!!
-        } catch (e: IOException) {
-            Log.e("TokenInterceptor", "Failed to decode token")
-            throw Exceptions.propagate(e)
-        }
+        this.jwtPayload = token?.toJwtPayload(jwtPayloadAdapter)
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
