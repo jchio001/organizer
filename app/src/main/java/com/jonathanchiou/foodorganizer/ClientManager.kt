@@ -37,7 +37,8 @@ class ClientManager(context: Context) {
     }
 
     companion object {
-        private var clientManager : ClientManager? = null
+        @JvmField
+        protected var clientManager : ClientManager? = null
 
         fun initialize(context: Context) {
             clientManager = ClientManager(context)

@@ -24,12 +24,11 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
         fun onLoginCancel()
     }
 
-    @JvmField
     protected val googleSignInClient : GoogleSignInClient
 
     protected lateinit var clientManager : ClientManager
 
-    private var loginListener : LoginListener? = null
+    protected var loginListener : LoginListener? = null
 
     protected var compositeDisposable : CompositeDisposable = CompositeDisposable()
 

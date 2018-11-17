@@ -66,6 +66,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         googleLoginButton.cancelPendingRequest()
+        progressDialog.dismiss()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

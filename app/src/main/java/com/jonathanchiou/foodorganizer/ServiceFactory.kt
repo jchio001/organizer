@@ -28,6 +28,6 @@ class ServiceFactory(vararg interceptors: Interceptor) {
     }
 
     companion object {
-        val BASE_URL = "https://foodorganizer.herokuapp.com"
+        const val BASE_URL = "https://foodorganizer.herokuapp.com"
     }
 }
