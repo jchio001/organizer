@@ -14,4 +14,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SwitchTheme">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

@@ -36,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (clientManager.isAlreadyLoggedIn()) {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            return
         }
 
         googleLoginButton

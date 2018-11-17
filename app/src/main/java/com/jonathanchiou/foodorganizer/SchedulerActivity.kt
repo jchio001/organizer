@@ -1,21 +1,20 @@
 package com.jonathanchiou.foodorganizer
 
-import android.content.Intent
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import butterknife.ButterKnife
 import butterknife.OnClick
 
-class MainActivity : AppCompatActivity() {
+class SchedulerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_scheduler)
         ButterKnife.bind(this)
     }
 
-    @OnClick(R.id.scheduler_fab)
-    fun onSchedulerFabClicked() {
-        startActivity(Intent(this, SchedulerActivity::class.java))
+    @OnClick(R.id.close_icon)
+    fun onCloseIconClicked() {
+        finish()
     }
 }
