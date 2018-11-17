@@ -1,6 +1,7 @@
 package com.jonathanchiou.foodorganizer
 
 import android.content.Context
+import android.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -10,16 +11,22 @@ class ClientManager(context: Context) {
 
     val moshi = Moshi.Builder().build()
 
-    val tokenInterceptor = TokenInterceptor(context, moshi.adapter(JwtPayload::class.java))
-
     val serviceFactory : ServiceFactory by lazy {
         ServiceFactory(tokenInterceptor,
                        HttpLoggingInterceptor().setLevel(Level.BODY))
     }
 
-    val foodOrganizerClient : FoodOrganizerClient by lazy {
-        FoodOrganizerClient(serviceFactory.create(FoodOrganizerService::class.java))
+    val lazyFoodOrganizerService = lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        serviceFactory.create(FoodOrganizerService::class.java)
     }
+
+    val foodOrganizerClient : FoodOrganizerClient by lazy {
+        FoodOrganizerClient(lazyFoodOrganizerService.value)
+    }
+
+    val tokenInterceptor = TokenInterceptor(PreferenceManager.getDefaultSharedPreferences(context),
+                                            moshi.adapter(JwtPayload::class.java),
+                                            lazyFoodOrganizerService)
 
     fun isAlreadyLoggedIn() : Boolean {
         return tokenInterceptor.token != null
