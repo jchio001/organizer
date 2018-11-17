@@ -36,4 +36,10 @@ class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {
                 .connect(googleIdToken)
                 .toUIModelStream()
     }
+
+    fun getPlaces(input: String?, location: String?) : Observable<UIModel<List<Place>>>{
+        return foodOrganizerService
+                .getPlaces(input, location)
+                .toUIModelStream()
+    }
 }
