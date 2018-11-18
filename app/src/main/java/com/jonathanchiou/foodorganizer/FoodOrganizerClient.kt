@@ -41,7 +41,7 @@ class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {
 
     fun getPlaces(input: String, location: String?) : Observable<UIModel<List<Place>>>{
         return foodOrganizerService
-                .getPlaces(if (!input.isEmpty()) input else "", location)
+                .getPlaces(if (!input.isEmpty()) input else null, location)
                 .toUIModelStream()
     }
 }

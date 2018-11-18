@@ -22,7 +22,7 @@ class ViewHolder(view: View) {
 
 class AutoCompletePlacesAdapter : Filterable, BaseAdapter() {
 
-    var places = emptyList<Place>()
+    var places = EMPTY_LIST
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         lateinit var viewHolder: ViewHolder
@@ -73,5 +73,14 @@ class AutoCompletePlacesAdapter : Filterable, BaseAdapter() {
                 notifyDataSetChanged()
             }
         }
+    }
+
+    fun reset() {
+        places = EMPTY_LIST
+    }
+
+    companion object {
+        @JvmStatic
+        val EMPTY_LIST = emptyList<Place>()
     }
 }

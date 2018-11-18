@@ -15,6 +15,6 @@ interface FoodOrganizerService {
 
     @GET("places")
     @Headers("required: authorization")
-    fun getPlaces(@Query("input") input: String,
+    fun getPlaces(@Query("input") input: String?,
                   @Query("location") location: String?) : Observable<Response<List<Place>>>
 }

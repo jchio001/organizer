@@ -109,8 +109,8 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_location"/>
 
-                <AutoCompleteTextView
-                    android:id="@+id/location_textview"
+                <com.jonathanchiou.foodorganizer.PlacesAutoCompleteTextView
+                    android:id="@+id/places_autocompletetextview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
