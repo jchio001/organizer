@@ -78,12 +78,14 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
                                                  "Token has expired.")
                 }
 
-                if (request.header(INTERNAL_REFRESH_TOKEN_HEADER) == "true") {
+                if (request.header(INTERNAL_SKIP_REFRESH_HEADER) == "true") {
                     if (now - jwtPayload!!.issuedTime >= TEN_DAYS) {
+                        // TODO: consider using a semaphore instead?
                         synchronized(this@TokenInterceptor) {
                             if (now - jwtPayload!!.issuedTime >= TEN_DAYS) {
                                 try {
-                                    this.token = lazyFoodOrganizerService.value.refreshToken()
+                                    this.token = lazyFoodOrganizerService.value
+                                            .refreshToken()
                                             .blockingFirst()
                                             .body()!!
                                             .token
@@ -98,7 +100,7 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
 
                 request = request.newBuilder()
                         .removeHeader(INTERNAL_REQUIRED_HEADER)
-                        .removeHeader(INTERNAL_REFRESH_TOKEN_HEADER)
+                        .removeHeader(INTERNAL_SKIP_REFRESH_HEADER)
                         .addHeader(AUTHORIZATION, token!!)
                         .build()
             }
@@ -110,7 +112,7 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
     companion object {
         const val TOKEN_KEY = "food_organizer_token"
         const val INTERNAL_REQUIRED_HEADER = "required"
-        const val INTERNAL_REFRESH_TOKEN_HEADER = "refresh-token"
+        const val INTERNAL_SKIP_REFRESH_HEADER = "skip-refresh"
         const val AUTHORIZATION = "authorization"
         const val TEN_DAYS = 864000
     }

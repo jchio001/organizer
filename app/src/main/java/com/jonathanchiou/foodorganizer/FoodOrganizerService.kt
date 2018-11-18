@@ -10,7 +10,7 @@ interface FoodOrganizerService {
     fun connect(@Query("google_id_token") googleIdToken: String): Observable<Response<Token>>
 
     @POST("token")
-    @Headers("required: authorization", "refresh-token: false")
+    @Headers("required: authorization", "skip-refresh: true")
     fun refreshToken() : Observable<Response<Token>>
 
     @GET("places")
