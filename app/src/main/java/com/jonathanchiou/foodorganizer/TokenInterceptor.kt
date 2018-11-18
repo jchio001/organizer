@@ -24,10 +24,12 @@ fun String.toJwtPayload(jwtPayloadAdapter: JsonAdapter<JwtPayload>) : JwtPayload
     }
 }
 
-fun createStubbedResponse(statusCode: Int,
+fun createStubbedResponse(request: Request,
+                          statusCode: Int,
                           message: String) : Response {
     return Response.Builder()
             .protocol(Protocol.HTTP_1_1)
+            .request(request)
             .code(statusCode)
             .message("")
             .body(ResponseBody.create(MediaType.get("application/json"),
@@ -63,14 +65,16 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
         request.header(INTERNAL_REQUIRED_HEADER)?.let {
             if (it == AUTHORIZATION) {
                 if (token == null) {
-                    return createStubbedResponse(HttpsURLConnection.HTTP_UNAUTHORIZED,
+                    return createStubbedResponse(request,
+                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
                                                  "Missing token.")
                 }
 
                 val now = System.currentTimeMillis() / 1000;
 
                 if (now > jwtPayload!!.expirationTime) {
-                    return createStubbedResponse(HttpsURLConnection.HTTP_UNAUTHORIZED,
+                    return createStubbedResponse(request,
+                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
                                                  "Token has expired.")
                 }
 

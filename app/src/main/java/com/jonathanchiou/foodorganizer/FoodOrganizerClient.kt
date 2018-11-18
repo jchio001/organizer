@@ -1,5 +1,6 @@
 package com.jonathanchiou.foodorganizer
 
+import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -13,6 +14,7 @@ fun <T> Observable<Response<T>>.toUIModelStream(): Observable<UIModel<T>> {
                 if (it.isSuccessful) {
                     return@map UIModel(State.SUCCESS, it.body())
                 } else {
+                    Log.e("FoodOrganizerClient", it.code().toString())
                     return@map UIModel(State.UNSUCCESSFUL, null as T)
                 }
             }
@@ -37,9 +39,9 @@ class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {
                 .toUIModelStream()
     }
 
-    fun getPlaces(input: String?, location: String?) : Observable<UIModel<List<Place>>>{
+    fun getPlaces(input: String, location: String?) : Observable<UIModel<List<Place>>>{
         return foodOrganizerService
-                .getPlaces(input, location)
+                .getPlaces(if (!input.isEmpty()) input else "", location)
                 .toUIModelStream()
     }
 }

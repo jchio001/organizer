@@ -109,10 +109,14 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_location"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/location_textview"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Add location"
+                    android:background="@android:color/transparent"
+                    android:completionThreshold="1"
+                    android:hint="Add location"
+                    android:minLines="1"
                     android:textSize="20sp"/>
 
             </LinearLayout>
