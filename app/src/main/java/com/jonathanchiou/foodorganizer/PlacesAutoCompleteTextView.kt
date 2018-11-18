@@ -18,6 +18,8 @@ class PlacesAutoCompleteTextView(context: Context, attributeSet: AttributeSet):
 
     protected var previousDisposable : Disposable? = null
 
+    protected var selectedPlace : Place? = null
+
     init {
         setAdapter(autoCompletePlacesAdapter)
 
@@ -33,22 +35,26 @@ class PlacesAutoCompleteTextView(context: Context, attributeSet: AttributeSet):
                                        start: Int,
                                        before: Int,
                                        count: Int) {
-                autoCompletePlacesAdapter.reset()
             }
 
             override fun afterTextChanged(editable: Editable?) {
+                selectedPlace = null
+
                 if (editable?.isEmpty() == true) {
                     return
                 }
 
                 val editableAsString = editable.toString()
                 val matchesInAdapter = autoCompletePlacesAdapter.places.filter {
-                    it.name ==  editableAsString
+                    it.name == editableAsString
                 }
 
                 if (!matchesInAdapter.isEmpty()) {
+                    selectedPlace = matchesInAdapter.first()
                     return
                 }
+
+                autoCompletePlacesAdapter.reset()
 
                 previousDisposable?.dispose()
                 clientManager.foodOrganizerClient
