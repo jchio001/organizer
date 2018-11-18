@@ -15,14 +15,23 @@ import io.reactivex.disposables.Disposable
 
 class SchedulerActivity : AppCompatActivity() {
 
+    @BindView(R.id.places_autocompletetextview)
+    lateinit var placesAutoCompleteTextView: PlacesAutoCompleteTextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheduler)
         ButterKnife.bind(this)
     }
 
+    override fun onStop() {
+        placesAutoCompleteTextView.cancelPendingRequest()
+        super.onStop()
+    }
+
     @OnClick(R.id.close_icon)
     fun onCloseIconClicked() {
+        placesAutoCompleteTextView.cancelPendingRequest()
         finish()
     }
 }
