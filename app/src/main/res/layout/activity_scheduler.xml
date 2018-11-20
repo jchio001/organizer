@@ -109,7 +109,7 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_location"/>
 
-                <com.jonathanchiou.foodorganizer.PlacesAutoCompleteTextView
+                <com.jonathanchiou.foodorganizer.ServerSidedAutoCompleteTextView
                     android:id="@+id/places_autocompletetextview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -139,7 +139,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.jonathanchiou.foodorganizer.AccountsAutoCompleteTextView
+                    <com.jonathanchiou.foodorganizer.ServerSidedAutoCompleteTextView
+                        android:id="@+id/account_autocompletetextview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"

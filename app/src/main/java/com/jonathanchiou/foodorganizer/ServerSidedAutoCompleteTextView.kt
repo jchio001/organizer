@@ -6,19 +6,19 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.AutoCompleteTextView
+import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Function
 
-class PlacesAutoCompleteTextView(context: Context, attributeSet: AttributeSet):
+class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: AttributeSet):
         AutoCompleteTextView(context, attributeSet) {
 
-    val clientManager = ClientManager.get()
-
-    val autoCompleteAdapter = AutoCompleteAdapter<Place>()
+    val autoCompleteAdapter = AutoCompleteAdapter<T>()
 
     protected var previousDisposable : Disposable? = null
 
-    protected var selectedPlace : Place? = null
+    lateinit var uiModelObservableSupplier : Function<String, Observable<UIModel<List<T>>>>
 
     init {
         setAdapter(autoCompleteAdapter)
@@ -38,35 +38,30 @@ class PlacesAutoCompleteTextView(context: Context, attributeSet: AttributeSet):
             }
 
             override fun afterTextChanged(editable: Editable?) {
-                selectedPlace = null
-
                 if (editable?.isEmpty() == true) {
                     return
                 }
 
                 val editableAsString = editable.toString()
                 val matchesInAdapter = autoCompleteAdapter.objects.filter {
-                    it.name == editableAsString
+                    it.toString() == editableAsString
                 }
 
                 if (!matchesInAdapter.isEmpty()) {
-                    selectedPlace = matchesInAdapter.first()
                     return
                 }
 
                 autoCompleteAdapter.reset()
 
                 previousDisposable?.dispose()
-                clientManager.foodOrganizerClient
-                        .getPlaces(editableAsString,
-                                    null)
-                        .subscribe(object: Observer<UIModel<List<Place>>> {
+                uiModelObservableSupplier.apply(editableAsString)
+                        .subscribe(object: Observer<UIModel<List<T>>> {
                             override fun onSubscribe(d: Disposable) {
                                 previousDisposable?.dispose()
                                 previousDisposable = d
                             }
 
-                            override fun onNext(uiModel: UIModel<List<Place>>) {
+                            override fun onNext(uiModel: UIModel<List<T>>) {
                                 Log.i("PlacesAutoComplete", uiModel.state.toString())
                                 if (uiModel.state == State.SUCCESS) {
                                     autoCompleteAdapter.objects = uiModel.model!!
@@ -84,6 +79,12 @@ class PlacesAutoCompleteTextView(context: Context, attributeSet: AttributeSet):
                         })
             }
         })
+    }
+
+    inline fun doOnItemClicked(crossinline consumer: (T) -> Unit) {
+        setOnItemClickListener { _, _, position, _ ->
+            consumer(autoCompleteAdapter.getItem(position))
+        }
     }
 
     fun cancelPendingRequest() {
