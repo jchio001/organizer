@@ -20,9 +20,10 @@ class ViewHolder(view: View) {
     }
 }
 
-class AutoCompletePlacesAdapter : Filterable, BaseAdapter() {
+class AutoCompleteAdapter<T> : Filterable, BaseAdapter() {
 
-    var places = EMPTY_LIST
+    val emptyList = emptyList<T>()
+    var objects = emptyList
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         lateinit var viewHolder: ViewHolder
@@ -40,13 +41,13 @@ class AutoCompletePlacesAdapter : Filterable, BaseAdapter() {
             viewHolder = view.getTag() as ViewHolder
         }
 
-        viewHolder.textView.setText(places.get(position).name)
+        viewHolder.textView.setText(objects[position].toString())
 
         return view
     }
 
-    override fun getItem(position: Int): Any {
-        return places[position]
+    override fun getItem(position: Int): T {
+        return objects[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -54,7 +55,7 @@ class AutoCompletePlacesAdapter : Filterable, BaseAdapter() {
     }
 
     override fun getCount(): Int {
-        return places.size
+        return objects.size
     }
 
     override fun getFilter(): Filter {
@@ -62,8 +63,8 @@ class AutoCompletePlacesAdapter : Filterable, BaseAdapter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val filterResults = FilterResults()
 
-                filterResults.values = places
-                filterResults.count = places.size
+                filterResults.values = objects
+                filterResults.count = objects.size
 
                 return filterResults
             }
@@ -76,11 +77,6 @@ class AutoCompletePlacesAdapter : Filterable, BaseAdapter() {
     }
 
     fun reset() {
-        places = EMPTY_LIST
-    }
-
-    companion object {
-        @JvmStatic
-        val EMPTY_LIST = emptyList<Place>()
+        objects = emptyList
     }
 }

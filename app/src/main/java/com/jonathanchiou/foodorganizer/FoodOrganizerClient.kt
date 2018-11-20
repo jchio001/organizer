@@ -39,9 +39,14 @@ class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {
                 .toUIModelStream()
     }
 
-    fun getPlaces(input: String, location: String?) : Observable<UIModel<List<Place>>>{
+    fun getPlaces(input: String, location: String?) : Observable<UIModel<List<Place>>> {
         return foodOrganizerService
                 .getPlaces(if (!input.isEmpty()) input else null, location)
+                .toUIModelStream()
+    }
+
+    fun searchAccounts(groupId: Int, query: String?) : Observable<UIModel<List<Account>>> {
+        return Observable.just(Response.success(createAccounts()))
                 .toUIModelStream()
     }
 }

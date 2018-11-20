@@ -17,4 +17,9 @@ interface FoodOrganizerService {
     @Headers("required: authorization")
     fun getPlaces(@Query("input") input: String?,
                   @Query("location") location: String?) : Observable<Response<List<Place>>>
+
+    @GET("group/{group_id}/accounts")
+    @Headers("required: authorization")
+    fun searchAccounts(@Path("group_id") groupId: Int,
+                       @Query("query") query: String?)
 }
