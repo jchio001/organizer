@@ -1,7 +1,12 @@
 package com.jonathanchiou.foodorganizer
 
 import android.os.Bundle
+import android.support.design.chip.Chip
+import android.support.design.chip.ChipGroup
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import butterknife.*
 import io.reactivex.Observable
 import io.reactivex.functions.Function
@@ -13,6 +18,9 @@ class SchedulerActivity : AppCompatActivity() {
 
     @BindView(R.id.account_autocompletetextview)
     lateinit var accountAutoCompleteTextView: ServerSidedAutoCompleteTextView<Account>
+
+    @BindView(R.id.account_chipgroup)
+    lateinit var accountChipGroup: ChipGroup
 
     private var foodOrganizerClient = ClientManager.get().foodOrganizerClient
 
@@ -36,6 +44,22 @@ class SchedulerActivity : AppCompatActivity() {
                         return foodOrganizerClient.searchAccounts(42, query)
                     }
                 }
+        accountAutoCompleteTextView.doOnItemClicked {
+            accountAutoCompleteTextView.text = null
+
+            val chip = LayoutInflater.from(this)
+                    .inflate(R.layout.layout_chip, accountChipGroup, false) as Chip
+            chip.text = it.toString()
+            chip.setOnCloseIconClickListener {
+                accountChipGroup.removeView(chip)
+                if (accountChipGroup.childCount == 0) {
+                    accountChipGroup.visibility = View.GONE
+                }
+            }
+
+            accountChipGroup.addView(chip)
+            accountChipGroup.visibility = View.VISIBLE
+        }
     }
 
     override fun onStop() {

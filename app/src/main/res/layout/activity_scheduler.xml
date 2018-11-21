@@ -139,6 +139,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <android.support.design.chip.ChipGroup
+                        android:id="@+id/account_chipgroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:visibility="gone"/>
+
                     <com.jonathanchiou.foodorganizer.ServerSidedAutoCompleteTextView
                         android:id="@+id/account_autocompletetextview"
                         android:layout_width="match_parent"

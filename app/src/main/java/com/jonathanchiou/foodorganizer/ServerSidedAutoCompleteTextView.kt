@@ -29,6 +29,7 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                                            count: Int,
                                            after: Int) {
                 dismissDropDown()
+                previousDisposable?.dispose()
             }
 
             override fun onTextChanged(s: CharSequence?,
@@ -52,8 +53,6 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                 }
 
                 autoCompleteAdapter.reset()
-
-                previousDisposable?.dispose()
                 uiModelObservableSupplier.apply(editableAsString)
                         .subscribe(object: Observer<UIModel<List<T>>> {
                             override fun onSubscribe(d: Disposable) {
