@@ -14,7 +14,7 @@ fun createAccounts() : List<Account> {
     account1.lastName = "Yang"
 
     val account2 = Account()
-    account2.id = 1
+    account2.id = 2
     account2.firstName = "Richard"
     account2.lastName = "Hendricks"
 
@@ -31,6 +31,10 @@ class Account {
 
     @Json(name = "last_name")
     var lastName = ""
+
+    override fun equals(other: Any?): Boolean {
+        return if (other == null || other !is Account) false else return id == other.id
+    }
 
     override fun toString(): String {
         return "$firstName $lastName"
