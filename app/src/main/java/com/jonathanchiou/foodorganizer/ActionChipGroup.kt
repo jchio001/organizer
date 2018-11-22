@@ -3,6 +3,7 @@ package com.jonathanchiou.foodorganizer
 import android.content.Context
 import android.support.design.chip.Chip
 import android.support.design.chip.ChipGroup
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -36,12 +37,16 @@ class CloseableChip(context: Context): Chip(context,
 class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet):
         ChipGroup(context, attributeSet) {
 
+    val textColor: Int
     val textSize: Int
 
     init {
         val resources = context.resources
         val attributes = resources.obtainAttributes(attributeSet, R.styleable.ActionChipGroup)
         try {
+            textColor = attributes.getColor(
+                R.styleable.ActionChipGroup_android_textColor,
+                ContextCompat.getColor(context, R.color.text_color))
             textSize = attributes.getDimensionPixelSize(
                 R.styleable.ActionChipGroup_android_textSize,
                 resources.getDimensionPixelSize(R.dimen.default_chip_text_size))
@@ -62,6 +67,7 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet):
         val closeableChip = CloseableChip(context)
         closeableChip.tag = chipModel
         closeableChip.text = chipModel.toString()
+        closeableChip.setTextColor(textColor)
         closeableChip.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
         addView(closeableChip)
 

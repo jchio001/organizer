@@ -23,4 +23,12 @@
         <item name="colorAccent">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="SchedulerIconTheme">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:tint">@color/text_color</item>
+    </style>
+
 </resources>
