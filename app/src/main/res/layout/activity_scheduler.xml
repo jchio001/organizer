@@ -78,63 +78,9 @@
                     android:layout_alignParentLeft="true"
                     android:src="@drawable/ic_clock"/>
 
-                <LinearLayout
+                <com.jonathanchiou.foodorganizer.DatePickerView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="28dp"
-                            android:layout_toRightOf="@id/clock_icon"
-                            android:layout_gravity="start|top"
-                            android:text="Now"
-                            android:textColor="@color/text_color"
-                            android:textSize="20sp"/>
-
-                        <Switch
-                            android:id="@+id/now_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|top"
-                            android:checked="true"
-                            android:theme="@style/SwitchTheme"/>
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:id="@+id/date_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <TextView
-                            android:id="@+id/date_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|top"
-                            android:textColor="@color/text_color"
-                            android:textSize="20sp"
-                            tools:text="Pizza"/>
-
-                        <TextView
-                            android:id="@+id/time_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|top"
-                            android:textColor="@color/text_color"
-                            android:textSize="20sp"
-                            tools:text="Hut"/>
-
-                    </FrameLayout>
-
-                </LinearLayout>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
