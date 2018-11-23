@@ -33,19 +33,19 @@ fun <T> Observable<Response<T>>.toUIModelStream(): Observable<UIModel<T>> {
 
 class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {
 
-    fun connect(googleIdToken: String) : Observable<UIModel<Token>> {
+    fun connect(googleIdToken: String): Observable<UIModel<Token>> {
         return foodOrganizerService
                 .connect(googleIdToken)
                 .toUIModelStream()
     }
 
-    fun getPlaces(input: String, location: String?) : Observable<UIModel<List<Place>>> {
+    fun getPlaces(input: String, location: String?): Observable<UIModel<List<Place>>> {
         return foodOrganizerService
                 .getPlaces(if (!input.isEmpty()) input else null, location)
                 .toUIModelStream()
     }
 
-    fun searchAccounts(groupId: Int, query: String?) : Observable<UIModel<List<Account>>> {
+    fun searchAccounts(groupId: Int, query: String?): Observable<UIModel<List<Account>>> {
         return Observable.just(Response.success(createAccounts()))
                 .toUIModelStream()
     }

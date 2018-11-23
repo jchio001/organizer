@@ -3,22 +3,17 @@ package com.jonathanchiou.foodorganizer
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.google.android.gms.common.api.ApiException
-import io.reactivex.Observer
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 
 class LoginActivity : AppCompatActivity() {
 
     @BindView(R.id.google_login_button)
-    lateinit var googleLoginButton : GoogleLoginButton
+    lateinit var googleLoginButton: GoogleLoginButton
 
-    protected val progressDialog : ProgressDialog by lazy {
+    protected val progressDialog: ProgressDialog by lazy {
         val progressDialog = ProgressDialog(this@LoginActivity)
         progressDialog.isIndeterminate = true
         progressDialog.setCancelable(false)
@@ -41,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
         googleLoginButton
                 .attachClient(clientManager)
-                .listen(object: GoogleLoginButton.LoginListener {
+                .listen(object : GoogleLoginButton.LoginListener {
                     override fun onLoginPending() {
                         progressDialog.show()
                     }

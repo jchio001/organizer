@@ -11,7 +11,7 @@ enum class State {
 
 class UIModel<T>(val state: State) {
 
-    var model : T? = null
+    var model: T? = null
 
     constructor(state: State, model: T?) : this(state) {
         this.model = model

@@ -13,7 +13,7 @@ import butterknife.ButterKnife
 class ViewHolder(view: View) {
 
     @BindView(R.id.textview)
-    lateinit var textView : TextView
+    lateinit var textView: TextView
 
     init {
         ButterKnife.bind(this, view)
@@ -59,7 +59,7 @@ class AutoCompleteAdapter<T> : Filterable, BaseAdapter() {
     }
 
     override fun getFilter(): Filter {
-        return object: Filter() {
+        return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val filterResults = FilterResults()
 

@@ -2,7 +2,7 @@ package com.jonathanchiou.foodorganizer
 
 import com.squareup.moshi.Json
 
-fun createAccounts() : List<Account> {
+fun createAccounts(): List<Account> {
     val account0 = Account()
     account0.id = 0
     account0.firstName = "Erlich"

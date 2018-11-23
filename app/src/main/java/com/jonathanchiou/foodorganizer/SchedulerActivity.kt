@@ -52,14 +52,14 @@ class SchedulerActivity : AppCompatActivity() {
         // IGNORE ANDROID STUDIOS. Replacing an interface with a lambda only works if the accepting
         // code is written in Java. It is not.
         placeAutoCompleteTextView.uiModelObservableSupplier =
-                object: Function<String, Observable<UIModel<List<Place>>>> {
+                object : Function<String, Observable<UIModel<List<Place>>>> {
                     override fun apply(query: String): Observable<UIModel<List<Place>>> {
                         return foodOrganizerClient.getPlaces(query, null)
                     }
                 }
 
         accountAutoCompleteTextView.uiModelObservableSupplier =
-                object: Function<String, Observable<UIModel<List<Account>>>> {
+                object : Function<String, Observable<UIModel<List<Account>>>> {
                     override fun apply(query: String): Observable<UIModel<List<Account>>> {
                         return foodOrganizerClient.searchAccounts(42, query)
                     }
@@ -99,7 +99,7 @@ class SchedulerActivity : AppCompatActivity() {
     @OnClick(R.id.date_textview)
     fun onDateTextViewClicked() {
         DatePickerDialog(this,
-                         { _ , y, m, d ->
+                         { _, y, m, d ->
                              scheduledTime.set(Calendar.YEAR, y)
                              scheduledTime.set(Calendar.MONTH, m)
                              scheduledTime.set(Calendar.DAY_OF_MONTH, d)

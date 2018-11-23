@@ -11,12 +11,12 @@ interface FoodOrganizerService {
 
     @POST("token")
     @Headers("required: authorization", "skip-refresh: true")
-    fun refreshToken() : Observable<Response<Token>>
+    fun refreshToken(): Observable<Response<Token>>
 
     @GET("places")
     @Headers("required: authorization")
     fun getPlaces(@Query("input") input: String?,
-                  @Query("location") location: String?) : Observable<Response<List<Place>>>
+                  @Query("location") location: String?): Observable<Response<List<Place>>>
 
     @GET("group/{group_id}/accounts")
     @Headers("required: authorization")

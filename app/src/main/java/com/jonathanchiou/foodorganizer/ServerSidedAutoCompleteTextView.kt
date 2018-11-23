@@ -17,23 +17,23 @@ import java.util.concurrent.TimeUnit
 
 sealed class TextEvent
 class TextInputEvent(val query: String) : TextEvent()
-class AutoCompleteEvent: TextEvent()
+class AutoCompleteEvent : TextEvent()
 
-class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: AttributeSet):
+class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: AttributeSet) :
         AutoCompleteTextView(context, attributeSet) {
 
     val autoCompleteAdapter = AutoCompleteAdapter<T>()
 
-    protected var diposable : Disposable? = null
+    protected var diposable: Disposable? = null
 
-    lateinit var uiModelObservableSupplier : Function<String, Observable<UIModel<List<T>>>>
+    lateinit var uiModelObservableSupplier: Function<String, Observable<UIModel<List<T>>>>
 
     val textEventSubject = PublishSubject.create<TextEvent>();
 
     init {
         setAdapter(autoCompleteAdapter)
 
-        addTextChangedListener(object: TextWatcher {
+        addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?,
                                            start: Int,
                                            count: Int,
@@ -76,7 +76,7 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                                 .observeOn(AndroidSchedulers.mainThread())
                     }
                 }
-                .subscribe(object: Observer<UIModel<List<T>>> {
+                .subscribe(object : Observer<UIModel<List<T>>> {
                     override fun onSubscribe(d: Disposable) {
                         diposable = d
                     }

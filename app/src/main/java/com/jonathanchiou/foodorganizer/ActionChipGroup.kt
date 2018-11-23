@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 
-class CloseableChip(context: Context): Chip(context,
-                                            null,
-                                            R.style.Widget_MaterialComponents_Chip_Action) {
+class CloseableChip(context: Context) : Chip(context,
+                                             null,
+                                             R.style.Widget_MaterialComponents_Chip_Action) {
 
     init {
         isCheckedIconVisible = false
@@ -34,7 +34,7 @@ class CloseableChip(context: Context): Chip(context,
     }
 }
 
-class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet):
+class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
         ChipGroup(context, attributeSet) {
 
     val textColor: Int

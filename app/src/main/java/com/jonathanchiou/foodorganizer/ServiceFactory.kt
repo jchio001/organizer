@@ -8,7 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class ServiceFactory(vararg interceptors: Interceptor) {
 
-    private val retrofit : Retrofit by lazy {
+    private val retrofit: Retrofit by lazy {
         val okHttpBuilder = OkHttpClient.Builder()
 
         for (interceptor in interceptors) {
@@ -23,7 +23,7 @@ class ServiceFactory(vararg interceptors: Interceptor) {
                 .build();
     }
 
-    fun<T> create(clazz: Class<T>) : T {
+    fun <T> create(clazz: Class<T>): T {
         return retrofit.create(clazz)
     }
 

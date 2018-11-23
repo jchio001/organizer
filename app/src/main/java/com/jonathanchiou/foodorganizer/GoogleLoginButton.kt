@@ -15,7 +15,7 @@ import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs)  {
+class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
     interface LoginListener {
         fun onLoginPending()
@@ -24,13 +24,13 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
         fun onLoginCancel()
     }
 
-    protected val googleSignInClient : GoogleSignInClient
+    protected val googleSignInClient: GoogleSignInClient
 
-    protected lateinit var clientManager : ClientManager
+    protected lateinit var clientManager: ClientManager
 
-    protected var loginListener : LoginListener? = null
+    protected var loginListener: LoginListener? = null
 
-    protected var compositeDisposable : CompositeDisposable = CompositeDisposable()
+    protected var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     init {
         View.inflate(context, R.layout.button_google, this)
@@ -46,7 +46,7 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
         }
     }
 
-    fun attachClient(clientManager: ClientManager) : GoogleLoginButton {
+    fun attachClient(clientManager: ClientManager): GoogleLoginButton {
         this.clientManager = clientManager
         return this
     }
@@ -69,7 +69,7 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
 
                 clientManager.foodOrganizerClient
                         .connect(account.idToken!!)
-                        .subscribeWith(object: Observer<UIModel<Token>> {
+                        .subscribeWith(object : Observer<UIModel<Token>> {
                             override fun onSubscribe(d: Disposable) {
                                 compositeDisposable.add(d)
                             }

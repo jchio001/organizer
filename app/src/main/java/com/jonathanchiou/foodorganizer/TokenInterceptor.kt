@@ -12,7 +12,7 @@ import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
 
 
-fun String.toJwtPayload(jwtPayloadAdapter: JsonAdapter<JwtPayload>) : JwtPayload {
+fun String.toJwtPayload(jwtPayloadAdapter: JsonAdapter<JwtPayload>): JwtPayload {
     try {
         val jwtArray = this.split(".")
         val payloadData = Base64.decode(jwtArray[1], Base64.DEFAULT) // 2nd part is the payload!
@@ -26,7 +26,7 @@ fun String.toJwtPayload(jwtPayloadAdapter: JsonAdapter<JwtPayload>) : JwtPayload
 
 fun createStubbedResponse(request: Request,
                           statusCode: Int,
-                          message: String) : Response {
+                          message: String): Response {
     return Response.Builder()
             .protocol(Protocol.HTTP_1_1)
             .request(request)
@@ -44,7 +44,7 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
     private val sharedPreferencesReference = WeakReference(sharedPreferences)
 
     @Volatile
-    private var jwtPayload : JwtPayload? = null
+    private var jwtPayload: JwtPayload? = null
 
     @Volatile
     var token: String? = null
