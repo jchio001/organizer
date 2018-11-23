@@ -14,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var googleLoginButton: GoogleLoginButton
 
     protected val progressDialog: ProgressDialog by lazy {
-        val progressDialog = ProgressDialog(this@LoginActivity)
+        val progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate = true
         progressDialog.setCancelable(false)
         progressDialog.setMessage(getString(R.string.connecting))

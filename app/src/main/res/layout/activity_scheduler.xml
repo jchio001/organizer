@@ -25,6 +25,7 @@
             android:tint="@color/text_color"/>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/share_button"
             android:layout_width="72dp"
             android:layout_height="36dp"
             android:layout_gravity="right|end|center_vertical"
@@ -45,6 +46,7 @@
     </FrameLayout>
 
     <EditText
+        android:id="@+id/title_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left|start"
@@ -79,6 +81,7 @@
                     android:src="@drawable/ic_clock"/>
 
                 <com.jonathanchiou.foodorganizer.DatePickerView
+                    android:id="@+id/datepickerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

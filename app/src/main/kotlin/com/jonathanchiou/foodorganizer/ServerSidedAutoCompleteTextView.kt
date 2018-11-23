@@ -8,16 +8,14 @@ import android.util.Log
 import android.widget.AutoCompleteTextView
 import io.reactivex.Observable
 import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 sealed class TextEvent
 class TextInputEvent(val query: String) : TextEvent()
-class AutoCompleteEvent : TextEvent()
+class OtherEvent : TextEvent()
 
 class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: AttributeSet) :
         AutoCompleteTextView(context, attributeSet) {
@@ -71,9 +69,7 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                 .switchMap {
                     when (it) {
                         is TextInputEvent -> uiModelObservableSupplier.apply(it.query)
-                        is AutoCompleteEvent -> Observable.never<UIModel<List<T>>>()
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
+                        is OtherEvent -> Observable.never<UIModel<List<T>>>()
                     }
                 }
                 .subscribe(object : Observer<UIModel<List<T>>> {
@@ -101,10 +97,15 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
 
     inline fun doOnItemClicked(crossinline consumer: (T) -> Unit) {
         setOnItemClickListener { _, _, position, _ ->
-            textEventSubject.onNext(AutoCompleteEvent())
+            textEventSubject.onNext(OtherEvent())
             consumer(autoCompleteAdapter.getItem(position))
             autoCompleteAdapter.reset()
         }
+    }
+
+    fun getCurrentlySelectedItem(): T? {
+        textEventSubject.onNext(OtherEvent())
+        return autoCompleteAdapter.objects.firstOrNull { it.toString() == text.toString() }
     }
 
     fun cancelPendingRequest() {

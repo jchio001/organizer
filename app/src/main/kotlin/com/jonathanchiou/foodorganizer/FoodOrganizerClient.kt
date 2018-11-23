@@ -49,4 +49,9 @@ class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {
         return Observable.just(Response.success(createAccounts()))
                 .toUIModelStream()
     }
+
+    fun createEvent(groupId: Int, clientEvent: ClientEvent): Observable<UIModel<Event>> {
+        return Observable.just(Response.success(Event()))
+                .toUIModelStream()
+    }
 }

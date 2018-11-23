@@ -73,4 +73,9 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
 
         visibility = View.VISIBLE
     }
+
+    fun getModels(): List<T> {
+        return (0 until childCount).asIterable()
+                .map { getChildAt(it).tag as T }
+    }
 }

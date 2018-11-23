@@ -21,5 +21,10 @@ interface FoodOrganizerService {
     @GET("group/{group_id}/accounts")
     @Headers("required: authorization")
     fun searchAccounts(@Path("group_id") groupId: Int,
-                       @Query("query") query: String?)
+                       @Query("query") query: String?): Observable<List<Account>>
+
+    @PUT("group/{group_id}/event")
+    @Headers("required: authorization")
+    fun createEvent(@Path("group_id") groupId: Int,
+                    @Body event: ClientEvent)
 }

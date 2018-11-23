@@ -27,16 +27,16 @@ class DatePickerView(context: Context, attributeSet: AttributeSet):
     @BindView(R.id.time_textview)
     lateinit var timeTextView: TextView
 
-    init {
-        inflate(context, R.layout.layout_date_picker_review, this)
-        orientation = VERTICAL
-        ButterKnife.bind(this, this)
-    }
-
     val scheduledTime by lazy {
         val now = Calendar.getInstance()
         now.add(Calendar.MINUTE, 30)
         now
+    }
+
+    init {
+        inflate(context, R.layout.layout_date_picker_review, this)
+        orientation = VERTICAL
+        ButterKnife.bind(this, this)
     }
 
     @OnCheckedChanged(R.id.now_switch)
@@ -83,11 +83,11 @@ class DatePickerView(context: Context, attributeSet: AttributeSet):
     }
 
     /**
-     * Gets the current date & time combination selected by this view and returns a epoch seconds
+     * Gets the current date & time combination selected by this view and returns a epoch ms
      * representation of it.
      */
-    fun getTime(): Long {
-        return scheduledTime.timeInMillis / 1000
+    fun getCurrentlySelectedTime(): Long {
+        return scheduledTime.timeInMillis
     }
 
     companion object {
