@@ -62,20 +62,18 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
             }
 
             override fun afterTextChanged(editable: Editable?) {
-                if (editable?.isEmpty() == true) {
-                    return
-                }
+                editable?.let {
+                    val editableAsString = it.toString()
+                    val matchesInAdapter = autoCompleteAdapter.objects.filter {
+                        it.toString() == editableAsString
+                    }
 
-                val editableAsString = editable.toString()
-                val matchesInAdapter = autoCompleteAdapter.objects.filter {
-                    it.toString() == editableAsString
-                }
+                    if (!matchesInAdapter.isEmpty()) {
+                        return
+                    }
 
-                if (!matchesInAdapter.isEmpty()) {
-                    return
+                    textEventSubject.onNext(TextInputEvent(query = editableAsString))
                 }
-
-                textEventSubject.onNext(TextInputEvent(query = editableAsString))
             }
         })
 
@@ -83,7 +81,9 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
             .debounce(200, TimeUnit.MILLISECONDS)
             .switchMap {
                 when (it) {
-                    is TextInputEvent -> uiModelObservableSupplier.apply(it.query)
+                    is TextInputEvent ->
+                        if (!it.query.isEmpty()) uiModelObservableSupplier.apply(it.query)
+                        else Observable.never<UIModel<List<T>>>()
                     is OtherEvent -> Observable.never<UIModel<List<T>>>()
                 }
             }
