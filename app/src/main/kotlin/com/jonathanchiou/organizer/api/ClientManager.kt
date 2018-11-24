@@ -18,7 +18,7 @@ class ClientManager(context: Context) {
 
     val serviceFactory: ServiceFactory by lazy {
         ServiceFactory(tokenInterceptor,
-                                                             HttpLoggingInterceptor().setLevel(Level.BODY))
+                       HttpLoggingInterceptor().setLevel(Level.BODY))
     }
 
     val lazyFoodOrganizerService = lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -30,8 +30,8 @@ class ClientManager(context: Context) {
     }
 
     val tokenInterceptor = TokenInterceptor(PreferenceManager.getDefaultSharedPreferences(context),
-                                                                            moshi.adapter(JwtPayload::class.java),
-                                                                            lazyFoodOrganizerService)
+                                            moshi.adapter(JwtPayload::class.java),
+                                            lazyFoodOrganizerService)
 
     fun isAlreadyLoggedIn(): Boolean {
         return tokenInterceptor.token != null

@@ -125,9 +125,9 @@ class SchedulerActivity : AppCompatActivity() {
 
         foodOrganizerClient.createEvent(42,
                                         ClientEvent(title = title,
-                                                                                          scheduledTime = scheduledTime,
-                                                                                          invitedAccounts = invitedAccounts,
-                                                                                          placeId = placeId))
+                                                    scheduledTime = scheduledTime,
+                                                    invitedAccounts = invitedAccounts,
+                                                    placeId = placeId))
                 .subscribeWith(object : Observer<UIModel<Event>> {
                     override fun onSubscribe(d: Disposable) {
                         disposable = d

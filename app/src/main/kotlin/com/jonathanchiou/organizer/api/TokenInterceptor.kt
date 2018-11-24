@@ -66,16 +66,16 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
             if (it == AUTHORIZATION) {
                 if (token == null) {
                     return createStubbedResponse(request,
-                                                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
-                                                                                 "Missing token.")
+                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
+                                                 "Missing token.")
                 }
 
                 val now = System.currentTimeMillis() / 1000;
 
                 if (now > jwtPayload!!.expirationTime) {
                     return createStubbedResponse(request,
-                                                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
-                                                                                 "Token has expired.")
+                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
+                                                 "Token has expired.")
                 }
 
                 if (request.header(INTERNAL_SKIP_REFRESH_HEADER) == "true") {
