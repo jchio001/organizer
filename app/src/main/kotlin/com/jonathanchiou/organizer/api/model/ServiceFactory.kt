@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.api.model
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.Interceptor

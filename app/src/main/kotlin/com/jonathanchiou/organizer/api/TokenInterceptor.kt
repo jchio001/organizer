@@ -1,8 +1,9 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.api
 
 import android.content.SharedPreferences
 import android.util.Base64
 import android.util.Log
+import com.jonathanchiou.organizer.api.model.JwtPayload
 import com.squareup.moshi.JsonAdapter
 import io.reactivex.exceptions.Exceptions
 import okhttp3.*
@@ -65,16 +66,16 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
             if (it == AUTHORIZATION) {
                 if (token == null) {
                     return createStubbedResponse(request,
-                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
-                                                 "Missing token.")
+                                                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
+                                                                                 "Missing token.")
                 }
 
                 val now = System.currentTimeMillis() / 1000;
 
                 if (now > jwtPayload!!.expirationTime) {
                     return createStubbedResponse(request,
-                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
-                                                 "Token has expired.")
+                                                                                 HttpsURLConnection.HTTP_UNAUTHORIZED,
+                                                                                 "Token has expired.")
                 }
 
                 if (request.header(INTERNAL_SKIP_REFRESH_HEADER) == "true") {

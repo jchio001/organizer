@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.login
 
 import android.app.Activity
 import android.content.Context
@@ -11,6 +11,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.api.model.State
+import com.jonathanchiou.organizer.api.model.UIModel
+import com.jonathanchiou.organizer.api.ClientManager
+import com.jonathanchiou.organizer.api.model.Token
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

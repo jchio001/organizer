@@ -13,25 +13,25 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarTheme">
         </activity>
 
         <activity
-            android:name=".SchedulerActivity"
+            android:name=".scheduler.SchedulerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarTheme">
         </activity>
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>

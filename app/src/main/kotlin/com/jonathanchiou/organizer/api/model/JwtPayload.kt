@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.api.model
 
 import com.squareup.moshi.Json
 

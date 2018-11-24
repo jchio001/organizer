@@ -1,4 +1,6 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.scheduler
+
+import com.jonathanchiou.organizer.api.model.Account
 
 /**
  * A model that represents a local version for event. Typically used to encapsulate events being

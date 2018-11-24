@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.scheduler
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +9,7 @@ import android.widget.Filterable
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.jonathanchiou.organizer.R
 
 class ViewHolder(view: View) {
 

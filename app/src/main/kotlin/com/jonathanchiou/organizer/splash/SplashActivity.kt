@@ -1,8 +1,11 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.splash
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.jonathanchiou.organizer.api.ClientManager
+import com.jonathanchiou.organizer.login.LoginActivity
+import com.jonathanchiou.organizer.main.MainActivity
 
 class SplashActivity : Activity() {
 

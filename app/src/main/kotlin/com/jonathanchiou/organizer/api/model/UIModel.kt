@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.api.model
 
 enum class State {
     PENDING,

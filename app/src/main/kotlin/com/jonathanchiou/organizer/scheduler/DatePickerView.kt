@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.scheduler
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -12,6 +12,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnCheckedChanged
 import butterknife.OnClick
+import com.jonathanchiou.organizer.R
 import java.text.SimpleDateFormat
 import java.util.*
 

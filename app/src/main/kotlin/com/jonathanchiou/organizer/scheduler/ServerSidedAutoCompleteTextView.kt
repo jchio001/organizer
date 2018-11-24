@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.scheduler
 
 import android.content.Context
 import android.text.Editable
@@ -6,6 +6,8 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.AutoCompleteTextView
+import com.jonathanchiou.organizer.api.model.State
+import com.jonathanchiou.organizer.api.model.UIModel
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable

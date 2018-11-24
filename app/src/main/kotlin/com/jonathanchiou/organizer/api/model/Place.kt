@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.api.model
 
 import com.squareup.moshi.Json
 
@@ -14,7 +14,7 @@ class Place {
         return name
     }
 
-    // TODO: This is kind of janky (placeId should be used as the hash code. Fix later!
+    // TODO: This is kind of janky (placeId should be used as the hash code). Fix later!
     override fun equals(other: Any?): Boolean {
         if (other is String) {
             return name == other

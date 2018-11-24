@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.scheduler
 
 import android.content.Context
 import android.support.design.chip.Chip
@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import com.jonathanchiou.organizer.R
 
 class CloseableChip(context: Context) : Chip(context,
                                              null,

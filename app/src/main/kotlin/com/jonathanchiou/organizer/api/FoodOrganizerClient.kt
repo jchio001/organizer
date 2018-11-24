@@ -1,6 +1,8 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.api
 
 import android.util.Log
+import com.jonathanchiou.organizer.api.model.*
+import com.jonathanchiou.organizer.scheduler.ClientEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

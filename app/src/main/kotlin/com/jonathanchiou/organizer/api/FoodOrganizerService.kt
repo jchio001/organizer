@@ -1,5 +1,9 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.api
 
+import com.jonathanchiou.organizer.api.model.Account
+import com.jonathanchiou.organizer.scheduler.ClientEvent
+import com.jonathanchiou.organizer.api.model.Place
+import com.jonathanchiou.organizer.api.model.Token
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.*

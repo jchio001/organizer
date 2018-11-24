@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".LoginActivity">
+    tools:context=".login.LoginActivity">
 
-    <com.jonathanchiou.organizer.GoogleLoginButton
+    <com.jonathanchiou.organizer.login.GoogleLoginButton
         android:id="@+id/google_login_button"
         android:layout_width="match_parent"
         android:layout_height="40dp"

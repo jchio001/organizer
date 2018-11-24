@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.login
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.jonathanchiou.organizer.main.MainActivity
+import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.api.ClientManager
 
 class LoginActivity : AppCompatActivity() {
 

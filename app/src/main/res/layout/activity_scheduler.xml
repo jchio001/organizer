@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".SchedulerActivity">
+    tools:context=".scheduler.SchedulerActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                     android:layout_alignParentLeft="true"
                     android:src="@drawable/ic_clock"/>
 
-                <com.jonathanchiou.organizer.DatePickerView
+                <com.jonathanchiou.organizer.scheduler.DatePickerView
                     android:id="@+id/datepickerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -97,7 +97,7 @@
                     style="@style/SchedulerIconTheme"
                     android:src="@drawable/ic_location"/>
 
-                <com.jonathanchiou.organizer.ServerSidedAutoCompleteTextView
+                <com.jonathanchiou.organizer.scheduler.ServerSidedAutoCompleteTextView
                     android:id="@+id/places_autocompletetextview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -125,14 +125,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.jonathanchiou.organizer.ActionChipGroup
+                    <com.jonathanchiou.organizer.scheduler.ActionChipGroup
                         android:id="@+id/account_chipgroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:textSize="16sp"/>
 
-                    <com.jonathanchiou.organizer.ServerSidedAutoCompleteTextView
+                    <com.jonathanchiou.organizer.scheduler.ServerSidedAutoCompleteTextView
                         android:id="@+id/account_autocompletetextview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

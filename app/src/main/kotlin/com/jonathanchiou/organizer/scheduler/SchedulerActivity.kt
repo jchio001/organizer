@@ -1,4 +1,4 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.scheduler
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.api.ClientManager
+import com.jonathanchiou.organizer.api.model.*
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -122,9 +125,9 @@ class SchedulerActivity : AppCompatActivity() {
 
         foodOrganizerClient.createEvent(42,
                                         ClientEvent(title = title,
-                                                    scheduledTime = scheduledTime,
-                                                    invitedAccounts = invitedAccounts,
-                                                    placeId = placeId))
+                                                                                          scheduledTime = scheduledTime,
+                                                                                          invitedAccounts = invitedAccounts,
+                                                                                          placeId = placeId))
                 .subscribeWith(object : Observer<UIModel<Event>> {
                     override fun onSubscribe(d: Disposable) {
                         disposable = d
