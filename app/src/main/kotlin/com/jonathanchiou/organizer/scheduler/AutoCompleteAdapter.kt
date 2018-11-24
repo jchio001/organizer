@@ -24,6 +24,10 @@ class ViewHolder(view: View) {
 class AutoCompleteAdapter<T> : Filterable, BaseAdapter() {
 
     var objects = emptyList<T>()
+        set(objects) {
+            field = objects
+            notifyDataSetChanged()
+        }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         lateinit var viewHolder: ViewHolder

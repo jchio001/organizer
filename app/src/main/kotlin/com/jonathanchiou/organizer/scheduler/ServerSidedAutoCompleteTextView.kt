@@ -96,7 +96,7 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                     Log.i("AutoComplete", uiModel.state.toString())
                     if (uiModel.state == State.SUCCESS) {
                         autoCompleteAdapter.objects = uiModel.model!!
-                        autoCompleteAdapter.notifyDataSetChanged()
+                        showDropDown()
                     }
                 }
 
