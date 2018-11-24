@@ -1,4 +1,4 @@
-package com.jonathanchiou.foodorganizer
+package com.jonathanchiou.organizer
 
 /**
  * A model that represents a local version for event. Typically used to encapsulate events being

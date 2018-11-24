@@ -1,4 +1,4 @@
-package com.jonathanchiou.foodorganizer
+package com.jonathanchiou.organizer
 
 import com.squareup.moshi.Json
 

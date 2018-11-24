@@ -1,4 +1,4 @@
-package com.jonathanchiou.foodorganizer
+package com.jonathanchiou.organizer
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -15,7 +15,7 @@ import butterknife.OnClick
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DatePickerView(context: Context, attributeSet: AttributeSet):
+class DatePickerView(context: Context, attributeSet: AttributeSet) :
         LinearLayout(context, attributeSet) {
 
     @BindView(R.id.date_layout)

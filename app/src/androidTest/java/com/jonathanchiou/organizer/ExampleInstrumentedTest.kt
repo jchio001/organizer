@@ -1,4 +1,4 @@
-package com.jonathanchiou.foodorganizer
+package com.jonathanchiou.organizer
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

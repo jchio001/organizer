@@ -1,4 +1,4 @@
-package com.jonathanchiou.foodorganizer
+package com.jonathanchiou.organizer
 
 import android.util.Log
 import io.reactivex.Observable
@@ -28,7 +28,6 @@ fun <T> Observable<Response<T>>.toUIModelStream(): Observable<UIModel<T>> {
             .startWith(UIModel(State.PENDING, null as T))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-
 }
 
 class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {

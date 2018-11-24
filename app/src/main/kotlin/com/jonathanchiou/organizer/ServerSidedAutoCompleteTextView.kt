@@ -1,4 +1,4 @@
-package com.jonathanchiou.foodorganizer
+package com.jonathanchiou.organizer
 
 import android.content.Context
 import android.text.Editable
@@ -34,7 +34,7 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
     init {
         setAdapter(autoCompleteAdapter)
 
-        setOnFocusChangeListener{ v, hasFocus ->
+        setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
                 dismissDropDown()
             }

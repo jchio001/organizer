@@ -1,4 +1,4 @@
-package com.jonathanchiou.foodorganizer
+package com.jonathanchiou.organizer
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -64,7 +64,7 @@ class SchedulerActivity : AppCompatActivity() {
                     }
                 }
 
-        accountAutoCompleteTextView.clickedItemConsumer = object: Consumer<Account> {
+        accountAutoCompleteTextView.clickedItemConsumer = object : Consumer<Account> {
             override fun accept(account: Account) {
                 accountAutoCompleteTextView.text = null
                 accountChipGroup.addChip(account)
@@ -125,7 +125,7 @@ class SchedulerActivity : AppCompatActivity() {
                                                     scheduledTime = scheduledTime,
                                                     invitedAccounts = invitedAccounts,
                                                     placeId = placeId))
-                .subscribeWith(object: Observer<UIModel<Event>> {
+                .subscribeWith(object : Observer<UIModel<Event>> {
                     override fun onSubscribe(d: Disposable) {
                         disposable = d
                     }

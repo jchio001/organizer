@@ -80,7 +80,7 @@
                     android:layout_alignParentLeft="true"
                     android:src="@drawable/ic_clock"/>
 
-                <com.jonathanchiou.foodorganizer.DatePickerView
+                <com.jonathanchiou.organizer.DatePickerView
                     android:id="@+id/datepickerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -97,7 +97,7 @@
                     style="@style/SchedulerIconTheme"
                     android:src="@drawable/ic_location"/>
 
-                <com.jonathanchiou.foodorganizer.ServerSidedAutoCompleteTextView
+                <com.jonathanchiou.organizer.ServerSidedAutoCompleteTextView
                     android:id="@+id/places_autocompletetextview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -125,14 +125,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.jonathanchiou.foodorganizer.ActionChipGroup
+                    <com.jonathanchiou.organizer.ActionChipGroup
                         android:id="@+id/account_chipgroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:textSize="16sp"/>
 
-                    <com.jonathanchiou.foodorganizer.ServerSidedAutoCompleteTextView
+                    <com.jonathanchiou.organizer.ServerSidedAutoCompleteTextView
                         android:id="@+id/account_autocompletetextview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

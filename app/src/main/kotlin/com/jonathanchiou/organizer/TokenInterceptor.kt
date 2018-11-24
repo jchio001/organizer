@@ -1,4 +1,4 @@
-package com.jonathanchiou.foodorganizer
+package com.jonathanchiou.organizer
 
 import android.content.SharedPreferences
 import android.util.Base64
@@ -10,7 +10,6 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
-
 
 fun String.toJwtPayload(jwtPayloadAdapter: JsonAdapter<JwtPayload>): JwtPayload {
     try {
