@@ -17,7 +17,7 @@
             android:layout_toRightOf="@id/clock_icon"
             android:text="Now"
             android:textColor="@color/text_color"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
         <Switch
             android:id="@+id/now_switch"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
             android:textColor="@color/text_color"
-            android:textSize="20sp"
+            android:textSize="18sp"
             tools:text="Pizza"/>
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|top"
             android:textColor="@color/text_color"
-            android:textSize="20sp"
+            android:textSize="18sp"
             tools:text="Hut"/>
 
     </FrameLayout>

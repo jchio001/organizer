@@ -11,6 +11,7 @@ import butterknife.OnClick
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 
 class SchedulerActivity : AppCompatActivity() {
@@ -63,9 +64,11 @@ class SchedulerActivity : AppCompatActivity() {
                     }
                 }
 
-        accountAutoCompleteTextView.doOnItemClicked {
-            accountAutoCompleteTextView.text = null
-            accountChipGroup.addChip(it)
+        accountAutoCompleteTextView.clickedItemConsumer = object: Consumer<Account> {
+            override fun accept(account: Account) {
+                accountAutoCompleteTextView.text = null
+                accountChipGroup.addChip(account)
+            }
         }
     }
 
@@ -136,6 +139,7 @@ class SchedulerActivity : AppCompatActivity() {
                                            "Event scheduled!",
                                            Toast.LENGTH_SHORT)
                                     .show()
+                            finish()
                         }
                     }
 

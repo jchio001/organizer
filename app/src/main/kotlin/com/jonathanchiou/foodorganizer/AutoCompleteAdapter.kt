@@ -22,8 +22,7 @@ class ViewHolder(view: View) {
 
 class AutoCompleteAdapter<T> : Filterable, BaseAdapter() {
 
-    val emptyList = emptyList<T>()
-    var objects = emptyList
+    var objects = emptyList<T>()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         lateinit var viewHolder: ViewHolder
@@ -74,9 +73,5 @@ class AutoCompleteAdapter<T> : Filterable, BaseAdapter() {
                 notifyDataSetChanged()
             }
         }
-    }
-
-    fun reset() {
-        objects = emptyList
     }
 }

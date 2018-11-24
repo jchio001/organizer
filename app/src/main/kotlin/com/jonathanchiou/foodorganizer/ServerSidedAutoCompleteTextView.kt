@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -26,10 +27,17 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
 
     lateinit var uiModelObservableSupplier: Function<String, Observable<UIModel<List<T>>>>
 
-    val textEventSubject = PublishSubject.create<TextEvent>();
+    val textEventSubject = PublishSubject.create<TextEvent>()
+
+    var clickedItemConsumer: Consumer<T>? = null
 
     init {
         setAdapter(autoCompleteAdapter)
+
+        setOnItemClickListener { _, _, position, _ ->
+            textEventSubject.onNext(OtherEvent())
+            clickedItemConsumer?.accept(autoCompleteAdapter.getItem(position))
+        }
 
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?,
@@ -59,7 +67,6 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                     return
                 }
 
-                autoCompleteAdapter.reset()
                 textEventSubject.onNext(TextInputEvent(query = editableAsString))
             }
         })
@@ -93,14 +100,6 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                     override fun onComplete() {
                     }
                 })
-    }
-
-    inline fun doOnItemClicked(crossinline consumer: (T) -> Unit) {
-        setOnItemClickListener { _, _, position, _ ->
-            textEventSubject.onNext(OtherEvent())
-            consumer(autoCompleteAdapter.getItem(position))
-            autoCompleteAdapter.reset()
-        }
     }
 
     fun getCurrentlySelectedItem(): T? {
