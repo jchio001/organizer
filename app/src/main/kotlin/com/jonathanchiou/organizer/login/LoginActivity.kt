@@ -50,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onLoginFailure() {
+                    progressDialog.dismiss()
                     Toast.makeText(this@LoginActivity,
                                    "Failed to login. Try again later",
                                    Toast.LENGTH_SHORT)
