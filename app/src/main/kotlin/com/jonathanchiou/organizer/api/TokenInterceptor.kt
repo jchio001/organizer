@@ -78,18 +78,27 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
                                                  "Token has expired.")
                 }
 
-                if (request.header(INTERNAL_SKIP_REFRESH_HEADER) == "true") {
+                if (request.header(INTERNAL_SKIP_REFRESH_HEADER) != "true") {
                     if (now - jwtPayload!!.issuedTime >= TEN_DAYS) {
                         // TODO: consider using a semaphore instead?
                         synchronized(this@TokenInterceptor) {
                             if (now - jwtPayload!!.issuedTime >= TEN_DAYS) {
                                 try {
-                                    this.token = lazyFoodOrganizerService.value
+                                    // TODO: Implement the token exchange endpoint on the backend!
+                                    val freshToken = lazyFoodOrganizerService.value
                                             .refreshToken()
                                             .blockingFirst()
                                             .body()!!
                                             .token
-                                    this.jwtPayload = this.token?.toJwtPayload(jwtPayloadAdapter)
+
+                                    sharedPreferencesReference.get()?.let {
+                                        it.edit()
+                                                .putString(TOKEN_KEY, freshToken)
+                                                .apply()
+                                    }
+
+                                    this.token = freshToken
+                                    this.jwtPayload = freshToken.toJwtPayload(jwtPayloadAdapter)
                                 } catch (e: Exception) {
                                     Log.e("TokenInterceptor", "Failed to refresh token");
                                 }
