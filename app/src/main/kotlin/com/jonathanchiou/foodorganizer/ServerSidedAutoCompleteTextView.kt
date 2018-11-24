@@ -34,6 +34,12 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
     init {
         setAdapter(autoCompleteAdapter)
 
+        setOnFocusChangeListener{ v, hasFocus ->
+            if (!hasFocus) {
+                dismissDropDown()
+            }
+        }
+
         setOnItemClickListener { _, _, position, _ ->
             textEventSubject.onNext(OtherEvent())
             clickedItemConsumer?.accept(autoCompleteAdapter.getItem(position))
@@ -89,7 +95,6 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                         if (uiModel.state == State.SUCCESS) {
                             autoCompleteAdapter.objects = uiModel.model!!
                             autoCompleteAdapter.notifyDataSetChanged()
-                            showDropDown()
                         }
                     }
 
