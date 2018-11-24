@@ -38,27 +38,27 @@ class LoginActivity : AppCompatActivity() {
         }
 
         googleLoginButton
-                .attachClient(clientManager)
-                .listen(object : GoogleLoginButton.LoginListener {
-                    override fun onLoginPending() {
-                        progressDialog.show()
-                    }
+            .attachClient(clientManager)
+            .listen(object : GoogleLoginButton.LoginListener {
+                override fun onLoginPending() {
+                    progressDialog.show()
+                }
 
-                    override fun onLoginSuccess() {
-                        progressDialog.dismiss()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    }
+                override fun onLoginSuccess() {
+                    progressDialog.dismiss()
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                }
 
-                    override fun onLoginFailure() {
-                        Toast.makeText(this@LoginActivity,
-                                       "Failed to login. Try again later",
-                                       Toast.LENGTH_SHORT)
-                                .show()
-                    }
+                override fun onLoginFailure() {
+                    Toast.makeText(this@LoginActivity,
+                                   "Failed to login. Try again later",
+                                   Toast.LENGTH_SHORT)
+                        .show()
+                }
 
-                    override fun onLoginCancel() {
-                    }
-                })
+                override fun onLoginCancel() {
+                }
+            })
     }
 
     override fun onStop() {

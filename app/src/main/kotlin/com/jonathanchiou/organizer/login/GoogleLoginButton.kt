@@ -41,8 +41,8 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
         View.inflate(context, R.layout.button_google, this)
         setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.google_server_client_id))
-                .build()
+            .requestIdToken(context.getString(R.string.google_server_client_id))
+            .build()
         googleSignInClient = GoogleSignIn.getClient(context, signInOptions)
 
         setOnClickListener { _ ->
@@ -73,29 +73,29 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
                 }
 
                 clientManager.foodOrganizerClient
-                        .connect(account.idToken!!)
-                        .subscribeWith(object : Observer<UIModel<Token>> {
-                            override fun onSubscribe(d: Disposable) {
-                                compositeDisposable.add(d)
-                            }
+                    .connect(account.idToken!!)
+                    .subscribeWith(object : Observer<UIModel<Token>> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
 
-                            override fun onNext(uiModel: UIModel<Token>) {
-                                when (uiModel.state) {
-                                    State.PENDING -> loginListener?.onLoginPending()
-                                    State.SUCCESS -> {
-                                        clientManager.setToken(uiModel.model!!)
-                                        loginListener?.onLoginSuccess()
-                                    }
-                                    else -> loginListener?.onLoginFailure()
+                        override fun onNext(uiModel: UIModel<Token>) {
+                            when (uiModel.state) {
+                                State.PENDING -> loginListener?.onLoginPending()
+                                State.SUCCESS -> {
+                                    clientManager.setToken(uiModel.model!!)
+                                    loginListener?.onLoginSuccess()
                                 }
+                                else -> loginListener?.onLoginFailure()
                             }
+                        }
 
-                            override fun onError(e: Throwable) {
-                            }
+                        override fun onError(e: Throwable) {
+                        }
 
-                            override fun onComplete() {
-                            }
-                        })
+                        override fun onComplete() {
+                        }
+                    })
             } catch (e: ApiException) {
                 loginListener?.onLoginFailure()
             }

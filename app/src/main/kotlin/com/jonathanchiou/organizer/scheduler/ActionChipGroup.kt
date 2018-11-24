@@ -36,7 +36,7 @@ class CloseableChip(context: Context) : Chip(context,
 }
 
 class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
-        ChipGroup(context, attributeSet) {
+    ChipGroup(context, attributeSet) {
 
     val textColor: Int
     val textSize: Int
@@ -77,6 +77,6 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
 
     fun getModels(): List<T> {
         return (0 until childCount).asIterable()
-                .map { getChildAt(it).tag as T }
+            .map { getChildAt(it).tag as T }
     }
 }

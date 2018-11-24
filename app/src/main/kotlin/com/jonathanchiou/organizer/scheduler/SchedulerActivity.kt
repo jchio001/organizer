@@ -54,18 +54,18 @@ class SchedulerActivity : AppCompatActivity() {
         // IGNORE ANDROID STUDIOS. Replacing an interface with a lambda only works if the accepting
         // code is written in Java. It is not.
         placeAutoCompleteTextView.uiModelObservableSupplier =
-                object : Function<String, Observable<UIModel<List<Place>>>> {
-                    override fun apply(query: String): Observable<UIModel<List<Place>>> {
-                        return foodOrganizerClient.getPlaces(query, null)
-                    }
+            object : Function<String, Observable<UIModel<List<Place>>>> {
+                override fun apply(query: String): Observable<UIModel<List<Place>>> {
+                    return foodOrganizerClient.getPlaces(query, null)
                 }
+            }
 
         accountAutoCompleteTextView.uiModelObservableSupplier =
-                object : Function<String, Observable<UIModel<List<Account>>>> {
-                    override fun apply(query: String): Observable<UIModel<List<Account>>> {
-                        return foodOrganizerClient.searchAccounts(42, query)
-                    }
+            object : Function<String, Observable<UIModel<List<Account>>>> {
+                override fun apply(query: String): Observable<UIModel<List<Account>>> {
+                    return foodOrganizerClient.searchAccounts(42, query)
                 }
+            }
 
         accountAutoCompleteTextView.clickedItemConsumer = object : Consumer<Account> {
             override fun accept(account: Account) {
@@ -101,7 +101,7 @@ class SchedulerActivity : AppCompatActivity() {
             Toast.makeText(this,
                            "Event must be scheduled at a future time!",
                            Toast.LENGTH_SHORT)
-                    .show()
+                .show()
             return
         }
 
@@ -110,7 +110,7 @@ class SchedulerActivity : AppCompatActivity() {
             Toast.makeText(this,
                            "Please select a valid place.",
                            Toast.LENGTH_SHORT)
-                    .show()
+                .show()
             return
         }
 
@@ -119,7 +119,7 @@ class SchedulerActivity : AppCompatActivity() {
             Toast.makeText(this,
                            "You must invite at least 1 account.",
                            Toast.LENGTH_SHORT)
-                    .show()
+                .show()
             return
         }
 
@@ -128,29 +128,29 @@ class SchedulerActivity : AppCompatActivity() {
                                                     scheduledTime = scheduledTime,
                                                     invitedAccounts = invitedAccounts,
                                                     placeId = placeId))
-                .subscribeWith(object : Observer<UIModel<Event>> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposable = d
-                    }
+            .subscribeWith(object : Observer<UIModel<Event>> {
+                override fun onSubscribe(d: Disposable) {
+                    disposable = d
+                }
 
-                    override fun onNext(uiModel: UIModel<Event>) {
-                        if (uiModel.state == State.PENDING) {
-                            progressDialog.show()
-                        } else if (uiModel.state == State.SUCCESS) {
-                            progressDialog.dismiss()
-                            Toast.makeText(this@SchedulerActivity,
-                                           "Event scheduled!",
-                                           Toast.LENGTH_SHORT)
-                                    .show()
-                            finish()
-                        }
+                override fun onNext(uiModel: UIModel<Event>) {
+                    if (uiModel.state == State.PENDING) {
+                        progressDialog.show()
+                    } else if (uiModel.state == State.SUCCESS) {
+                        progressDialog.dismiss()
+                        Toast.makeText(this@SchedulerActivity,
+                                       "Event scheduled!",
+                                       Toast.LENGTH_SHORT)
+                            .show()
+                        finish()
                     }
+                }
 
-                    override fun onError(e: Throwable) {
-                    }
+                override fun onError(e: Throwable) {
+                }
 
-                    override fun onComplete() {
-                    }
-                })
+                override fun onComplete() {
+                }
+            })
     }
 }

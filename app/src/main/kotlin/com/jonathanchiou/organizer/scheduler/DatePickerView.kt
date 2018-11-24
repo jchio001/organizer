@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DatePickerView(context: Context, attributeSet: AttributeSet) :
-        LinearLayout(context, attributeSet) {
+    LinearLayout(context, attributeSet) {
 
     @BindView(R.id.date_layout)
     lateinit var dateLayout: FrameLayout
@@ -65,7 +65,7 @@ class DatePickerView(context: Context, attributeSet: AttributeSet) :
                          scheduledTime.get(Calendar.YEAR),
                          scheduledTime.get(Calendar.MONTH),
                          scheduledTime.get(Calendar.DAY_OF_MONTH))
-                .show()
+            .show()
     }
 
     @OnClick(R.id.time_textview)
@@ -80,7 +80,7 @@ class DatePickerView(context: Context, attributeSet: AttributeSet) :
                          scheduledTime.get(Calendar.HOUR_OF_DAY),
                          scheduledTime.get(Calendar.MINUTE),
                          false)
-                .show()
+            .show()
     }
 
     /**

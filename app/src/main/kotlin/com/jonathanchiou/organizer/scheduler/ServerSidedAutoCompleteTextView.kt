@@ -21,7 +21,7 @@ class TextInputEvent(val query: String) : TextEvent()
 class OtherEvent : TextEvent()
 
 class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: AttributeSet) :
-        AutoCompleteTextView(context, attributeSet) {
+    AutoCompleteTextView(context, attributeSet) {
 
     val autoCompleteAdapter = AutoCompleteAdapter<T>()
 
@@ -80,33 +80,33 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
         })
 
         textEventSubject
-                .debounce(200, TimeUnit.MILLISECONDS)
-                .switchMap {
-                    when (it) {
-                        is TextInputEvent -> uiModelObservableSupplier.apply(it.query)
-                        is OtherEvent -> Observable.never<UIModel<List<T>>>()
+            .debounce(200, TimeUnit.MILLISECONDS)
+            .switchMap {
+                when (it) {
+                    is TextInputEvent -> uiModelObservableSupplier.apply(it.query)
+                    is OtherEvent -> Observable.never<UIModel<List<T>>>()
+                }
+            }
+            .subscribe(object : Observer<UIModel<List<T>>> {
+                override fun onSubscribe(d: Disposable) {
+                    diposable = d
+                }
+
+                override fun onNext(uiModel: UIModel<List<T>>) {
+                    Log.i("AutoComplete", uiModel.state.toString())
+                    if (uiModel.state == State.SUCCESS) {
+                        autoCompleteAdapter.objects = uiModel.model!!
+                        autoCompleteAdapter.notifyDataSetChanged()
                     }
                 }
-                .subscribe(object : Observer<UIModel<List<T>>> {
-                    override fun onSubscribe(d: Disposable) {
-                        diposable = d
-                    }
 
-                    override fun onNext(uiModel: UIModel<List<T>>) {
-                        Log.i("AutoComplete", uiModel.state.toString())
-                        if (uiModel.state == State.SUCCESS) {
-                            autoCompleteAdapter.objects = uiModel.model!!
-                            autoCompleteAdapter.notifyDataSetChanged()
-                        }
-                    }
+                override fun onError(e: Throwable) {
+                    Log.i("AutoComplete", e.message)
+                }
 
-                    override fun onError(e: Throwable) {
-                        Log.i("AutoComplete", e.message)
-                    }
-
-                    override fun onComplete() {
-                    }
-                })
+                override fun onComplete() {
+                }
+            })
     }
 
     fun getCurrentlySelectedItem(): T? {

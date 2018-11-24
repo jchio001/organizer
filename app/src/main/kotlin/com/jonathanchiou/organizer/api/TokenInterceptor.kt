@@ -28,13 +28,13 @@ fun createStubbedResponse(request: Request,
                           statusCode: Int,
                           message: String): Response {
     return Response.Builder()
-            .protocol(Protocol.HTTP_1_1)
-            .request(request)
-            .code(statusCode)
-            .message("")
-            .body(ResponseBody.create(MediaType.get("application/json"),
-                                      "{'error: $message}"))
-            .build()
+        .protocol(Protocol.HTTP_1_1)
+        .request(request)
+        .code(statusCode)
+        .message("")
+        .body(ResponseBody.create(MediaType.get("application/json"),
+                                  "{'error: $message}"))
+        .build()
 }
 
 class TokenInterceptor(sharedPreferences: SharedPreferences,
@@ -86,15 +86,15 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
                                 try {
                                     // TODO: Implement the token exchange endpoint on the backend!
                                     val freshToken = lazyFoodOrganizerService.value
-                                            .refreshToken()
-                                            .blockingFirst()
-                                            .body()!!
-                                            .token
+                                        .refreshToken()
+                                        .blockingFirst()
+                                        .body()!!
+                                        .token
 
                                     sharedPreferencesReference.get()?.let {
                                         it.edit()
-                                                .putString(TOKEN_KEY, freshToken)
-                                                .apply()
+                                            .putString(TOKEN_KEY, freshToken)
+                                            .apply()
                                     }
 
                                     this.token = freshToken
@@ -108,10 +108,10 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
                 }
 
                 request = request.newBuilder()
-                        .removeHeader(INTERNAL_REQUIRED_HEADER)
-                        .removeHeader(INTERNAL_SKIP_REFRESH_HEADER)
-                        .addHeader(AUTHORIZATION, token!!)
-                        .build()
+                    .removeHeader(INTERNAL_REQUIRED_HEADER)
+                    .removeHeader(INTERNAL_SKIP_REFRESH_HEADER)
+                    .addHeader(AUTHORIZATION, token!!)
+                    .build()
             }
         }
 

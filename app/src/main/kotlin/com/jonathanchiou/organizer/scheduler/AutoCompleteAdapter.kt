@@ -31,9 +31,9 @@ class AutoCompleteAdapter<T> : Filterable, BaseAdapter() {
 
         if (convertView == null) {
             view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_text,
-                             parent,
-                             false)
+                .inflate(R.layout.list_item_text,
+                         parent,
+                         false)
             viewHolder = ViewHolder(view)
             view.setTag(viewHolder)
         } else {

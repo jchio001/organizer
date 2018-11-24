@@ -13,8 +13,8 @@ import okhttp3.logging.HttpLoggingInterceptor.Level
 class ClientManager(context: Context) {
 
     val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     val serviceFactory: ServiceFactory by lazy {
         ServiceFactory(tokenInterceptor,

@@ -16,11 +16,11 @@ class ServiceFactory(vararg interceptors: Interceptor) {
         }
 
         Retrofit.Builder()
-                .client(okHttpBuilder.build())
-                .baseUrl(BASE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
+            .client(okHttpBuilder.build())
+            .baseUrl(BASE_URL)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build();
     }
 
     fun <T> create(clazz: Class<T>): T {
