@@ -4,8 +4,8 @@ import com.squareup.moshi.Json
 
 class JwtPayload {
 
-    @Json(name = "id")
-    var id: Int = 0
+    @Json(name = "sub")
+    var sub: Int = 0
 
     @Json(name = "iat")
     var issuedTime: Long = 0
