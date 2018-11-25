@@ -5,11 +5,15 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 class ServiceFactory(vararg interceptors: Interceptor) {
 
     private val retrofit: Retrofit by lazy {
         val okHttpBuilder = OkHttpClient.Builder()
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(1, TimeUnit.MINUTES)
+            .writeTimeout(1, TimeUnit.MINUTES)
 
         for (interceptor in interceptors) {
             okHttpBuilder.addInterceptor(interceptor)
