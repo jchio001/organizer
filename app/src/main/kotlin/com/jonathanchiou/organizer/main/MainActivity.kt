@@ -4,24 +4,29 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.annotation.ColorInt
-import android.support.annotation.DrawableRes
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.AppCompatActivity
-import com.jonathanchiou.organizer.R
-import com.jonathanchiou.organizer.scheduler.SchedulerActivity
+import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
+import android.support.v4.widget.DrawerLayout.DrawerListener
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
 import butterknife.*
+import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.scheduler.SchedulerActivity
+import com.jonathanchiou.organizer.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
-    @BindView(R.id.toolbar)
-    lateinit var toolbar: Toolbar
-
     @BindView(R.id.drawer_layout)
     lateinit var drawerLayout: DrawerLayout
+
+    @BindView(R.id.main_navigation_view)
+    lateinit var mainNavigationView: NavigationView
+
+    @BindView(R.id.toolbar)
+    lateinit var toolbar: Toolbar
 
     @BindDrawable(R.drawable.ic_menu)
     lateinit var upButtonIcon: Drawable
@@ -29,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     @BindColor(R.color.white)
     @JvmField
     var white = 0
+
+    var selectedItemId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +49,31 @@ class MainActivity : AppCompatActivity() {
         // Have to dynamically change the icon's color since I'm dynamically changing the icon.
         upButtonIcon.setColorFilter(white, PorterDuff.Mode.SRC_ATOP)
         actionBar.setHomeAsUpIndicator(upButtonIcon)
+
+        mainNavigationView.setNavigationItemSelectedListener { menuItem ->
+            selectedItemId = menuItem.itemId
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+
+        drawerLayout.addDrawerListener(object: DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                when (selectedItemId) {
+                    R.id.settings -> startActivity(Intent(this@MainActivity,
+                                                          SettingsActivity::class.java))
+                }
+                selectedItemId = -1
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+            }
+
+            override fun onDrawerStateChanged(drawerView: Int) {
+            }
+        })
     }
 
     @OnClick(R.id.scheduler_fab)

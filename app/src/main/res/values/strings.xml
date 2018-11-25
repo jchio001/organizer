@@ -2,6 +2,9 @@
     <string name="app_name">Organizer</string>
     <string name="google_server_client_id">105733002841-vojgb6vjgna4k2v95i1ksotln64vu5pt.apps.googleusercontent.com</string>
 
+    <!-- Generic -->
+    <string name="settings">Settings</string>
+
     <!-- Login Activity -->
     <string name="connecting">Connecting&#8230;</string>
 

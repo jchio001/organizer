@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jonathanchiou.organizer">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.jonathanchiou.organizer">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -11,33 +10,36 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
-
         <activity
             android:name=".main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarTheme">
         </activity>
-
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarTheme">
         </activity>
-
         <activity
             android:name=".scheduler.SchedulerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarTheme">
         </activity>
-
         <activity
             android:name=".splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
         </activity>
     </application>
 

@@ -41,6 +41,10 @@ class ClientManager(context: Context) {
         tokenInterceptor.token = token.token
     }
 
+    fun logout() {
+        tokenInterceptor.token = null
+    }
+
     companion object {
         @JvmField
         protected var clientManager: ClientManager? = null
