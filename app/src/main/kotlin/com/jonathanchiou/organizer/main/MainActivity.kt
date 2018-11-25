@@ -4,26 +4,20 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v4.widget.DrawerLayout.DrawerListener
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.view.View
 import butterknife.*
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.scheduler.SchedulerActivity
 import com.jonathanchiou.organizer.settings.SettingsActivity
+import io.reactivex.functions.Consumer
 
 class MainActivity : AppCompatActivity() {
 
     @BindView(R.id.drawer_layout)
-    lateinit var drawerLayout: DrawerLayout
-
-    @BindView(R.id.main_navigation_view)
-    lateinit var mainNavigationView: NavigationView
+    lateinit var debouncedDrawerLayout: DebouncedDrawerLayout
 
     @BindView(R.id.toolbar)
     lateinit var toolbar: Toolbar
@@ -34,8 +28,6 @@ class MainActivity : AppCompatActivity() {
     @BindColor(R.color.white)
     @JvmField
     var white = 0
-
-    var selectedItemId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,30 +42,12 @@ class MainActivity : AppCompatActivity() {
         upButtonIcon.setColorFilter(white, PorterDuff.Mode.SRC_ATOP)
         actionBar.setHomeAsUpIndicator(upButtonIcon)
 
-        mainNavigationView.setNavigationItemSelectedListener { menuItem ->
-            selectedItemId = menuItem.itemId
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
+        debouncedDrawerLayout.itemSelectedConsumer = Consumer { selectedItemId ->
+            when (selectedItemId) {
+                R.id.settings -> startActivity(Intent(this@MainActivity,
+                                                      SettingsActivity::class.java))
+            }
         }
-
-        drawerLayout.addDrawerListener(object: DrawerListener {
-            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-            }
-
-            override fun onDrawerClosed(drawerView: View) {
-                when (selectedItemId) {
-                    R.id.settings -> startActivity(Intent(this@MainActivity,
-                                                          SettingsActivity::class.java))
-                }
-                selectedItemId = -1
-            }
-
-            override fun onDrawerOpened(drawerView: View) {
-            }
-
-            override fun onDrawerStateChanged(drawerView: Int) {
-            }
-        })
     }
 
     @OnClick(R.id.scheduler_fab)
@@ -84,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                drawerLayout.openDrawer(GravityCompat.START)
+                debouncedDrawerLayout.openDrawer(GravityCompat.START)
                 return true
             }
         }

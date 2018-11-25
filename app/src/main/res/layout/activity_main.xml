@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<com.jonathanchiou.organizer.main.DebouncedDrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -41,4 +41,4 @@
         app:itemTextColor="@color/text_color"
         app:menu="@menu/nav_drawer_menu"/>
 
-</android.support.v4.widget.DrawerLayout>
+</com.jonathanchiou.organizer.main.DebouncedDrawerLayout>
