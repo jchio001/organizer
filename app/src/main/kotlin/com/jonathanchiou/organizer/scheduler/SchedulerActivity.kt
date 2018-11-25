@@ -17,6 +17,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 
+// TODO: I'm 99% sure this entire layout bricks when the layout is stopped and then restarted. Deal
+// TODO: with this eventually.
 class SchedulerActivity : AppCompatActivity() {
 
     @BindView(R.id.title_edittext)

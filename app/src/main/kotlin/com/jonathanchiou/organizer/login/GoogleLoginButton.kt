@@ -17,7 +17,6 @@ import com.jonathanchiou.organizer.api.model.State
 import com.jonathanchiou.organizer.api.model.Token
 import com.jonathanchiou.organizer.api.model.UIModel
 import io.reactivex.Observer
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
@@ -35,7 +34,7 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
 
     protected var loginListener: LoginListener? = null
 
-    protected var compositeDisposable: CompositeDisposable = CompositeDisposable()
+    protected var currentDisposable: Disposable? = null
 
     init {
         View.inflate(context, R.layout.button_google, this)
@@ -68,15 +67,13 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
             try {
                 val account = signInTask.getResult(ApiException::class.java)!!
 
-                if (compositeDisposable.isDisposed) {
-                    compositeDisposable = CompositeDisposable()
-                }
+                currentDisposable?.dispose()
 
                 clientManager.foodOrganizerClient
                     .connect(account.idToken!!)
                     .subscribeWith(object : Observer<UIModel<Token>> {
-                        override fun onSubscribe(d: Disposable) {
-                            compositeDisposable.add(d)
+                        override fun onSubscribe(disposable: Disposable) {
+                            currentDisposable = disposable
                         }
 
                         override fun onNext(uiModel: UIModel<Token>) {
@@ -103,7 +100,7 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
     }
 
     fun cancelPendingRequest() {
-        compositeDisposable.dispose()
+        currentDisposable?.dispose()
     }
 
     companion object {
