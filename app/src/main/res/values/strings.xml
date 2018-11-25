@@ -10,4 +10,9 @@
 
     <!-- Scheduler Activity -->
     <string name="sharing">Sharing&#8230;</string>
+
+    <!-- Settings Activity -->
+    <string name="log_out_prompt">Are you sure you want to logout?</string>
+    <string name="log_out">Log out</string>
+    <string name="cancel">Cancel</string>
 </resources>
