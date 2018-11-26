@@ -6,12 +6,20 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import butterknife.*
 import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.api.ClientManager
+import com.jonathanchiou.organizer.api.model.Notification
+import com.jonathanchiou.organizer.api.model.State
+import com.jonathanchiou.organizer.api.model.UIModel
 import com.jonathanchiou.organizer.scheduler.SchedulerActivity
 import com.jonathanchiou.organizer.settings.SettingsActivity
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 
 class MainActivity : AppCompatActivity() {
@@ -22,12 +30,17 @@ class MainActivity : AppCompatActivity() {
     @BindView(R.id.toolbar)
     lateinit var toolbar: Toolbar
 
+    @BindView(R.id.main_recyclerview)
+    lateinit var recyclerView: RecyclerView
+
     @BindDrawable(R.drawable.ic_menu)
     lateinit var upButtonIcon: Drawable
 
     @BindColor(R.color.white)
     @JvmField
     var white = 0
+
+    protected var notificationDisposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +61,37 @@ class MainActivity : AppCompatActivity() {
                                                       SettingsActivity::class.java))
             }
         }
+
+        recyclerView.adapter = MainFeedAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        ClientManager.get()
+            .foodOrganizerClient
+            .getNotification()
+            .subscribe(object: Observer<UIModel<Notification>> {
+                override fun onSubscribe(disposable: Disposable) {
+                    notificationDisposable = disposable
+                }
+
+                override fun onNext(uiModel: UIModel<Notification>) {
+                    if (uiModel.state == State.SUCCESS) {
+                        val mainFeedAdapter = recyclerView.adapter as MainFeedAdapter
+                        mainFeedAdapter.notification = uiModel.model
+                        mainFeedAdapter.notifyDataSetChanged()
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                }
+
+                override fun onComplete() {
+                }
+            })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        notificationDisposable?.dispose()
     }
 
     @OnClick(R.id.scheduler_fab)

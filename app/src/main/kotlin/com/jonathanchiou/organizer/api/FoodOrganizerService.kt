@@ -17,6 +17,10 @@ interface FoodOrganizerService {
     @Headers("required: authorization", "skip-refresh: true")
     fun refreshToken(): Observable<Response<Token>>
 
+    @GET("notification")
+    @Headers("required: authorization", "skip-refresh: true")
+    fun getNotification(): Observable<Response<Token>>
+
     @GET("places")
     @Headers("required: authorization")
     fun getPlaces(@Query("input") input: String?,
