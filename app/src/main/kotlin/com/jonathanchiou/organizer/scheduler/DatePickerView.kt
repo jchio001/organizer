@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.Switch
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -18,6 +19,9 @@ import java.util.*
 
 class DatePickerView(context: Context, attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
+
+    @BindView(R.id.now_switch)
+    lateinit var nowSwitch: Switch
 
     @BindView(R.id.date_layout)
     lateinit var dateLayout: FrameLayout
@@ -88,7 +92,7 @@ class DatePickerView(context: Context, attributeSet: AttributeSet) :
      * representation of it.
      */
     fun getCurrentlySelectedTime(): Long {
-        return scheduledTime.timeInMillis
+        return (if (!nowSwitch.isChecked) scheduledTime else Calendar.getInstance()).timeInMillis
     }
 
     companion object {
