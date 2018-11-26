@@ -24,6 +24,4 @@ class NotificationViewHolder(itemView: View): ViewHolder(itemView) {
     init {
         ButterKnife.bind(this, itemView)
     }
-
-
 }

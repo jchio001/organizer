@@ -6,8 +6,8 @@ fun createNotification(): Notification {
     val notification = Notification()
     notification.title = "Respond to events"
     notification.text = "You've been invited to some events. " +
-        "Please reply to them as soon as possible!"
-    notification.actionType = "Reply now"
+        "Please respond to them as soon as possible!"
+    notification.actionType = "Respond now"
     notification.actionCount = 3
 
     return notification
