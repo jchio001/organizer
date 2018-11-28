@@ -12,6 +12,8 @@ class DebouncedDrawerLayout(context: Context,
                             attributeSet: AttributeSet):
     DrawerLayout(context, attributeSet) {
 
+    protected lateinit var navigationView: NavigationView
+
     private var navigationItemSelectedEnabled = true
 
     protected var selectedItemId = NOTHING_SELECTED_ID
@@ -28,6 +30,7 @@ class DebouncedDrawerLayout(context: Context,
         maybeNavigationView.setNavigationItemSelectedListener {
             if (navigationItemSelectedEnabled) {
                 navigationItemSelectedEnabled = false
+                navigationView.setCheckedItem(it.itemId)
                 selectedItemId = it.itemId
                 navigationItemSelectedEnabled = true
             }
@@ -36,12 +39,15 @@ class DebouncedDrawerLayout(context: Context,
             true
         }
 
+        navigationView = maybeNavigationView
+
         addDrawerListener(object: DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             }
 
             override fun onDrawerClosed(drawerView: View) {
                 itemSelectedConsumer?.accept(selectedItemId)
+                navigationView.menu.findItem(selectedItemId).isChecked = false
                 selectedItemId = NOTHING_SELECTED_ID
             }
 

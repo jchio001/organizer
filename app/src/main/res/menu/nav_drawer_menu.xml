@@ -2,12 +2,17 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/drafts"
-        android:title="Drafts"/>
+    <group
+        android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/settings"
-        android:title="@string/settings"/>
+        <item
+            android:id="@+id/drafts"
+            android:title="Drafts"/>
+
+        <item
+            android:id="@+id/settings"
+            android:title="@string/settings"/>
+
+    </group>
 
 </menu>
