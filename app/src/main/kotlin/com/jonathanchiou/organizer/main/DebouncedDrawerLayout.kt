@@ -47,7 +47,9 @@ class DebouncedDrawerLayout(context: Context,
 
             override fun onDrawerClosed(drawerView: View) {
                 itemSelectedConsumer?.accept(selectedItemId)
-                navigationView.menu.findItem(selectedItemId).isChecked = false
+                if (selectedItemId != NOTHING_SELECTED_ID) {
+                    navigationView.menu.findItem(selectedItemId).isChecked = false
+                }
                 selectedItemId = NOTHING_SELECTED_ID
             }
 

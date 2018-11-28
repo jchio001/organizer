@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.concurrent.TimeUnit
 
 fun <T> Observable<Response<T>>.toUIModelStream(): Observable<UIModel<T>> {
     return this
@@ -42,6 +43,7 @@ class FoodOrganizerClient(val organizerService: OrganizerService) {
 
     fun getNotification(): Observable<UIModel<Notification>> {
         return Observable.just(Response.success(createNotification()))
+            .delay(500, TimeUnit.MILLISECONDS)
             .toUIModelStream()
     }
 
