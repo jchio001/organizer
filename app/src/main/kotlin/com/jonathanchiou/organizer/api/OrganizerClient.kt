@@ -32,10 +32,10 @@ fun <T> Observable<Response<T>>.toUIModelStream(): Observable<UIModel<T>> {
         .observeOn(AndroidSchedulers.mainThread())
 }
 
-class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {
+class FoodOrganizerClient(val organizerService: OrganizerService) {
 
     fun connect(googleIdToken: String): Observable<UIModel<Token>> {
-        return foodOrganizerService
+        return organizerService
             .connect(googleIdToken)
             .toUIModelStream()
     }
@@ -46,7 +46,7 @@ class FoodOrganizerClient(val foodOrganizerService: FoodOrganizerService) {
     }
 
     fun getPlaces(input: String, location: String?): Observable<UIModel<List<Place>>> {
-        return foodOrganizerService
+        return organizerService
             .getPlaces(if (!input.isEmpty()) input else null, location)
             .toUIModelStream()
     }

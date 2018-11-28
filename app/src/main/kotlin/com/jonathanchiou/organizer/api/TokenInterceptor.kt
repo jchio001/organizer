@@ -39,7 +39,7 @@ fun createStubbedResponse(request: Request,
 
 class TokenInterceptor(sharedPreferences: SharedPreferences,
                        val jwtPayloadAdapter: JsonAdapter<JwtPayload>,
-                       val lazyFoodOrganizerService: Lazy<FoodOrganizerService>) : Interceptor {
+                       val lazyOrganizerService: Lazy<OrganizerService>) : Interceptor {
 
     private val sharedPreferencesReference = WeakReference(sharedPreferences)
 
@@ -85,7 +85,7 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
                             if (now - jwtPayload!!.issuedTime >= TEN_DAYS) {
                                 try {
                                     // TODO: Implement the token exchange endpoint on the backend!
-                                    val freshToken = lazyFoodOrganizerService.value
+                                    val freshToken = lazyOrganizerService.value
                                         .refreshToken()
                                         .blockingFirst()
                                         .body()!!

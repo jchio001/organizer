@@ -22,7 +22,7 @@ class ClientManager(context: Context) {
     }
 
     val lazyFoodOrganizerService = lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-        serviceFactory.create(FoodOrganizerService::class.java)
+        serviceFactory.create(OrganizerService::class.java)
     }
 
     val foodOrganizerClient: FoodOrganizerClient by lazy {

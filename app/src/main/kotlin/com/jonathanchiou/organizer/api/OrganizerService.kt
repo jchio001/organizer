@@ -8,7 +8,7 @@ import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.*
 
-interface FoodOrganizerService {
+interface OrganizerService {
 
     @PUT("connect")
     fun connect(@Query("google_id_token") googleIdToken: String): Observable<Response<Token>>
