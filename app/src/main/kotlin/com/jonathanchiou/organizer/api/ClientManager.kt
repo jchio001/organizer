@@ -25,8 +25,8 @@ class ClientManager(context: Context) {
         serviceFactory.create(OrganizerService::class.java)
     }
 
-    val foodOrganizerClient: FoodOrganizerClient by lazy {
-        FoodOrganizerClient(lazyFoodOrganizerService.value)
+    val organizerClient: OrganizerClient by lazy {
+        OrganizerClient(lazyFoodOrganizerService.value)
     }
 
     val tokenInterceptor = TokenInterceptor(PreferenceManager.getDefaultSharedPreferences(context),

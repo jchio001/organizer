@@ -16,6 +16,7 @@ import android.widget.ProgressBar
 import butterknife.*
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
+import com.jonathanchiou.organizer.api.model.Event
 import com.jonathanchiou.organizer.api.model.Notification
 import com.jonathanchiou.organizer.api.model.State
 import com.jonathanchiou.organizer.api.model.UIModel
@@ -75,21 +76,21 @@ class MainActivity : AppCompatActivity() {
         mainRecyclerView.layoutManager = LinearLayoutManager(this)
 
         ClientManager.get()
-            .foodOrganizerClient
-            .getNotification()
-            .subscribe(object: Observer<UIModel<Notification>> {
+            .organizerClient
+            .getMainFeed()
+            .subscribe(object: Observer<UIModel<Pair<Notification?, List<Event>?>>> {
                 override fun onSubscribe(disposable: Disposable) {
                     notificationDisposable = disposable
                 }
 
-                override fun onNext(uiModel: UIModel<Notification>) {
+                override fun onNext(uiModel: UIModel<Pair<Notification?, List<Event>?>>) {
                     if (uiModel.state == State.SUCCESS) {
                         mainProgressBar.visibility = View.GONE
                         mainRecyclerView.visibility = View.VISIBLE
                         schedulerFab.visibility = View.VISIBLE
 
                         val mainFeedAdapter = mainRecyclerView.adapter as MainFeedAdapter
-                        mainFeedAdapter.notification = uiModel.model
+                        mainFeedAdapter.notification = uiModel.model!!.first
                         mainFeedAdapter.notifyDataSetChanged()
                     }
                 }

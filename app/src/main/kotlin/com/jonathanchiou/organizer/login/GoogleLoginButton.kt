@@ -69,7 +69,7 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
 
                 currentDisposable?.dispose()
 
-                clientManager.foodOrganizerClient
+                clientManager.organizerClient
                     .connect(account.idToken!!)
                     .subscribeWith(object : Observer<UIModel<Token>> {
                         override fun onSubscribe(disposable: Disposable) {

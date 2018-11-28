@@ -44,7 +44,7 @@ class SchedulerActivity : AppCompatActivity() {
         progressDialog
     }
 
-    val foodOrganizerClient = ClientManager.get().foodOrganizerClient
+    val foodOrganizerClient = ClientManager.get().organizerClient
 
     var disposable: Disposable? = null
 
@@ -127,7 +127,7 @@ class SchedulerActivity : AppCompatActivity() {
 
         foodOrganizerClient.createEvent(42,
                                         ClientEvent(title = title,
-                                                    scheduledTime = scheduledTime,
+                                                    scheduledTime = scheduledTime / 1000,
                                                     invitedAccounts = invitedAccounts,
                                                     placeId = placeId))
             .subscribeWith(object : Observer<UIModel<Event>> {

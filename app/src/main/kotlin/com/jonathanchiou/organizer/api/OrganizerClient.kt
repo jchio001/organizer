@@ -5,6 +5,7 @@ import com.jonathanchiou.organizer.api.model.*
 import com.jonathanchiou.organizer.scheduler.ClientEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Response
 import java.net.SocketTimeoutException
@@ -17,7 +18,7 @@ fun <T> Observable<Response<T>>.toUIModelStream(): Observable<UIModel<T>> {
             if (it.isSuccessful) {
                 return@map UIModel(State.SUCCESS, it.body())
             } else {
-                Log.e("FoodOrganizerClient", it.code().toString())
+                Log.e("OrganizerClient", it.code().toString())
                 return@map UIModel(State.UNSUCCESSFUL, null as T)
             }
         }
@@ -33,7 +34,7 @@ fun <T> Observable<Response<T>>.toUIModelStream(): Observable<UIModel<T>> {
         .observeOn(AndroidSchedulers.mainThread())
 }
 
-class FoodOrganizerClient(val organizerService: OrganizerService) {
+class OrganizerClient(val organizerService: OrganizerService) {
 
     fun connect(googleIdToken: String): Observable<UIModel<Token>> {
         return organizerService
@@ -45,6 +46,31 @@ class FoodOrganizerClient(val organizerService: OrganizerService) {
         return Observable.just(Response.success(createNotification()))
             .delay(500, TimeUnit.MILLISECONDS)
             .toUIModelStream()
+    }
+
+    fun getEvents(): Observable<UIModel<List<Event>>> {
+        return Observable.just(Response.success(createEvents()))
+            .delay(500, TimeUnit.MILLISECONDS)
+            .toUIModelStream()
+    }
+
+    // TODO: Make that BiFunction code less like a bulldog and more like a normal dog.
+    fun getMainFeed(): Observable<UIModel<Pair<Notification?, List<Event>?>>> {
+        return Observable.zip(
+            getNotification(),
+            getEvents(),
+            BiFunction<
+                UIModel<Notification>,
+                UIModel<List<Event>>,
+                UIModel<Pair<Notification?, List<Event>?>>> { notificationUIModel, eventsUIModel ->
+                var state = notificationUIModel.state
+                if (eventsUIModel.state < state) {
+                    state = eventsUIModel.state
+                }
+
+                val pair = Pair(notificationUIModel.model, eventsUIModel.model)
+                return@BiFunction UIModel(state, pair)
+            })
     }
 
     fun getPlaces(input: String, location: String?): Observable<UIModel<List<Place>>> {

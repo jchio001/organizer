@@ -1,6 +1,7 @@
 package com.jonathanchiou.organizer.api
 
 import com.jonathanchiou.organizer.api.model.Account
+import com.jonathanchiou.organizer.api.model.Event
 import com.jonathanchiou.organizer.api.model.Place
 import com.jonathanchiou.organizer.api.model.Token
 import com.jonathanchiou.organizer.scheduler.ClientEvent
@@ -18,8 +19,12 @@ interface OrganizerService {
     fun refreshToken(): Observable<Response<Token>>
 
     @GET("notification")
-    @Headers("required: authorization", "skip-refresh: true")
+    @Headers("required: authorization")
     fun getNotification(): Observable<Response<Token>>
+
+    @GET("group/{group_id}/events")
+    @Headers("required: authorization")
+    fun getEvents(): Observable<Response<List<Event>>>
 
     @GET("places")
     @Headers("required: authorization")
@@ -34,5 +39,5 @@ interface OrganizerService {
     @PUT("group/{group_id}/event")
     @Headers("required: authorization")
     fun createEvent(@Path("group_id") groupId: Int,
-                    @Body event: ClientEvent)
+                    @Body event: ClientEvent): Observable<Response<Event>>
 }
