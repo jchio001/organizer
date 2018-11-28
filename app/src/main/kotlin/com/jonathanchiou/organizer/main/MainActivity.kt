@@ -4,12 +4,15 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import butterknife.*
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
@@ -30,8 +33,14 @@ class MainActivity : AppCompatActivity() {
     @BindView(R.id.toolbar)
     lateinit var toolbar: Toolbar
 
+    @BindView(R.id.main_progress_bar)
+    lateinit var mainProgressBar: ProgressBar
+
     @BindView(R.id.main_recyclerview)
-    lateinit var recyclerView: RecyclerView
+    lateinit var mainRecyclerView: RecyclerView
+
+    @BindView(R.id.scheduler_fab)
+    lateinit var schedulerFab: FloatingActionButton
 
     @BindDrawable(R.drawable.ic_menu)
     lateinit var upButtonIcon: Drawable
@@ -62,8 +71,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        recyclerView.adapter = MainFeedAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        mainRecyclerView.adapter = MainFeedAdapter()
+        mainRecyclerView.layoutManager = LinearLayoutManager(this)
 
         ClientManager.get()
             .foodOrganizerClient
@@ -75,7 +84,11 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onNext(uiModel: UIModel<Notification>) {
                     if (uiModel.state == State.SUCCESS) {
-                        val mainFeedAdapter = recyclerView.adapter as MainFeedAdapter
+                        mainProgressBar.visibility = View.GONE
+                        mainRecyclerView.visibility = View.VISIBLE
+                        schedulerFab.visibility = View.VISIBLE
+
+                        val mainFeedAdapter = mainRecyclerView.adapter as MainFeedAdapter
                         mainFeedAdapter.notification = uiModel.model
                         mainFeedAdapter.notifyDataSetChanged()
                     }

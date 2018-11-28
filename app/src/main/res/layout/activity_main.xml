@@ -26,8 +26,9 @@
             android:layout_height="match_parent">
 
             <ProgressBar
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:id="@+id/main_progress_bar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"/>
 
             <android.support.v7.widget.RecyclerView
