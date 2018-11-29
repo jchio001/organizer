@@ -1,7 +1,7 @@
 package com.jonathanchiou.organizer.api
 
 import com.jonathanchiou.organizer.api.model.Account
-import com.jonathanchiou.organizer.api.model.Event
+import com.jonathanchiou.organizer.api.model.EventBlurb
 import com.jonathanchiou.organizer.api.model.Place
 import com.jonathanchiou.organizer.api.model.Token
 import com.jonathanchiou.organizer.scheduler.ClientEvent
@@ -24,7 +24,7 @@ interface OrganizerService {
 
     @GET("group/{group_id}/events")
     @Headers("required: authorization")
-    fun getEvents(): Observable<Response<List<Event>>>
+    fun getEvents(): Observable<Response<List<EventBlurb>>>
 
     @GET("places")
     @Headers("required: authorization")
@@ -39,5 +39,5 @@ interface OrganizerService {
     @PUT("group/{group_id}/event")
     @Headers("required: authorization")
     fun createEvent(@Path("group_id") groupId: Int,
-                    @Body event: ClientEvent): Observable<Response<Event>>
+                    @Body event: ClientEvent): Observable<Response<EventBlurb>>
 }

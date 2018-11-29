@@ -101,7 +101,7 @@ class SchedulerActivity : AppCompatActivity() {
 
         if (System.currentTimeMillis() >= scheduledTime) {
             Toast.makeText(this,
-                           "Event must be scheduled at a future time!",
+                           "EventBlurb must be scheduled at a future time!",
                            Toast.LENGTH_SHORT)
                 .show()
             return
@@ -130,18 +130,18 @@ class SchedulerActivity : AppCompatActivity() {
                                                     scheduledTime = scheduledTime / 1000,
                                                     invitedAccounts = invitedAccounts,
                                                     placeId = placeId))
-            .subscribeWith(object : Observer<UIModel<Event>> {
+            .subscribeWith(object : Observer<UIModel<EventBlurb>> {
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
                 }
 
-                override fun onNext(uiModel: UIModel<Event>) {
+                override fun onNext(uiModel: UIModel<EventBlurb>) {
                     if (uiModel.state == State.PENDING) {
                         progressDialog.show()
                     } else if (uiModel.state == State.SUCCESS) {
                         progressDialog.dismiss()
                         Toast.makeText(this@SchedulerActivity,
-                                       "Event scheduled!",
+                                       "EventBlurb scheduled!",
                                        Toast.LENGTH_SHORT)
                             .show()
                         finish()

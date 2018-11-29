@@ -2,6 +2,15 @@ package com.jonathanchiou.organizer.api.model
 
 import com.squareup.moshi.Json
 
+fun createAccount(): Account {
+    val account0 = Account()
+    account0.id = 0
+    account0.firstName = "Erlich"
+    account0.lastName = "Bachman"
+
+    return account0
+}
+
 fun createAccounts(): List<Account> {
     val account0 = Account()
     account0.id = 0
@@ -31,6 +40,9 @@ class Account {
 
     @Json(name = "last_name")
     var lastName = ""
+
+    @Json(name = "profile_image")
+    var profileImage = ""
 
     override fun equals(other: Any?): Boolean {
         return if (other == null || other !is Account) false else return id == other.id

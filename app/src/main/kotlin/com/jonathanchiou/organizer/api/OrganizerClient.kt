@@ -48,21 +48,21 @@ class OrganizerClient(val organizerService: OrganizerService) {
             .toUIModelStream()
     }
 
-    fun getEvents(): Observable<UIModel<List<Event>>> {
-        return Observable.just(Response.success(createEvents()))
+    fun getEvents(): Observable<UIModel<List<EventBlurb>>> {
+        return Observable.just(Response.success(createEventBlurbs()))
             .delay(500, TimeUnit.MILLISECONDS)
             .toUIModelStream()
     }
 
     // TODO: Make that BiFunction code less like a bulldog and more like a normal dog.
-    fun getMainFeed(): Observable<UIModel<Pair<Notification?, List<Event>?>>> {
+    fun getMainFeed(): Observable<UIModel<Pair<Notification?, List<EventBlurb>?>>> {
         return Observable.zip(
             getNotification(),
             getEvents(),
             BiFunction<
                 UIModel<Notification>,
-                UIModel<List<Event>>,
-                UIModel<Pair<Notification?, List<Event>?>>> { notificationUIModel, eventsUIModel ->
+                UIModel<List<EventBlurb>>,
+                UIModel<Pair<Notification?, List<EventBlurb>?>>> { notificationUIModel, eventsUIModel ->
                 var state = notificationUIModel.state
                 if (eventsUIModel.state < state) {
                     state = eventsUIModel.state
@@ -84,8 +84,11 @@ class OrganizerClient(val organizerService: OrganizerService) {
             .toUIModelStream()
     }
 
-    fun createEvent(groupId: Int, clientEvent: ClientEvent): Observable<UIModel<Event>> {
-        return Observable.just(Response.success(Event()))
+    fun createEvent(groupId: Int, clientEvent: ClientEvent): Observable<UIModel<EventBlurb>> {
+        return Observable.just(Response.success(EventBlurb(id = 42,
+                                                           title = "",
+                                                           date = 0,
+                                                           creator = createAccount())))
             .toUIModelStream()
     }
 }

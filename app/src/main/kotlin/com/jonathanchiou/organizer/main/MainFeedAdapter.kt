@@ -5,36 +5,51 @@ import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.api.model.EventBlurb
 import com.jonathanchiou.organizer.api.model.Notification
+
+interface MainFeedModel
 
 class MainFeedAdapter: Adapter<ViewHolder>() {
 
-    var notification: Notification? = null
+    private var mainFeedModels = ArrayList<MainFeedModel>(3)
 
     override fun getItemCount(): Int {
-        return if (notification == null) 0 else 1
+        return mainFeedModels.size
     }
 
     // TODO: FIXED JANK STUBBED LOGIC
     override fun getItemViewType(position: Int): Int {
-        return if (position == 1) 1 else -1
+        return when (position) {
+            0 -> 1
+            else -> 2
+        }
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         when (viewHolder) {
             is NotificationViewHolder -> {
-                viewHolder.notificationTitle.text = notification!!.title
-                viewHolder.notificationActionCount.text = notification!!.actionCount.toString()
-                viewHolder.notificationText.text = notification!!.text
-                viewHolder.notificationActionText.text = notification!!.actionType
+                viewHolder.display(mainFeedModels.get(position) as Notification)
+            }
+            is EventBlurbViewHolder -> {
+                viewHolder.display(mainFeedModels.get(position) as EventBlurb)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return NotificationViewHolder(LayoutInflater.from(parent.context)
-                                          .inflate(R.layout.cell_main_feed_notification,
-                                                   parent,
-                                                   false))
+        val layoutInflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            1 -> NotificationViewHolder(layoutInflater.inflate(R.layout.cell_main_feed_notification,
+                                                     parent,
+                                                     false))
+            else -> EventBlurbViewHolder(layoutInflater.inflate(R.layout.cell_event_blurb,
+                                                      parent,
+                                                      false))
+        }
+    }
+
+    fun addMainFeedModels(mainFeedModelsPage: List<MainFeedModel>) {
+        mainFeedModels.addAll(mainFeedModelsPage)
     }
 }

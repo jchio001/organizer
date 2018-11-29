@@ -1,5 +1,6 @@
 package com.jonathanchiou.organizer.api.model
 
+import com.jonathanchiou.organizer.main.MainFeedModel
 import com.squareup.moshi.Json
 
 fun createNotification(): Notification {
@@ -13,7 +14,7 @@ fun createNotification(): Notification {
     return notification
 }
 
-class Notification {
+class Notification: MainFeedModel {
 
     @Json(name = "title")
     var title = ""
