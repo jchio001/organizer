@@ -2,11 +2,11 @@ package com.jonathanchiou.organizer.api.model
 
 enum class State {
     PENDING,
-    SUCCESS,
     UNSUCCESSFUL,
     ERROR_NO_NETWORK,
     ERROR_TIMEOUT,
-    ERROR_UNKNOWN
+    ERROR_UNKNOWN,
+    SUCCESS,
 }
 
 class UIModel<T>(val state: State) {

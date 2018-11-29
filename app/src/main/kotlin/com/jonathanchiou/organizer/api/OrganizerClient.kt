@@ -70,7 +70,7 @@ class OrganizerClient(val organizerService: OrganizerService) {
                 UIModel<List<EventBlurb>>,
                 UIModel<List<MainFeedModel>?>> { notificationUIModel, eventsUIModel ->
                 var state = notificationUIModel.state
-                if (eventsUIModel.state < state) {
+                if (eventsUIModel.state.ordinal < state.ordinal) {
                     state = eventsUIModel.state
                 }
 
