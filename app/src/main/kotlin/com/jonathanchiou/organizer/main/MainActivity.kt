@@ -16,8 +16,6 @@ import android.widget.ProgressBar
 import butterknife.*
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
-import com.jonathanchiou.organizer.api.model.EventBlurb
-import com.jonathanchiou.organizer.api.model.Notification
 import com.jonathanchiou.organizer.api.model.State
 import com.jonathanchiou.organizer.api.model.UIModel
 import com.jonathanchiou.organizer.scheduler.SchedulerActivity

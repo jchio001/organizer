@@ -5,7 +5,6 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import io.reactivex.functions.Consumer
 
