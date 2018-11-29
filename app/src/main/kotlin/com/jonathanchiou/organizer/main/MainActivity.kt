@@ -4,15 +4,12 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
+import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.view.View
-import android.widget.ProgressBar
+import android.widget.FrameLayout
 import butterknife.*
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
@@ -32,15 +29,6 @@ class MainActivity : AppCompatActivity() {
     @BindView(R.id.toolbar)
     lateinit var toolbar: Toolbar
 
-    @BindView(R.id.main_progress_bar)
-    lateinit var mainProgressBar: ProgressBar
-
-    @BindView(R.id.main_recyclerview)
-    lateinit var mainRecyclerView: RecyclerView
-
-    @BindView(R.id.scheduler_fab)
-    lateinit var schedulerFab: FloatingActionButton
-
     @BindDrawable(R.drawable.ic_menu)
     lateinit var upButtonIcon: Drawable
 
@@ -48,12 +36,16 @@ class MainActivity : AppCompatActivity() {
     @JvmField
     var white = 0
 
+    protected lateinit var fragmentManager: FragmentManager
+
     protected var notificationDisposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ButterKnife.bind(this)
+
+        fragmentManager = supportFragmentManager
 
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar!!
@@ -70,9 +62,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mainRecyclerView.adapter = MainFeedAdapter()
-        mainRecyclerView.layoutManager = LinearLayoutManager(this)
-
         ClientManager.get()
             .organizerClient
             .getMainFeed()
@@ -82,14 +71,24 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onNext(uiModel: UIModel<List<MainFeedModel>?>) {
-                    if (uiModel.state == State.SUCCESS) {
-                        mainProgressBar.visibility = View.GONE
-                        mainRecyclerView.visibility = View.VISIBLE
-                        schedulerFab.hide()
+                    when (uiModel.state) {
+                        State.PENDING ->
+                            fragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, LoadingFragment())
+                                .commit()
+                        State.SUCCESS -> {
+                            fragmentManager.findFragmentById(R.id.fragment_container)?.let {
+                                fragmentManager.beginTransaction()
+                                    .remove(it)
+                                    .commit()
+                            }
 
-                        val mainFeedAdapter = mainRecyclerView.adapter as MainFeedAdapter
-                        mainFeedAdapter.addMainFeedModels(uiModel.model!!)
-                        mainFeedAdapter.notifyDataSetChanged()
+                            fragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container,
+                                         MainFeedFragment(uiModel.model!!))
+                                .addToBackStack(MainFeedFragment.BACKSTACK_TAG)
+                                .commit()
+                        }
                     }
                 }
 
@@ -106,9 +105,12 @@ class MainActivity : AppCompatActivity() {
         notificationDisposable?.dispose()
     }
 
-    @OnClick(R.id.scheduler_fab)
-    fun onSchedulerFabClicked() {
-        startActivity(Intent(this, SchedulerActivity::class.java))
+    override fun onBackPressed() {
+        if (fragmentManager.backStackEntryCount <= 1) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
