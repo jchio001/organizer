@@ -5,6 +5,7 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import io.reactivex.functions.Consumer
 
@@ -30,7 +31,7 @@ class DebouncedDrawerLayout(context: Context,
         maybeNavigationView.setNavigationItemSelectedListener {
             if (navigationItemSelectedEnabled) {
                 navigationItemSelectedEnabled = false
-                navigationView.setCheckedItem(it.itemId)
+                it.isChecked = true
                 selectedItemId = it.itemId
                 navigationItemSelectedEnabled = true
             }
