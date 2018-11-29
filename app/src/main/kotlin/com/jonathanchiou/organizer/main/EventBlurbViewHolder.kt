@@ -1,18 +1,18 @@
 package com.jonathanchiou.organizer.main
 
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.EventBlurb
+import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EventBlurbViewHolder(itemView: View): ViewHolder(itemView) {
+class EventBlurbViewHolder(itemView: View): AbsViewHolder<MainFeedModel>(itemView) {
 
     @BindView(R.id.event_blurb_cell_title)
     lateinit var eventBlurbCellTitle: TextView
@@ -32,7 +32,8 @@ class EventBlurbViewHolder(itemView: View): ViewHolder(itemView) {
         ButterKnife.bind(this, itemView)
     }
 
-    fun display(eventBlurb: EventBlurb) {
+    override fun display(listItem: MainFeedModel) {
+        val eventBlurb = listItem as EventBlurb
         eventBlurbCellTitle.text = eventBlurb.title
         eventBlurbDateCell.text = DATE_FORMAT.format(Date(eventBlurb.date))
 

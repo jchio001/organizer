@@ -1,14 +1,14 @@
 package com.jonathanchiou.organizer.main
 
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.Notification
+import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 
-class NotificationViewHolder(itemView: View): ViewHolder(itemView) {
+class NotificationViewHolder(itemView: View): AbsViewHolder<MainFeedModel>(itemView) {
 
     @BindView(R.id.notification_title)
     lateinit var notificationTitle: TextView
@@ -26,11 +26,11 @@ class NotificationViewHolder(itemView: View): ViewHolder(itemView) {
         ButterKnife.bind(this, itemView)
     }
 
-    fun display(notification: Notification) {
+    override fun display(listItem: MainFeedModel) {
+        val notification = listItem as Notification
         notificationTitle.text = notification.title
         notificationActionCount.text = notification.actionCount.toString()
         notificationText.text = notification.text
         notificationActionText.text = notification.actionType
     }
-
 }

@@ -78,23 +78,19 @@ class MainActivity : AppCompatActivity() {
         ClientManager.get()
             .organizerClient
             .getMainFeed()
-            .subscribe(object: Observer<UIModel<Pair<Notification?, List<EventBlurb>?>>> {
+            .subscribe(object: Observer<UIModel<List<MainFeedModel>?>> {
                 override fun onSubscribe(disposable: Disposable) {
                     notificationDisposable = disposable
                 }
 
-                override fun onNext(uiModel: UIModel<Pair<Notification?, List<EventBlurb>?>>) {
+                override fun onNext(uiModel: UIModel<List<MainFeedModel>?>) {
                     if (uiModel.state == State.SUCCESS) {
                         mainProgressBar.visibility = View.GONE
                         mainRecyclerView.visibility = View.VISIBLE
                         schedulerFab.hide()
 
-                        val mainFeedViewModels = ArrayList<MainFeedModel>(3)
-                        mainFeedViewModels.add(uiModel.model!!.first!!)
-                        mainFeedViewModels.addAll(uiModel.model!!.second!!)
-
                         val mainFeedAdapter = mainRecyclerView.adapter as MainFeedAdapter
-                        mainFeedAdapter.addMainFeedModels(mainFeedViewModels)
+                        mainFeedAdapter.addMainFeedModels(uiModel.model!!)
                         mainFeedAdapter.notifyDataSetChanged()
                     }
                 }

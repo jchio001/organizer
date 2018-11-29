@@ -2,6 +2,7 @@ package com.jonathanchiou.organizer.api
 
 import android.util.Log
 import com.jonathanchiou.organizer.api.model.*
+import com.jonathanchiou.organizer.main.MainFeedModel
 import com.jonathanchiou.organizer.scheduler.ClientEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -43,7 +44,12 @@ class OrganizerClient(val organizerService: OrganizerService) {
     }
 
     fun getNotification(): Observable<UIModel<Notification>> {
-        return Observable.just(Response.success(createNotification()))
+        return Observable.just(Response.success(Notification(title = "Respond to events",
+                                                             text = "You've been invited to some " +
+                                                                 "events. Please respond to them " +
+                                                                 "as soon as possible!",
+                                                             actionType = "Respond now",
+                                                             actionCount = 3)))
             .delay(500, TimeUnit.MILLISECONDS)
             .toUIModelStream()
     }
@@ -54,22 +60,29 @@ class OrganizerClient(val organizerService: OrganizerService) {
             .toUIModelStream()
     }
 
-    // TODO: Make that BiFunction code less like a bulldog and more like a normal dog.
-    fun getMainFeed(): Observable<UIModel<Pair<Notification?, List<EventBlurb>?>>> {
+    // TODO: Slightly better, but still kind of sucky.
+    fun getMainFeed(): Observable<UIModel<List<MainFeedModel>?>> {
         return Observable.zip(
             getNotification(),
             getEvents(),
             BiFunction<
                 UIModel<Notification>,
                 UIModel<List<EventBlurb>>,
-                UIModel<Pair<Notification?, List<EventBlurb>?>>> { notificationUIModel, eventsUIModel ->
+                UIModel<List<MainFeedModel>?>> { notificationUIModel, eventsUIModel ->
                 var state = notificationUIModel.state
                 if (eventsUIModel.state < state) {
                     state = eventsUIModel.state
                 }
 
-                val pair = Pair(notificationUIModel.model, eventsUIModel.model)
-                return@BiFunction UIModel(state, pair)
+                val mainFeedModels = ArrayList<MainFeedModel>(3)
+                notificationUIModel.model?.let {
+                    mainFeedModels.add(it)
+                }
+                eventsUIModel.model?.let {
+                    mainFeedModels.addAll(it)
+                }
+
+                return@BiFunction UIModel(state, mainFeedModels)
             })
     }
 

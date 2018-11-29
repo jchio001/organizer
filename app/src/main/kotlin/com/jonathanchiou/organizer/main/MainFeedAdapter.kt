@@ -1,16 +1,14 @@
 package com.jonathanchiou.organizer.main
 
 import android.support.v7.widget.RecyclerView.Adapter
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jonathanchiou.organizer.R
-import com.jonathanchiou.organizer.api.model.EventBlurb
-import com.jonathanchiou.organizer.api.model.Notification
+import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 
 interface MainFeedModel
 
-class MainFeedAdapter: Adapter<ViewHolder>() {
+class MainFeedAdapter: Adapter<AbsViewHolder<MainFeedModel>>() {
 
     private var mainFeedModels = ArrayList<MainFeedModel>(3)
 
@@ -26,18 +24,11 @@ class MainFeedAdapter: Adapter<ViewHolder>() {
         }
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        when (viewHolder) {
-            is NotificationViewHolder -> {
-                viewHolder.display(mainFeedModels.get(position) as Notification)
-            }
-            is EventBlurbViewHolder -> {
-                viewHolder.display(mainFeedModels.get(position) as EventBlurb)
-            }
-        }
+    override fun onBindViewHolder(viewHolder: AbsViewHolder<MainFeedModel>, position: Int) {
+        viewHolder.display(mainFeedModels.get(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AbsViewHolder<MainFeedModel> {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             1 -> NotificationViewHolder(layoutInflater.inflate(R.layout.cell_main_feed_notification,
