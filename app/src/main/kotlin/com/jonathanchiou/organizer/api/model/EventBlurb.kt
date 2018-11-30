@@ -16,6 +16,12 @@ fun createEventBlurbs(): List<EventBlurb> {
     account1.lastName = ""
     account1.profileImage = "https://i1.wp.com/mentalmars.com/wp-content/uploads/2014/11/claptrap.jpg?resize=250%2C239"
 
+    val account2 = Account()
+    account2.id = 2
+    account2.firstName = "MISTER"
+    account2.lastName = "TORGUE"
+    account2.profileImage = "https://pbs.twimg.com/profile_images/2930127149/e18533e68204c0d64c5e22acd2c01248_400x400.jpeg"
+
     val date = (System.currentTimeMillis() / 1000) + 86400
 
     val eventBlurb0 = EventBlurb(id = 0,
@@ -26,8 +32,12 @@ fun createEventBlurbs(): List<EventBlurb> {
                                  title = "Pizza party",
                                  date = date,
                                  creator = account1)
+    val eventBlurb2 = EventBlurb(id = 2,
+                                 title = "EXPLOSIONS?",
+                                 date = date,
+                                 creator = account2)
 
-    return arrayListOf(eventBlurb0, eventBlurb1)
+    return arrayListOf(eventBlurb0, eventBlurb1, eventBlurb2)
 }
 
 data class EventBlurb(@Json(name = "id") val id: Int,

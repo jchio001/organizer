@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/text_color"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         tools:text="Let's go kill Handsome Jack!"/>
 
@@ -40,12 +40,12 @@
             android:layout_height="wrap_content"
             android:text="Created by:"
             android:textColor="@color/text_color"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/event_blurb_creator_profile_image"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="8dp" />
 
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:textColor="@color/text_color"
-            android:textSize="18sp"
+            android:textSize="16sp"
             tools:text="Roland"/>
 
     </LinearLayout>

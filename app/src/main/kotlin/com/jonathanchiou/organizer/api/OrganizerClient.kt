@@ -3,6 +3,7 @@ package com.jonathanchiou.organizer.api
 import android.util.Log
 import com.jonathanchiou.organizer.api.model.*
 import com.jonathanchiou.organizer.main.MainFeedModel
+import com.jonathanchiou.organizer.main.TitleModel
 import com.jonathanchiou.organizer.scheduler.ClientEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -79,6 +80,7 @@ class OrganizerClient(val organizerService: OrganizerService) {
                     mainFeedModels.add(it)
                 }
                 eventsUIModel.model?.let {
+                    mainFeedModels.add(TitleModel("Upcoming"))
                     mainFeedModels.addAll(it)
                 }
 
@@ -103,5 +105,9 @@ class OrganizerClient(val organizerService: OrganizerService) {
                                                            date = 0,
                                                            creator = createAccount())))
             .toUIModelStream()
+    }
+
+    companion object {
+        const val EVENT_BLURB_MAIN_FEED_PAGE_SIZE = 3
     }
 }
