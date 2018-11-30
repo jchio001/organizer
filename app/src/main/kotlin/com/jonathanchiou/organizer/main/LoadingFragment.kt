@@ -14,8 +14,4 @@ class LoadingFragment: Fragment() {
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_loading, container, false)
     }
-
-    companion object {
-        const val BACKSTACK_TAG = "LoadingFragment"
-    }
 }

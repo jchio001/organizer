@@ -35,7 +35,7 @@ class EventBlurbViewHolder(itemView: View): AbsViewHolder<MainFeedModel>(itemVie
     override fun display(listItem: MainFeedModel) {
         val eventBlurb = listItem as EventBlurb
         eventBlurbCellTitle.text = eventBlurb.title
-        eventBlurbDateCell.text = DATE_FORMAT.format(Date(eventBlurb.date))
+        eventBlurbDateCell.text = DATE_FORMAT.format(Date(eventBlurb.date * 1000))
 
         picasso
             .load(eventBlurb.creator.profileImage)

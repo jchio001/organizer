@@ -2,7 +2,6 @@ package com.jonathanchiou.organizer.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -19,9 +18,6 @@ class MainFeedFragment(): Fragment() {
 
     @BindView(R.id.main_recyclerview)
     lateinit var mainRecyclerView: RecyclerView
-
-    @BindView(R.id.scheduler_fab)
-    lateinit var schedulerFab: FloatingActionButton
 
     var mainFeedModels: List<MainFeedModel>? = null
 

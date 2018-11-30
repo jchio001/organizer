@@ -96,11 +96,11 @@ class DatePickerView(context: Context, attributeSet: AttributeSet) :
     }
 
     companion object {
-        val DATE_FORMAT by lazy {
+        private val DATE_FORMAT by lazy {
             SimpleDateFormat("EEE MMM, dd, yyyy", Locale.US)
         }
 
-        val TIME_FORMAT by lazy {
+        private val TIME_FORMAT by lazy {
             SimpleDateFormat("hh:mm aa", Locale.US)
         }
     }
