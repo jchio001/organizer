@@ -12,7 +12,7 @@ fun createEventBlurbs(): List<EventBlurb> {
 
     val account1 = Account()
     account1.id = 1
-    account1.firstName = "Clatrap"
+    account1.firstName = "Claptrap"
     account1.lastName = ""
     account1.profileImage = "https://i1.wp.com/mentalmars.com/wp-content/uploads/2014/11/claptrap.jpg?resize=250%2C239"
 
