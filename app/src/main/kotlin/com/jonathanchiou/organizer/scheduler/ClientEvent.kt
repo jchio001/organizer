@@ -8,6 +8,6 @@ import com.jonathanchiou.organizer.api.model.Account
  * [FoodOrganizerService].
  */
 data class ClientEvent(val title: String,
+                       val placeId: String,
                        val scheduledTime: Long,
-                       val invitedAccounts: List<Account>,
-                       val placeId: String)
+                       val invitedAccounts: List<Account>)

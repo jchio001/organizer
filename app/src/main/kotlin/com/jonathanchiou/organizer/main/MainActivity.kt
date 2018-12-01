@@ -4,18 +4,16 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.fragment.app.FragmentManager
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
-import android.widget.FrameLayout
 import butterknife.*
+import com.jonathanchiou.organizer.DraftsActivity
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.State
 import com.jonathanchiou.organizer.api.model.UIModel
-import com.jonathanchiou.organizer.scheduler.SchedulerActivity
 import com.jonathanchiou.organizer.settings.SettingsActivity
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -59,6 +57,8 @@ class MainActivity : AppCompatActivity() {
             when (selectedItemId) {
                 R.id.settings -> startActivity(Intent(this@MainActivity,
                                                       SettingsActivity::class.java))
+                R.id.drafts -> startActivity(Intent(this@MainActivity,
+                                                    DraftsActivity::class.java))
             }
         }
 
