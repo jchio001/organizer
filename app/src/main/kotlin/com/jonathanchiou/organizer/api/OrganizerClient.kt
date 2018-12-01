@@ -2,6 +2,7 @@ package com.jonathanchiou.organizer.api
 
 import android.util.Log
 import com.jonathanchiou.organizer.api.model.*
+import com.jonathanchiou.organizer.main.ButtonModel
 import com.jonathanchiou.organizer.main.MainFeedModel
 import com.jonathanchiou.organizer.main.TitleModel
 import com.jonathanchiou.organizer.scheduler.ClientEvent
@@ -82,6 +83,10 @@ class OrganizerClient(val organizerService: OrganizerService) {
                 eventsUIModel.model?.let {
                     mainFeedModels.add(TitleModel("Upcoming"))
                     mainFeedModels.addAll(it)
+
+                    if (it.size == EVENT_BLURB_MAIN_FEED_PAGE_SIZE) {
+                        mainFeedModels.add(ButtonModel("Show more"))
+                    }
                 }
 
                 return@BiFunction UIModel(state, mainFeedModels)

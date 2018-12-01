@@ -9,8 +9,10 @@ import com.jonathanchiou.organizer.api.model.Notification
 import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 import java.lang.IllegalStateException
 
+// Sealed classes don't work cross files yet.
 interface MainFeedModel
 class TitleModel(val title: String): MainFeedModel
+class ButtonModel(val text: String): MainFeedModel
 
 class MainFeedAdapter: Adapter<AbsViewHolder<MainFeedModel>>() {
 
@@ -26,12 +28,13 @@ class MainFeedAdapter: Adapter<AbsViewHolder<MainFeedModel>>() {
             is Notification -> 1
             is EventBlurb -> 2
             is TitleModel -> 3
+            is ButtonModel -> 4
             else -> -1
         }
     }
 
     override fun onBindViewHolder(viewHolder: AbsViewHolder<MainFeedModel>, position: Int) {
-        viewHolder.display(mainFeedModels.get(position))
+        viewHolder.display(mainFeedModels[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AbsViewHolder<MainFeedModel> {
@@ -46,7 +49,10 @@ class MainFeedAdapter: Adapter<AbsViewHolder<MainFeedModel>>() {
             3 -> TitleViewHolder(layoutInflater.inflate(R.layout.cell_main_feed_title,
                                                            parent,
                                                            false))
-            else -> throw IllegalStateException("Invalid viewType ${viewType}.")
+            4 -> ButtonViewHolder(layoutInflater.inflate(R.layout.cell_main_feed_button,
+                                                         parent,
+                                                         false))
+            else -> throw IllegalStateException("Invalid viewType $viewType.")
         }
     }
 
