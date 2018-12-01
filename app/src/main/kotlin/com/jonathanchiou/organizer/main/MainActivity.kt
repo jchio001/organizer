@@ -4,10 +4,10 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import androidx.fragment.app.FragmentManager
+import androidx.core.view.GravityCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import android.widget.FrameLayout
 import butterknife.*
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     @JvmField
     var white = 0
 
-    protected lateinit var fragmentManager: FragmentManager
+    protected lateinit var fragmentManager: androidx.fragment.app.FragmentManager
 
     protected var notificationDisposable: Disposable? = null
 

@@ -2,9 +2,9 @@ package com.jonathanchiou.organizer.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +14,10 @@ import butterknife.OnClick
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.scheduler.SchedulerActivity
 
-class MainFeedFragment(): Fragment() {
+class MainFeedFragment(): androidx.fragment.app.Fragment() {
 
     @BindView(R.id.main_recyclerview)
-    lateinit var mainRecyclerView: RecyclerView
+    lateinit var mainRecyclerView: androidx.recyclerview.widget.RecyclerView
 
     var mainFeedModels: List<MainFeedModel>? = null
 
@@ -37,7 +37,7 @@ class MainFeedFragment(): Fragment() {
 
         val mainFeedAdapter = MainFeedAdapter()
         mainRecyclerView.adapter = mainFeedAdapter
-        mainRecyclerView.layoutManager = LinearLayoutManager(context)
+        mainRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         mainFeedModels?.let(mainFeedAdapter::addMainFeedModels)
     }
 

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.jonathanchiou.organizer.settings.SettingsActivity">
 
-    <android.support.design.widget.NavigationView
+    <com.google.android.material.navigation.NavigationView
         android:id="@+id/settings_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

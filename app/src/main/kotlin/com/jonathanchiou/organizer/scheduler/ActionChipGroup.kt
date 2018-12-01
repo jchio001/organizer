@@ -1,9 +1,9 @@
 package com.jonathanchiou.organizer.scheduler
 
 import android.content.Context
-import android.support.design.chip.Chip
-import android.support.design.chip.ChipGroup
-import android.support.v4.content.ContextCompat
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -12,8 +12,8 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.jonathanchiou.organizer.R
 
 class CloseableChip(context: Context) : Chip(context,
-                                             null,
-                                             R.style.Widget_MaterialComponents_Chip_Action) {
+                                                                              null,
+                                                                              R.style.Widget_MaterialComponents_Chip_Action) {
 
     init {
         isCheckedIconVisible = false

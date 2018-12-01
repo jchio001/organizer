@@ -1,16 +1,16 @@
 package com.jonathanchiou.organizer.main
 
 import android.content.Context
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import android.util.AttributeSet
 import android.view.View
 import io.reactivex.functions.Consumer
 
 class DebouncedDrawerLayout(context: Context,
                             attributeSet: AttributeSet):
-    DrawerLayout(context, attributeSet) {
+    androidx.drawerlayout.widget.DrawerLayout(context, attributeSet) {
 
     protected lateinit var navigationView: NavigationView
 
