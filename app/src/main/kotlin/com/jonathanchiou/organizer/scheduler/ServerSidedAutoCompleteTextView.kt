@@ -6,8 +6,7 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.AutoCompleteTextView
-import com.jonathanchiou.organizer.api.model.State
-import com.jonathanchiou.organizer.api.model.UIModel
+import com.jonathanchiou.organizer.api.model.ApiUIModel
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -27,7 +26,7 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
 
     protected var diposable: Disposable? = null
 
-    lateinit var uiModelObservableSupplier: Function<String, Observable<UIModel<List<T>>>>
+    lateinit var apiUiModelObservableSupplier: Function<String, Observable<ApiUIModel<List<T>>>>
 
     val textEventSubject = PublishSubject.create<TextEvent>()
 
@@ -82,20 +81,20 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
             .switchMap {
                 when (it) {
                     is TextInputEvent ->
-                        if (!it.query.isEmpty()) uiModelObservableSupplier.apply(it.query)
-                        else Observable.never<UIModel<List<T>>>()
-                    is OtherEvent -> Observable.never<UIModel<List<T>>>()
+                        if (!it.query.isEmpty()) apiUiModelObservableSupplier.apply(it.query)
+                        else Observable.never<ApiUIModel<List<T>>>()
+                    is OtherEvent -> Observable.never<ApiUIModel<List<T>>>()
                 }
             }
-            .subscribe(object : Observer<UIModel<List<T>>> {
+            .subscribe(object : Observer<ApiUIModel<List<T>>> {
                 override fun onSubscribe(d: Disposable) {
                     diposable = d
                 }
 
-                override fun onNext(uiModel: UIModel<List<T>>) {
-                    Log.i("AutoComplete", uiModel.state.toString())
-                    if (uiModel.state == State.SUCCESS) {
-                        autoCompleteAdapter.objects = uiModel.model!!
+                override fun onNext(apiUiModel: ApiUIModel<List<T>>) {
+                    Log.i("AutoComplete", apiUiModel.state.toString())
+                    if (apiUiModel.state == ApiUIModel.State.SUCCESS) {
+                        autoCompleteAdapter.objects = apiUiModel.model!!
                         showDropDown()
                     }
                 }

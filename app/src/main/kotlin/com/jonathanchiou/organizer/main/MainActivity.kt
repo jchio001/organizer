@@ -4,16 +4,18 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.core.view.GravityCompat
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import android.view.MenuItem
-import butterknife.*
-import com.jonathanchiou.organizer.drafts.DraftsActivity
+import androidx.core.view.GravityCompat
+import butterknife.BindColor
+import butterknife.BindDrawable
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
-import com.jonathanchiou.organizer.api.model.State
-import com.jonathanchiou.organizer.api.model.UIModel
+import com.jonathanchiou.organizer.api.model.ApiUIModel
+import com.jonathanchiou.organizer.drafts.DraftsActivity
 import com.jonathanchiou.organizer.settings.SettingsActivity
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -65,18 +67,18 @@ class MainActivity : AppCompatActivity() {
         ClientManager.get()
             .organizerClient
             .getMainFeed()
-            .subscribe(object: Observer<UIModel<List<MainFeedModel>?>> {
+            .subscribe(object : Observer<ApiUIModel<List<MainFeedModel>?>> {
                 override fun onSubscribe(disposable: Disposable) {
                     notificationDisposable = disposable
                 }
 
-                override fun onNext(uiModel: UIModel<List<MainFeedModel>?>) {
-                    when (uiModel.state) {
-                        State.PENDING ->
+                override fun onNext(apiUiModel: ApiUIModel<List<MainFeedModel>?>) {
+                    when (apiUiModel.state) {
+                        ApiUIModel.State.PENDING ->
                             fragmentManager.beginTransaction()
                                 .replace(R.id.fragment_container, LoadingFragment())
                                 .commit()
-                        State.SUCCESS -> {
+                        ApiUIModel.State.SUCCESS -> {
                             fragmentManager.findFragmentById(R.id.fragment_container)?.let {
                                 fragmentManager.beginTransaction()
                                     .remove(it)
@@ -85,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
                             fragmentManager.beginTransaction()
                                 .replace(R.id.fragment_container,
-                                         MainFeedFragment(uiModel.model!!))
+                                         MainFeedFragment(apiUiModel.model!!))
                                 .addToBackStack(MainFeedFragment.BACKSTACK_TAG)
                                 .commit()
                         }

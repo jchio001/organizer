@@ -1,10 +1,9 @@
 package com.jonathanchiou.organizer.drafts
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +50,7 @@ class DraftsActivity : AppCompatActivity() {
         eventDraftDao.getAll()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object: Observer<List<EventDraft>> {
+            .subscribe(object : Observer<List<EventDraft>> {
                 override fun onSubscribe(disposable: Disposable) {
                     getAllDisposable = disposable
                 }

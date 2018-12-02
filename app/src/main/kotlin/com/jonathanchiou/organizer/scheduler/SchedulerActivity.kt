@@ -12,7 +12,10 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
-import com.jonathanchiou.organizer.api.model.*
+import com.jonathanchiou.organizer.api.model.Account
+import com.jonathanchiou.organizer.api.model.ApiUIModel
+import com.jonathanchiou.organizer.api.model.EventBlurb
+import com.jonathanchiou.organizer.api.model.Place
 import com.jonathanchiou.organizer.persistence.DbUIModel
 import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
@@ -57,6 +60,14 @@ class SchedulerActivity : AppCompatActivity() {
 
     val foodOrganizerClient = ClientManager.get().organizerClient
 
+    val eventDraftDao by lazy {
+        Room.databaseBuilder(applicationContext,
+                             OrganizerDatabase::class.java,
+                             "organizer_db")
+            .build()
+            .getEventDraftDao()
+    }
+
     var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,16 +77,16 @@ class SchedulerActivity : AppCompatActivity() {
 
         // IGNORE ANDROID STUDIOS. Replacing an interface with a lambda only works if the accepting
         // code is written in Java. It is not.
-        placeAutoCompleteTextView.uiModelObservableSupplier =
-            object : Function<String, Observable<UIModel<List<Place>>>> {
-                override fun apply(query: String): Observable<UIModel<List<Place>>> {
+        placeAutoCompleteTextView.apiUiModelObservableSupplier =
+            object : Function<String, Observable<ApiUIModel<List<Place>>>> {
+                override fun apply(query: String): Observable<ApiUIModel<List<Place>>> {
                     return foodOrganizerClient.getPlaces(query, null)
                 }
             }
 
-        accountAutoCompleteTextView.uiModelObservableSupplier =
-            object : Function<String, Observable<UIModel<List<Account>>>> {
-                override fun apply(query: String): Observable<UIModel<List<Account>>> {
+        accountAutoCompleteTextView.apiUiModelObservableSupplier =
+            object : Function<String, Observable<ApiUIModel<List<Account>>>> {
+                override fun apply(query: String): Observable<ApiUIModel<List<Account>>> {
                     return foodOrganizerClient.searchAccounts(42, query)
                 }
             }
@@ -118,14 +129,7 @@ class SchedulerActivity : AppCompatActivity() {
 
         compositeDisposable.add(
             Observable
-                .fromCallable {
-                    Room.databaseBuilder(applicationContext,
-                                         OrganizerDatabase::class.java,
-                                         "organizer_db")
-                        .build()
-                        .getEventDraftDao()
-                        .upsert(eventDraft)
-                }
+                .fromCallable { eventDraftDao.upsert(eventDraft) }
                 .toDbUIModelStream()
                 .subscribe {
                     if (it.state == DbUIModel.State.SUCCESS) {
@@ -172,15 +176,15 @@ class SchedulerActivity : AppCompatActivity() {
                                                     scheduledTime = scheduledTime / 1000,
                                                     invitedAccounts = invitedAccounts,
                                                     placeId = placeId))
-            .subscribeWith(object : Observer<UIModel<EventBlurb>> {
+            .subscribeWith(object : Observer<ApiUIModel<EventBlurb>> {
                 override fun onSubscribe(disposable: Disposable) {
                     compositeDisposable.add(disposable)
                 }
 
-                override fun onNext(uiModel: UIModel<EventBlurb>) {
-                    if (uiModel.state == State.PENDING) {
+                override fun onNext(apiUiModel: ApiUIModel<EventBlurb>) {
+                    if (apiUiModel.state == ApiUIModel.State.PENDING) {
                         progressDialog.show()
-                    } else if (uiModel.state == State.SUCCESS) {
+                    } else if (apiUiModel.state == ApiUIModel.State.SUCCESS) {
                         progressDialog.dismiss()
                         Toast.makeText(this@SchedulerActivity,
                                        "EventBlurb scheduled!",

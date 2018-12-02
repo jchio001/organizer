@@ -12,7 +12,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EventBlurbViewHolder(itemView: View): AbsViewHolder<MainFeedModel>(itemView) {
+class EventBlurbViewHolder(itemView: View) : AbsViewHolder<MainFeedModel>(itemView) {
 
     @BindView(R.id.event_blurb_cell_title)
     lateinit var eventBlurbCellTitle: TextView

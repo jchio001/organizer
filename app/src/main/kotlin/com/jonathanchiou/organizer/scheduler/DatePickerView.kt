@@ -39,7 +39,7 @@ class DatePickerView(context: Context, attributeSet: AttributeSet) :
     }
 
     init {
-        inflate(context, R.layout.layout_date_picker_review, this)
+        inflate(context, R.layout.layout_date_picker, this)
         orientation = VERTICAL
         ButterKnife.bind(this, this)
     }
@@ -86,7 +86,6 @@ class DatePickerView(context: Context, attributeSet: AttributeSet) :
                          false)
             .show()
     }
-
 
 
     /**

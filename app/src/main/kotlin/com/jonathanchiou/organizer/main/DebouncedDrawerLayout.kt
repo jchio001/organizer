@@ -1,15 +1,14 @@
 package com.jonathanchiou.organizer.main
 
 import android.content.Context
-import com.google.android.material.navigation.NavigationView
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.view.GravityCompat
+import com.google.android.material.navigation.NavigationView
 import io.reactivex.functions.Consumer
 
 class DebouncedDrawerLayout(context: Context,
-                            attributeSet: AttributeSet):
+                            attributeSet: AttributeSet) :
     androidx.drawerlayout.widget.DrawerLayout(context, attributeSet) {
 
     protected lateinit var navigationView: NavigationView
@@ -41,7 +40,7 @@ class DebouncedDrawerLayout(context: Context,
 
         navigationView = maybeNavigationView
 
-        addDrawerListener(object: DrawerListener {
+        addDrawerListener(object : DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             }
 

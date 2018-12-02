@@ -3,19 +3,18 @@ package com.jonathanchiou.organizer.login
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
-import com.jonathanchiou.organizer.api.model.State
+import com.jonathanchiou.organizer.api.model.ApiUIModel
 import com.jonathanchiou.organizer.api.model.Token
-import com.jonathanchiou.organizer.api.model.UIModel
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
@@ -71,16 +70,16 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
 
                 clientManager.organizerClient
                     .connect(account.idToken!!)
-                    .subscribeWith(object : Observer<UIModel<Token>> {
+                    .subscribeWith(object : Observer<ApiUIModel<Token>> {
                         override fun onSubscribe(disposable: Disposable) {
                             currentDisposable = disposable
                         }
 
-                        override fun onNext(uiModel: UIModel<Token>) {
-                            when (uiModel.state) {
-                                State.PENDING -> loginListener?.onLoginPending()
-                                State.SUCCESS -> {
-                                    clientManager.setToken(uiModel.model!!)
+                        override fun onNext(apiUiModel: ApiUIModel<Token>) {
+                            when (apiUiModel.state) {
+                                ApiUIModel.State.PENDING -> loginListener?.onLoginPending()
+                                ApiUIModel.State.SUCCESS -> {
+                                    clientManager.setToken(apiUiModel.model!!)
                                     loginListener?.onLoginSuccess()
                                 }
                                 else -> loginListener?.onLoginFailure()

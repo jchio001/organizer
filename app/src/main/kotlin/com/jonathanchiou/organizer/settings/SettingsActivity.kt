@@ -2,13 +2,13 @@ package com.jonathanchiou.organizer.settings
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.navigation.NavigationView
-import androidx.core.app.ActivityCompat
+import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import android.view.MenuItem
+import androidx.core.app.ActivityCompat
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.google.android.material.navigation.NavigationView
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.login.LoginActivity

@@ -7,7 +7,7 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 
-class EventDraftsAdapter: Adapter<AbsViewHolder<EventDraft>>() {
+class EventDraftsAdapter : Adapter<AbsViewHolder<EventDraft>>() {
 
     private val eventDrafts = ArrayList<EventDraft>(3)
 

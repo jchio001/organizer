@@ -1,20 +1,20 @@
 package com.jonathanchiou.organizer.main
 
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.EventBlurb
 import com.jonathanchiou.organizer.api.model.Notification
 import com.jonathanchiou.organizer.viewholder.AbsViewHolder
-import java.lang.IllegalStateException
 
 // Sealed classes don't work cross files yet.
 interface MainFeedModel
-class TitleModel(val title: String): MainFeedModel
-class ButtonModel(val text: String): MainFeedModel
 
-class MainFeedAdapter: Adapter<AbsViewHolder<MainFeedModel>>() {
+class TitleModel(val title: String) : MainFeedModel
+class ButtonModel(val text: String) : MainFeedModel
+
+class MainFeedAdapter : Adapter<AbsViewHolder<MainFeedModel>>() {
 
     private var mainFeedModels = ArrayList<MainFeedModel>(3)
 
@@ -44,11 +44,11 @@ class MainFeedAdapter: Adapter<AbsViewHolder<MainFeedModel>>() {
                                                                parent,
                                                                false))
             2 -> EventBlurbViewHolder(layoutInflater.inflate(R.layout.cell_event_blurb,
-                                                                parent,
-                                                                false))
+                                                             parent,
+                                                             false))
             3 -> TitleViewHolder(layoutInflater.inflate(R.layout.cell_main_feed_title,
-                                                           parent,
-                                                           false))
+                                                        parent,
+                                                        false))
             4 -> ButtonViewHolder(layoutInflater.inflate(R.layout.cell_main_feed_button,
                                                          parent,
                                                          false))
