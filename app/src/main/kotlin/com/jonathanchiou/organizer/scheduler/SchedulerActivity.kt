@@ -120,7 +120,7 @@ class SchedulerActivity : AppCompatActivity() {
                                     placeId = placeAutoCompleteTextView
                                         .getCurrentlySelectedItem()
                                         ?.placeId,
-                                    scheduledTime = datePickerView.getCurrentlySelectedTime(),
+                                    scheduledTime = datePickerView.getUserSelectedTime(),
                                     invitedAccounts = adapter.toJson(accountChipGroup.getModels()),
                                     description = descriptionTextView.text.toString())
 
@@ -140,7 +140,7 @@ class SchedulerActivity : AppCompatActivity() {
         val enteredTitle = titleEditText.text
         val title = if (!enteredTitle.isEmpty()) enteredTitle.toString() else "(No title)"
 
-        val scheduledTime = datePickerView.getCurrentlySelectedTime()!!
+        val scheduledTime = datePickerView.getCurrentlySelectedTime()
 
         if (System.currentTimeMillis() >= scheduledTime) {
             Toast.makeText(this,
