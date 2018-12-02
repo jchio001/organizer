@@ -6,14 +6,12 @@ import com.jonathanchiou.organizer.api.model.JwtPayload
 import com.jonathanchiou.organizer.api.model.ServiceFactory
 import com.jonathanchiou.organizer.api.model.Token
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
 
 class ClientManager(context: Context) {
 
     val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
         .build()
 
     val serviceFactory: ServiceFactory by lazy {

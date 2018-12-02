@@ -2,6 +2,7 @@ package com.jonathanchiou.organizer.api.model
 
 import com.jonathanchiou.organizer.main.MainFeedModel
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 fun createEventBlurbs(): List<EventBlurb> {
     val account0 = Account(id = 0,
@@ -37,6 +38,7 @@ fun createEventBlurbs(): List<EventBlurb> {
     return arrayListOf(eventBlurb0, eventBlurb1, eventBlurb2)
 }
 
+@JsonClass(generateAdapter = true)
 data class EventBlurb(@Json(name = "id") val id: Int,
                       @Json(name = "title") val title: String,
                       @Json(name = "date") val date: Long,
