@@ -12,8 +12,8 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.jonathanchiou.organizer.R
 
 class CloseableChip(context: Context) : Chip(context,
-                                                                              null,
-                                                                              R.style.Widget_MaterialComponents_Chip_Action) {
+                                             null,
+                                             R.style.Widget_MaterialComponents_Chip_Action) {
 
     init {
         isCheckedIconVisible = false

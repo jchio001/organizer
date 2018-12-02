@@ -2,17 +2,25 @@ package com.jonathanchiou.organizer.scheduler
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.*
+import com.jonathanchiou.organizer.persistence.DbUIModel
+import com.jonathanchiou.organizer.persistence.EventDraft
+import com.jonathanchiou.organizer.persistence.OrganizerDatabase
+import com.jonathanchiou.organizer.persistence.toDbUIModelStream
+import com.squareup.moshi.Types
 import io.reactivex.Observable
 import io.reactivex.Observer
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
@@ -36,6 +44,9 @@ class SchedulerActivity : AppCompatActivity() {
     @BindView(R.id.account_chipgroup)
     lateinit var accountChipGroup: ActionChipGroup<Account>
 
+    @BindView(R.id.description_textview)
+    lateinit var descriptionTextView: TextView
+
     val progressDialog by lazy {
         val progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate = true
@@ -46,7 +57,7 @@ class SchedulerActivity : AppCompatActivity() {
 
     val foodOrganizerClient = ClientManager.get().organizerClient
 
-    var disposable: Disposable? = null
+    var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +91,7 @@ class SchedulerActivity : AppCompatActivity() {
     override fun onStop() {
         placeAutoCompleteTextView.cancelPendingRequest()
         accountAutoCompleteTextView.cancelPendingRequest()
-        disposable?.dispose()
+        compositeDisposable.clear()
         super.onStop()
     }
 
@@ -88,16 +99,47 @@ class SchedulerActivity : AppCompatActivity() {
     fun onCloseIconClicked() {
         placeAutoCompleteTextView.cancelPendingRequest()
         accountAutoCompleteTextView.cancelPendingRequest()
-        disposable?.dispose()
+        compositeDisposable.clear()
         finish()
     }
 
+    @OnClick(R.id.save_button)
+    fun onSaveButtonClicked() {
+        val listMyData = Types.newParameterizedType(List::class.java, Account::class.java)
+        val adapter = ClientManager.get().moshi.adapter<List<Account>>(listMyData)
+
+        val eventDraft = EventDraft(title = titleEditText.text.toString(),
+                                    placeId = placeAutoCompleteTextView
+                                        .getCurrentlySelectedItem()
+                                        ?.placeId,
+                                    scheduledTime = datePickerView.getCurrentlySelectedTime(),
+                                    invitedAccounts = adapter.toJson(accountChipGroup.getModels()),
+                                    description = descriptionTextView.text.toString())
+
+        compositeDisposable.add(
+            Observable
+                .fromCallable {
+                    Room.databaseBuilder(applicationContext,
+                                         OrganizerDatabase::class.java,
+                                         "organizer_db")
+                        .build()
+                        .getEventDraftDao()
+                        .upsert(eventDraft)
+                }
+                .toDbUIModelStream()
+                .subscribe {
+                    if (it.state == DbUIModel.State.SUCCESS) {
+                        finish()
+                    }
+                })
+    }
+    
     @OnClick(R.id.share_button)
     fun onShareButtonClicked() {
         val enteredTitle = titleEditText.text
         val title = if (!enteredTitle.isEmpty()) enteredTitle.toString() else "(No title)"
 
-        val scheduledTime = datePickerView.getCurrentlySelectedTime()
+        val scheduledTime = datePickerView.getCurrentlySelectedTime()!!
 
         if (System.currentTimeMillis() >= scheduledTime) {
             Toast.makeText(this,
@@ -131,8 +173,8 @@ class SchedulerActivity : AppCompatActivity() {
                                                     invitedAccounts = invitedAccounts,
                                                     placeId = placeId))
             .subscribeWith(object : Observer<UIModel<EventBlurb>> {
-                override fun onSubscribe(d: Disposable) {
-                    disposable = d
+                override fun onSubscribe(disposable: Disposable) {
+                    compositeDisposable.add(disposable)
                 }
 
                 override fun onNext(uiModel: UIModel<EventBlurb>) {
