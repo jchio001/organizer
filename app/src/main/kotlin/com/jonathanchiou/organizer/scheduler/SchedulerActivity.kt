@@ -14,7 +14,6 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.Account
 import com.jonathanchiou.organizer.api.model.ApiUIModel
-import com.jonathanchiou.organizer.api.model.EventBlurb
 import com.jonathanchiou.organizer.api.model.Place
 import com.jonathanchiou.organizer.persistence.DbUIModel
 import com.jonathanchiou.organizer.persistence.EventDraft
@@ -22,9 +21,7 @@ import com.jonathanchiou.organizer.persistence.OrganizerDatabase
 import com.jonathanchiou.organizer.persistence.toDbUIModelStream
 import com.squareup.moshi.Types
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 
@@ -171,20 +168,17 @@ class SchedulerActivity : AppCompatActivity() {
             return
         }
 
-        foodOrganizerClient.createEvent(42,
-                                        ClientEvent(title = title,
-                                                    scheduledTime = scheduledTime / 1000,
-                                                    invitedAccounts = invitedAccounts,
-                                                    placeId = placeId))
-            .subscribeWith(object : Observer<ApiUIModel<EventBlurb>> {
-                override fun onSubscribe(disposable: Disposable) {
-                    compositeDisposable.add(disposable)
-                }
-
-                override fun onNext(apiUiModel: ApiUIModel<EventBlurb>) {
-                    if (apiUiModel.state == ApiUIModel.State.PENDING) {
+        compositeDisposable.add(
+            foodOrganizerClient
+                .createEvent(42,
+                             ClientEvent(title = title,
+                                         scheduledTime = scheduledTime / 1000,
+                                         invitedAccounts = invitedAccounts,
+                                         placeId = placeId))
+                .subscribe {
+                    if (it.state == ApiUIModel.State.PENDING) {
                         progressDialog.show()
-                    } else if (apiUiModel.state == ApiUIModel.State.SUCCESS) {
+                    } else if (it.state == ApiUIModel.State.SUCCESS) {
                         progressDialog.dismiss()
                         Toast.makeText(this@SchedulerActivity,
                                        "EventBlurb scheduled!",
@@ -192,13 +186,6 @@ class SchedulerActivity : AppCompatActivity() {
                             .show()
                         finish()
                     }
-                }
-
-                override fun onError(e: Throwable) {
-                }
-
-                override fun onComplete() {
-                }
-            })
+                })
     }
 }

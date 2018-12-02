@@ -11,10 +11,8 @@ import androidx.room.Room
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.jonathanchiou.organizer.R
-import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.EventDraftDao
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -47,26 +45,12 @@ class DraftsActivity : AppCompatActivity() {
             .build()
             .getEventDraftDao()
 
-        eventDraftDao.getAll()
+        getAllDisposable = eventDraftDao.getAll()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<List<EventDraft>> {
-                override fun onSubscribe(disposable: Disposable) {
-                    getAllDisposable = disposable
-                }
-
-                override fun onNext(eventDraftsPage: List<EventDraft>) {
-                    eventDraftsAdapter.addAll(eventDraftsPage)
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.d("DraftsActivity", e.message)
-                }
-
-                override fun onComplete() {
-                    Log.d("DraftsActivity", "OnComplete!")
-                }
-            })
+            .subscribe(
+                { eventDraftsAdapter.addAll(it) },
+                { Log.d("DraftsActivity", it.message) })
     }
 
     override fun onStop() {

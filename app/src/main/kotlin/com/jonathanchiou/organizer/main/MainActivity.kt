@@ -17,7 +17,6 @@ import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.ApiUIModel
 import com.jonathanchiou.organizer.drafts.DraftsActivity
 import com.jonathanchiou.organizer.settings.SettingsActivity
-import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 
@@ -64,42 +63,30 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        ClientManager.get()
+        notificationDisposable = ClientManager.get()
             .organizerClient
             .getMainFeed()
-            .subscribe(object : Observer<ApiUIModel<List<MainFeedModel>?>> {
-                override fun onSubscribe(disposable: Disposable) {
-                    notificationDisposable = disposable
-                }
-
-                override fun onNext(apiUiModel: ApiUIModel<List<MainFeedModel>?>) {
-                    when (apiUiModel.state) {
-                        ApiUIModel.State.PENDING ->
+            .subscribe {
+                when (it.state) {
+                    ApiUIModel.State.PENDING ->
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, LoadingFragment())
+                            .commit()
+                    ApiUIModel.State.SUCCESS -> {
+                        fragmentManager.findFragmentById(R.id.fragment_container)?.let {
                             fragmentManager.beginTransaction()
-                                .replace(R.id.fragment_container, LoadingFragment())
-                                .commit()
-                        ApiUIModel.State.SUCCESS -> {
-                            fragmentManager.findFragmentById(R.id.fragment_container)?.let {
-                                fragmentManager.beginTransaction()
-                                    .remove(it)
-                                    .commit()
-                            }
-
-                            fragmentManager.beginTransaction()
-                                .replace(R.id.fragment_container,
-                                         MainFeedFragment(apiUiModel.model!!))
-                                .addToBackStack(MainFeedFragment.BACKSTACK_TAG)
+                                .remove(it)
                                 .commit()
                         }
+
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container,
+                                     MainFeedFragment(it.model!!))
+                            .addToBackStack(MainFeedFragment.BACKSTACK_TAG)
+                            .commit()
                     }
                 }
-
-                override fun onError(e: Throwable) {
-                }
-
-                override fun onComplete() {
-                }
-            })
+            }
     }
 
     override fun onStop() {

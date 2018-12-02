@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.AutoCompleteTextView
 import com.jonathanchiou.organizer.api.model.ApiUIModel
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
@@ -76,7 +75,7 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
             }
         })
 
-        textEventSubject
+        diposable = textEventSubject
             .debounce(200, TimeUnit.MILLISECONDS)
             .switchMap {
                 when (it) {
@@ -86,26 +85,15 @@ class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: Attribu
                     is OtherEvent -> Observable.never<ApiUIModel<List<T>>>()
                 }
             }
-            .subscribe(object : Observer<ApiUIModel<List<T>>> {
-                override fun onSubscribe(d: Disposable) {
-                    diposable = d
-                }
-
-                override fun onNext(apiUiModel: ApiUIModel<List<T>>) {
-                    Log.i("AutoComplete", apiUiModel.state.toString())
-                    if (apiUiModel.state == ApiUIModel.State.SUCCESS) {
-                        autoCompleteAdapter.objects = apiUiModel.model!!
+            .subscribe(
+                {
+                    Log.i("AutoComplete", it.state.toString())
+                    if (it.state == ApiUIModel.State.SUCCESS) {
+                        autoCompleteAdapter.objects = it.model!!
                         showDropDown()
                     }
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.i("AutoComplete", e.message)
-                }
-
-                override fun onComplete() {
-                }
-            })
+                },
+                { Log.i("AutoComplete", it.message) })
     }
 
     fun getCurrentlySelectedItem(): T? {

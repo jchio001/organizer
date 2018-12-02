@@ -14,8 +14,6 @@ import com.google.android.gms.common.api.ApiException
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.ApiUIModel
-import com.jonathanchiou.organizer.api.model.Token
-import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
 class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
@@ -68,30 +66,18 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(con
 
                 currentDisposable?.dispose()
 
-                clientManager.organizerClient
+                currentDisposable = clientManager.organizerClient
                     .connect(account.idToken!!)
-                    .subscribeWith(object : Observer<ApiUIModel<Token>> {
-                        override fun onSubscribe(disposable: Disposable) {
-                            currentDisposable = disposable
-                        }
-
-                        override fun onNext(apiUiModel: ApiUIModel<Token>) {
-                            when (apiUiModel.state) {
-                                ApiUIModel.State.PENDING -> loginListener?.onLoginPending()
-                                ApiUIModel.State.SUCCESS -> {
-                                    clientManager.setToken(apiUiModel.model!!)
-                                    loginListener?.onLoginSuccess()
-                                }
-                                else -> loginListener?.onLoginFailure()
+                    .subscribe {
+                        when (it.state) {
+                            ApiUIModel.State.PENDING -> loginListener?.onLoginPending()
+                            ApiUIModel.State.SUCCESS -> {
+                                clientManager.setToken(it.model!!)
+                                loginListener?.onLoginSuccess()
                             }
+                            else -> loginListener?.onLoginFailure()
                         }
-
-                        override fun onError(e: Throwable) {
-                        }
-
-                        override fun onComplete() {
-                        }
-                    })
+                    }
             } catch (e: ApiException) {
                 loginListener?.onLoginFailure()
             }
