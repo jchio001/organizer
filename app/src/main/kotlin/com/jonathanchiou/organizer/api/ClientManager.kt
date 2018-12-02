@@ -11,8 +11,10 @@ import okhttp3.logging.HttpLoggingInterceptor.Level
 
 class ClientManager(context: Context) {
 
-    val moshi = Moshi.Builder()
-        .build()
+    val moshi by lazy {
+        Moshi.Builder()
+            .build()
+    }
 
     val serviceFactory: ServiceFactory by lazy {
         ServiceFactory(tokenInterceptor,
