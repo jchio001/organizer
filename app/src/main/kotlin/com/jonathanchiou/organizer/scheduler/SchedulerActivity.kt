@@ -133,7 +133,7 @@ class SchedulerActivity : AppCompatActivity() {
                     }
                 })
     }
-    
+
     @OnClick(R.id.share_button)
     fun onShareButtonClicked() {
         val enteredTitle = titleEditText.text

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import butterknife.*
-import com.jonathanchiou.organizer.DraftsActivity
+import com.jonathanchiou.organizer.drafts.DraftsActivity
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.State

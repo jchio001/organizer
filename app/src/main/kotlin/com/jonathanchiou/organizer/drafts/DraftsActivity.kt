@@ -1,10 +1,17 @@
-package com.jonathanchiou.organizer
+package com.jonathanchiou.organizer.drafts
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import butterknife.BindView
+import butterknife.ButterKnife
+import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.EventDraftDao
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
@@ -15,6 +22,9 @@ import io.reactivex.schedulers.Schedulers
 
 class DraftsActivity : AppCompatActivity() {
 
+    @BindView(R.id.draft_recyclerview)
+    lateinit var draftRecyclerView: RecyclerView
+
     private lateinit var eventDraftDao: EventDraftDao
 
     protected var getAllDisposable: Disposable? = null
@@ -22,6 +32,15 @@ class DraftsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_draft)
+        ButterKnife.bind(this)
+
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        val eventDraftsAdapter = EventDraftsAdapter()
+        draftRecyclerView.adapter = eventDraftsAdapter
+        draftRecyclerView.layoutManager = LinearLayoutManager(this)
+        draftRecyclerView.addItemDecoration(
+            DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         eventDraftDao = Room.databaseBuilder(applicationContext,
                                              OrganizerDatabase::class.java,
@@ -37,11 +56,8 @@ class DraftsActivity : AppCompatActivity() {
                     getAllDisposable = disposable
                 }
 
-                override fun onNext(t: List<EventDraft>) {
-                    Toast.makeText(this@DraftsActivity,
-                                   "Event drafts fetched from SQLlite!",
-                                   Toast.LENGTH_SHORT)
-                        .show()
+                override fun onNext(eventDraftsPage: List<EventDraft>) {
+                    eventDraftsAdapter.addAll(eventDraftsPage)
                 }
 
                 override fun onError(e: Throwable) {
@@ -57,5 +73,14 @@ class DraftsActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         getAllDisposable?.dispose()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            getAllDisposable?.dispose()
+            finish()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
