@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                             .addToBackStack(MainFeedFragment.BACKSTACK_TAG)
                             .commit()
                     }
+                    else -> TODO("Implement handling error cases!")
                 }
             }
     }

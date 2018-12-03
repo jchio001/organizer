@@ -14,15 +14,19 @@ import butterknife.OnClick
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.scheduler.SchedulerActivity
 
-class MainFeedFragment() : Fragment() {
+class MainFeedFragment: Fragment {
 
     @BindView(R.id.main_recyclerview)
     lateinit var mainRecyclerView: RecyclerView
 
-    var mainFeedModels: List<MainFeedModel>? = null
+    var mainFeedAdapter: MainFeedAdapter
 
-    constructor(mainFeedModels: List<MainFeedModel>) : this() {
-        this.mainFeedModels = mainFeedModels
+    constructor() {
+        mainFeedAdapter = MainFeedAdapter()
+    }
+
+    constructor(mainFeedModels: List<MainFeedModel>) {
+        mainFeedAdapter = MainFeedAdapter(mainFeedModels = mainFeedModels)
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -34,11 +38,8 @@ class MainFeedFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ButterKnife.bind(this, view)
-
-        val mainFeedAdapter = MainFeedAdapter()
         mainRecyclerView.adapter = mainFeedAdapter
         mainRecyclerView.layoutManager = LinearLayoutManager(context)
-        mainFeedModels?.let(mainFeedAdapter::addMainFeedModels)
     }
 
     @OnClick(R.id.scheduler_fab)

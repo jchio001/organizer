@@ -14,9 +14,14 @@ interface MainFeedModel
 class TitleModel(val title: String) : MainFeedModel
 class ButtonModel(val text: String) : MainFeedModel
 
-class MainFeedAdapter : Adapter<AbsViewHolder<MainFeedModel>>() {
+class MainFeedAdapter(mainFeedModels: List<MainFeedModel> = emptyList()):
+    Adapter<AbsViewHolder<MainFeedModel>>() {
 
-    private var mainFeedModels = ArrayList<MainFeedModel>(3)
+    val mainFeedModels = ArrayList<MainFeedModel>(13)
+
+    init {
+        this.mainFeedModels.addAll(mainFeedModels)
+    }
 
     override fun getItemCount(): Int {
         return mainFeedModels.size
@@ -54,9 +59,5 @@ class MainFeedAdapter : Adapter<AbsViewHolder<MainFeedModel>>() {
                                                          false))
             else -> throw IllegalStateException("Invalid viewType $viewType.")
         }
-    }
-
-    fun addMainFeedModels(mainFeedModelsPage: List<MainFeedModel>) {
-        mainFeedModels.addAll(mainFeedModelsPage)
     }
 }
