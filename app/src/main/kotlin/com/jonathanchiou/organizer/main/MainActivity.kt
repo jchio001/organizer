@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.FragmentManager
 import butterknife.BindColor
 import butterknife.BindDrawable
 import butterknife.BindView
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     @JvmField
     var white = 0
 
-    protected lateinit var fragmentManager: androidx.fragment.app.FragmentManager
+    protected lateinit var fragmentManager: FragmentManager
 
     protected var notificationDisposable: Disposable? = null
 

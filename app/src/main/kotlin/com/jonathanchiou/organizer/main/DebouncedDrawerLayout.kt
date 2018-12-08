@@ -4,12 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import io.reactivex.functions.Consumer
 
 class DebouncedDrawerLayout(context: Context,
                             attributeSet: AttributeSet) :
-    androidx.drawerlayout.widget.DrawerLayout(context, attributeSet) {
+    DrawerLayout(context, attributeSet) {
 
     protected lateinit var navigationView: NavigationView
 
