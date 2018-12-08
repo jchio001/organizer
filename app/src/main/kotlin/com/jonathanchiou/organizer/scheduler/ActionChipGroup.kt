@@ -75,6 +75,12 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
         visibility = View.VISIBLE
     }
 
+    fun addChips(chipModels: List<T>) {
+        for (chipModel in chipModels) {
+            addChip(chipModel)
+        }
+    }
+
     fun getModels(): List<T> {
         return (0 until childCount).asIterable()
             .map { getChildAt(it).tag as T }

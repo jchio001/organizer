@@ -14,4 +14,7 @@ interface EventDraftDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsert(eventDraft: EventDraft): Long
+
+    @Query("DELETE FROM event WHERE id=(:id)")
+    fun deleteDraft(id: Long): Int
 }

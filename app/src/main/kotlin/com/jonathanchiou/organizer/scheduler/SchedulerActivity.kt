@@ -55,7 +55,9 @@ class SchedulerActivity : AppCompatActivity() {
         progressDialog
     }
 
-    val foodOrganizerClient = ClientManager.get().organizerClient
+    val clientManager = ClientManager.get()
+
+    val foodOrganizerClient = clientManager.organizerClient
 
     val eventDraftDao by lazy {
         Room.databaseBuilder(applicationContext,
@@ -66,6 +68,8 @@ class SchedulerActivity : AppCompatActivity() {
     }
 
     var compositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    var draftId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +98,8 @@ class SchedulerActivity : AppCompatActivity() {
                 accountChipGroup.addChip(account)
             }
         }
+
+        maybeDisplayDraftFromIntent()
     }
 
     override fun onStop() {
@@ -116,10 +122,12 @@ class SchedulerActivity : AppCompatActivity() {
         val listMyData = Types.newParameterizedType(List::class.java, Account::class.java)
         val adapter = ClientManager.get().moshi.adapter<List<Account>>(listMyData)
 
-        val eventDraft = EventDraft(title = titleEditText.text.toString(),
-                                    placeId = placeAutoCompleteTextView
-                                        .getCurrentlySelectedItem()
-                                        ?.placeId,
+        val currentPlace = placeAutoCompleteTextView.getCurrentlySelectedItem()
+
+        val eventDraft = EventDraft(id = draftId,
+                                    title = titleEditText.text.toString(),
+                                    placeId = currentPlace?.placeId,
+                                    placeName = currentPlace?.name,
                                     scheduledTime = datePickerView.getUserSelectedTime(),
                                     invitedAccounts = adapter.toJson(accountChipGroup.getModels()),
                                     description = descriptionTextView.text.toString())
@@ -187,5 +195,22 @@ class SchedulerActivity : AppCompatActivity() {
                         finish()
                     }
                 })
+    }
+
+    fun maybeDisplayDraftFromIntent() {
+        intent?.getParcelableExtra<EventDraft>(EVENT_DRAFT_KEY)?.let{
+            draftId = it.id
+            titleEditText.setText(it.title)
+            descriptionTextView.text = it.description
+            it.invitedAccounts?.let{
+                val listMyData = Types.newParameterizedType(List::class.java, Account::class.java)
+                val adapter = clientManager.moshi.adapter<List<Account>>(listMyData)
+                accountChipGroup.addChips(adapter.fromJson(it)!!)
+            }
+        }
+    }
+
+    companion object {
+        const val EVENT_DRAFT_KEY = "event_draft"
     }
 }

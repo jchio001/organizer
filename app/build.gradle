@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    androidExtensions {
+        experimental = true
+    }
+
     compileSdkVersion 28
 
     sourceSets {

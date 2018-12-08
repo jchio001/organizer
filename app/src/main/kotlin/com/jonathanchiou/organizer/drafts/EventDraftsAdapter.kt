@@ -1,25 +1,39 @@
 package com.jonathanchiou.organizer.drafts
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import butterknife.internal.DebouncingOnClickListener
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.viewholder.AbsViewHolder
+import io.reactivex.functions.Consumer
 
-class EventDraftsAdapter : Adapter<AbsViewHolder<EventDraft>>() {
+class EventDraftsAdapter(recyclerView: RecyclerView) : Adapter<AbsViewHolder<EventDraft>>() {
 
     private val eventDrafts = ArrayList<EventDraft>(3)
+
+    var itemConsumer: Consumer<EventDraft>? = null
+
+    private val onClickListener = object: DebouncingOnClickListener() {
+        override fun doClick(v: View) {
+            itemConsumer?.accept(eventDrafts.get(recyclerView.getChildAdapterPosition(v)))
+        }
+    }
 
     override fun getItemCount(): Int {
         return eventDrafts.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AbsViewHolder<EventDraft> {
-        return EventDraftViewHolder(LayoutInflater.from(parent.context)
-                                        .inflate(R.layout.cell_event_draft,
-                                                 parent,
-                                                 false))
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.cell_event_draft,
+                     parent,
+                     false)
+        view.setOnClickListener(onClickListener)
+        return EventDraftViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: AbsViewHolder<EventDraft>, position: Int) {
