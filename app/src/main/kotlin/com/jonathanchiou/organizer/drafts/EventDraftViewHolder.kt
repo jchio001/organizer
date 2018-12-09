@@ -23,8 +23,11 @@ class EventDraftViewHolder(itemView: View) : AbsViewHolder<EventDraft>(itemView)
     }
 
     override fun display(listItem: EventDraft) {
-        eventDraftTitle.text = listItem.title
-        eventDraftLastUpdatedText.text =
+        val title = listItem.title
+        eventDraftTitle.text = if (title.isEmpty()) "(No title)" else title
+
+        val description = listItem.description
+        eventDraftLastUpdatedText.text =  if (description.isEmpty()) "(No description" else
             "Last updated ${DATE_FORMAT.format(listItem.lastUpdatedTime)}"
     }
 
