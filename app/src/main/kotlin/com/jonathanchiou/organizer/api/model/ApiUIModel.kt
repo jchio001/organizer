@@ -1,10 +1,12 @@
 package com.jonathanchiou.organizer.api.model
 
 import android.util.Log
+import com.jonathanchiou.organizer.api.model.ApiUIModel.State
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Response
+import java.lang.IllegalStateException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -28,6 +30,22 @@ fun <T> Observable<Response<T>>.toUIModelStream(): Observable<ApiUIModel<T>> {
         .startWith(ApiUIModel(ApiUIModel.State.PENDING, null as T))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+}
+
+fun lowestState(vararg states: State): State {
+    if (states.isEmpty()) {
+        throw IllegalStateException("No states supplied")
+    }
+
+    var lowestState = states[0]
+    for (i in 1 until states.size) {
+        val currentState = states[i]
+        if (currentState.ordinal < lowestState.ordinal) {
+            lowestState = currentState
+        }
+    }
+
+    return lowestState
 }
 
 class ApiUIModel<T>(val state: State) {

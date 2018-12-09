@@ -6,7 +6,7 @@ import com.jonathanchiou.organizer.main.MainFeedModel
 import com.jonathanchiou.organizer.main.TitleModel
 import com.jonathanchiou.organizer.scheduler.ClientEvent
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
@@ -29,40 +29,63 @@ class OrganizerClient(val organizerService: OrganizerService) {
             .toUIModelStream()
     }
 
-    fun getEvents(): Observable<ApiUIModel<List<EventBlurb>>> {
-        return Observable.just(Response.success(createEventBlurbs()))
+    fun getUpcomingEvents(): Observable<ApiUIModel<List<EventBlurb>>> {
+        return Observable.just(Response.success(createUpcomingEventBlurbs()))
+            .delay(500, TimeUnit.MILLISECONDS)
+            .toUIModelStream()
+    }
+
+    fun getPastEvents(): Observable<ApiUIModel<List<EventBlurb>>> {
+        return Observable.just(Response.success(createPastEventBlurbs()))
             .delay(500, TimeUnit.MILLISECONDS)
             .toUIModelStream()
     }
 
     // TODO: Slightly better, but still kind of sucky.
+    // IGNORE ANDROID STUDIOS ABOUT USING A LAMBDA, THE TYPE INTERFERENCE IS A BIT WONKY.
     fun getMainFeed(): Observable<ApiUIModel<List<MainFeedModel>?>> {
         return Observable.zip(
             getNotification(),
-            getEvents(),
-            BiFunction<
+            getUpcomingEvents(),
+            getPastEvents(),
+            object: Function3<
                 ApiUIModel<Notification>,
                 ApiUIModel<List<EventBlurb>>,
-                ApiUIModel<List<MainFeedModel>?>> { notificationUIModel, eventsUIModel ->
-                var state = notificationUIModel.state
-                if (eventsUIModel.state.ordinal < state.ordinal) {
-                    state = eventsUIModel.state
-                }
-
-                val mainFeedModels = ArrayList<MainFeedModel>(3)
-                notificationUIModel.model?.let {
-                    mainFeedModels.add(it)
-                }
-                eventsUIModel.model?.let {
-                    mainFeedModels.add(TitleModel("Upcoming"))
-                    mainFeedModels.addAll(it)
-
-                    if (it.size == EVENT_BLURB_MAIN_FEED_PAGE_SIZE) {
-                        mainFeedModels.add(ButtonModel("Show more"))
+                ApiUIModel<List<EventBlurb>>,
+                ApiUIModel<List<MainFeedModel>?>> {
+                override fun apply(notificationUIModel: ApiUIModel<Notification>,
+                                   upcomingEventsUIModel: ApiUIModel<List<EventBlurb>>,
+                                   pastEventsUIModel: ApiUIModel<List<EventBlurb>>): ApiUIModel<List<MainFeedModel>?> {
+                    val state = lowestState(notificationUIModel.state,
+                                            upcomingEventsUIModel.state,
+                                            pastEventsUIModel.state)
+                    val mainFeedModels = ArrayList<MainFeedModel>(3)
+                    notificationUIModel.model?.let {
+                        mainFeedModels.add(it)
                     }
-                }
 
-                return@BiFunction ApiUIModel(state, mainFeedModels)
+                    val buttonModel = ButtonModel("Show more")
+
+                    upcomingEventsUIModel.model?.let {
+                        mainFeedModels.add(TitleModel("Upcoming Events"))
+                        mainFeedModels.addAll(it)
+
+                        if (it.size == EVENT_BLURB_MAIN_FEED_PAGE_SIZE) {
+                            mainFeedModels.add(buttonModel)
+                        }
+                    }
+
+                    pastEventsUIModel.model?.let {
+                        mainFeedModels.add(TitleModel("Past Events"))
+                        mainFeedModels.addAll(it)
+
+                        if (it.size == EVENT_BLURB_MAIN_FEED_PAGE_SIZE) {
+                            mainFeedModels.add(buttonModel)
+                        }
+                    }
+
+                    return ApiUIModel(state, mainFeedModels)
+                }
             })
     }
 
@@ -86,6 +109,6 @@ class OrganizerClient(val organizerService: OrganizerService) {
     }
 
     companion object {
-        const val EVENT_BLURB_MAIN_FEED_PAGE_SIZE = 3
+        const val EVENT_BLURB_MAIN_FEED_PAGE_SIZE = 5
     }
 }
