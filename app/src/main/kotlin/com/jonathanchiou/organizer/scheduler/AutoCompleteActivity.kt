@@ -20,7 +20,7 @@ import butterknife.internal.DebouncingOnClickListener
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.ApiUIModel
 import com.jonathanchiou.organizer.api.model.ApiUIModel.State
-import com.jonathanchiou.organizer.api.model.toUIModelStream
+import com.jonathanchiou.organizer.api.model.toApiUIModelStream
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -128,7 +128,7 @@ abstract class AutoCompleteActivity<T> :
                     return@switchMap queryForResults(it)
                 } else {
                     return@switchMap Observable.just(Response.success(emptyList<T>()))
-                        .toUIModelStream()
+                        .toApiUIModelStream()
                 }
             }
             .subscribe{

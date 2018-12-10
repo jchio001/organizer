@@ -10,7 +10,7 @@ import java.lang.IllegalStateException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-fun <T> Observable<Response<T>>.toUIModelStream(): Observable<ApiUIModel<T>> {
+fun <T> Observable<Response<T>>.toApiUIModelStream(): Observable<ApiUIModel<T>> {
     return this
         .map {
             if (it.isSuccessful) {

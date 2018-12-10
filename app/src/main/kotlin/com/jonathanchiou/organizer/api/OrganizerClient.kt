@@ -15,7 +15,7 @@ class OrganizerClient(val organizerService: OrganizerService) {
     fun connect(googleIdToken: String): Observable<ApiUIModel<Token>> {
         return organizerService
             .connect(googleIdToken)
-            .toUIModelStream()
+            .toApiUIModelStream()
     }
 
     fun getNotification(): Observable<ApiUIModel<Notification>> {
@@ -26,19 +26,19 @@ class OrganizerClient(val organizerService: OrganizerService) {
                                                              actionType = "Respond now",
                                                              actionCount = 3)))
             .delay(500, TimeUnit.MILLISECONDS)
-            .toUIModelStream()
+            .toApiUIModelStream()
     }
 
     fun getUpcomingEvents(): Observable<ApiUIModel<List<EventBlurb>>> {
         return Observable.just(Response.success(createUpcomingEventBlurbs()))
             .delay(500, TimeUnit.MILLISECONDS)
-            .toUIModelStream()
+            .toApiUIModelStream()
     }
 
     fun getPastEvents(): Observable<ApiUIModel<List<EventBlurb>>> {
         return Observable.just(Response.success(createPastEventBlurbs()))
             .delay(500, TimeUnit.MILLISECONDS)
-            .toUIModelStream()
+            .toApiUIModelStream()
     }
 
     // TODO: Slightly better, but still kind of sucky.
@@ -92,12 +92,12 @@ class OrganizerClient(val organizerService: OrganizerService) {
     fun getPlaces(input: String, location: String?): Observable<ApiUIModel<List<Place>>> {
         return organizerService
             .getPlaces(if (!input.isEmpty()) input else null, location)
-            .toUIModelStream()
+            .toApiUIModelStream()
     }
 
     fun searchAccounts(groupId: Int, query: String?): Observable<ApiUIModel<List<Account>>> {
         return Observable.just(Response.success(createAccounts()))
-            .toUIModelStream()
+            .toApiUIModelStream()
     }
 
     fun createEvent(groupId: Int, clientEvent: ClientEvent): Observable<ApiUIModel<EventBlurb>> {
@@ -105,7 +105,7 @@ class OrganizerClient(val organizerService: OrganizerService) {
                                                            title = "",
                                                            date = 0,
                                                            creator = createAccount())))
-            .toUIModelStream()
+            .toApiUIModelStream()
     }
 
     companion object {
