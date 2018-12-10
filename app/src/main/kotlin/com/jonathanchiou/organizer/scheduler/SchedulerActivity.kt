@@ -21,6 +21,7 @@ import com.jonathanchiou.organizer.persistence.DbUIModel
 import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
 import com.jonathanchiou.organizer.persistence.toDbUIModelStream
+import com.jonathanchiou.organizer.scheduler.AutoCompleteActivity.Companion.AUTO_COMPLETE_RESULT_KEY
 import com.squareup.moshi.Types
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -80,7 +81,6 @@ class SchedulerActivity : AppCompatActivity() {
 
         // IGNORE ANDROID STUDIOS. Replacing an interface with a lambda only works if the accepting
         // code is written in Java. It is not.
-
         accountAutoCompleteTextView.apiUiModelObservableSupplier =
             object : Function<String, Observable<ApiUIModel<List<Account>>>> {
                 override fun apply(query: String): Observable<ApiUIModel<List<Account>>> {
@@ -108,9 +108,9 @@ class SchedulerActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-                data?.getParcelableExtra<Place>("place")?.let {
-                    placeTextView.setText(it.getTextForViewHolder())
-                    placeTextView.setTag(it)
+                data?.getParcelableExtra<Place>(AUTO_COMPLETE_RESULT_KEY)?.let {
+                    placeTextView.text = it.getTextForViewHolder()
+                    placeTextView.tag = it
                 }
             }
         }
