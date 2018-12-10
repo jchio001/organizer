@@ -13,15 +13,15 @@
         <activity
             android:name=".main.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarTheme"></activity>
+            android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarTheme"></activity>
+            android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".scheduler.SchedulerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarTheme"></activity>
+            android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".splash.SplashActivity"
             android:screenOrientation="portrait"
@@ -36,10 +36,13 @@
             android:name=".settings.SettingsActivity"
             android:label="@string/settings"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".drafts.DraftsActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".scheduler.PlaceSelectionActivity"
             android:theme="@style/AppTheme"/>
     </application>
 

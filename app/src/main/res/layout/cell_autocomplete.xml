@@ -6,4 +6,5 @@
     android:layout_height="wrap_content"
     android:ellipsize="end"
     android:padding="6dp"
-    android:textSize="18sp"/>
+    android:textColor="@color/text_color"
+    android:textSize="20sp"/>

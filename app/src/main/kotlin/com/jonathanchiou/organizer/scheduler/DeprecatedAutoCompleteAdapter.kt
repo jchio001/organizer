@@ -21,7 +21,8 @@ class ViewHolder(view: View) {
     }
 }
 
-class AutoCompleteAdapter<T> : Filterable, BaseAdapter() {
+@Deprecated(message = "Replacing this for an activity!")
+class DeprecatedAutoCompleteAdapter<T> : Filterable, BaseAdapter() {
 
     var objects = emptyList<T>()
         set(objects) {
@@ -35,7 +36,7 @@ class AutoCompleteAdapter<T> : Filterable, BaseAdapter() {
 
         if (convertView == null) {
             view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_text,
+                .inflate(R.layout.cell_autocomplete,
                          parent,
                          false)
             viewHolder = ViewHolder(view)

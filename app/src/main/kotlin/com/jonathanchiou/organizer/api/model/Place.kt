@@ -1,18 +1,19 @@
 package com.jonathanchiou.organizer.api.model
 
+import android.os.Parcelable
+import com.jonathanchiou.organizer.scheduler.AutoCompleteModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
-class Place {
+@Parcelize
+class Place(@Json(name = "place_id")
+            val placeId: String,
+            @Json(name = "name")
+            val name: String): AutoCompleteModel, Parcelable {
 
-    @Json(name = "place_id")
-    var placeId = ""
-
-    @Json(name = "name")
-    var name = ""
-
-    override fun toString(): String {
+    override fun getTextForViewHolder(): String {
         return name
     }
 

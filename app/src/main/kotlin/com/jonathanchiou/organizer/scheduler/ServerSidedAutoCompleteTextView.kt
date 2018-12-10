@@ -21,7 +21,7 @@ class OtherEvent : TextEvent()
 class ServerSidedAutoCompleteTextView<T>(context: Context, attributeSet: AttributeSet) :
     AutoCompleteTextView(context, attributeSet) {
 
-    val autoCompleteAdapter = AutoCompleteAdapter<T>()
+    val autoCompleteAdapter = DeprecatedAutoCompleteAdapter<T>()
 
     protected var diposable: Disposable? = null
 

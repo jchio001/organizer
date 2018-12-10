@@ -125,12 +125,10 @@
                     style="@style/SchedulerIconTheme"
                     android:src="@drawable/ic_location"/>
 
-                <com.jonathanchiou.organizer.scheduler.ServerSidedAutoCompleteTextView
-                    android:id="@+id/places_autocompletetextview"
+                <TextView
+                    android:id="@+id/places_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:completionThreshold="1"
                     android:hint="Add location"
                     android:minLines="1"
                     android:textColor="@color/text_color"

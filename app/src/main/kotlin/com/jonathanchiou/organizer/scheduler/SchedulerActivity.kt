@@ -1,6 +1,8 @@
 package com.jonathanchiou.organizer.scheduler
 
+import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.TextView
@@ -35,8 +37,8 @@ class SchedulerActivity : AppCompatActivity() {
     @BindView(R.id.datepickerview)
     lateinit var datePickerView: DatePickerView
 
-    @BindView(R.id.places_autocompletetextview)
-    lateinit var placeAutoCompleteTextView: ServerSidedAutoCompleteTextView<Place>
+    @BindView(R.id.places_textview)
+    lateinit var placeTextView: TextView
 
     @BindView(R.id.account_autocompletetextview)
     lateinit var accountAutoCompleteTextView: ServerSidedAutoCompleteTextView<Account>
@@ -78,12 +80,6 @@ class SchedulerActivity : AppCompatActivity() {
 
         // IGNORE ANDROID STUDIOS. Replacing an interface with a lambda only works if the accepting
         // code is written in Java. It is not.
-        placeAutoCompleteTextView.apiUiModelObservableSupplier =
-            object : Function<String, Observable<ApiUIModel<List<Place>>>> {
-                override fun apply(query: String): Observable<ApiUIModel<List<Place>>> {
-                    return foodOrganizerClient.getPlaces(query, null)
-                }
-            }
 
         accountAutoCompleteTextView.apiUiModelObservableSupplier =
             object : Function<String, Observable<ApiUIModel<List<Account>>>> {
@@ -103,15 +99,25 @@ class SchedulerActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
-        placeAutoCompleteTextView.cancelPendingRequest()
         accountAutoCompleteTextView.cancelPendingRequest()
         compositeDisposable.clear()
         super.onStop()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+                data?.getParcelableExtra<Place>("place")?.let {
+                    placeTextView.setText(it.getTextForViewHolder())
+                    placeTextView.setTag(it)
+                }
+            }
+        }
+    }
+
     @OnClick(R.id.close_icon)
     fun onCloseIconClicked() {
-        placeAutoCompleteTextView.cancelPendingRequest()
         accountAutoCompleteTextView.cancelPendingRequest()
         compositeDisposable.clear()
         finish()
@@ -122,7 +128,7 @@ class SchedulerActivity : AppCompatActivity() {
         val listMyData = Types.newParameterizedType(List::class.java, Account::class.java)
         val adapter = ClientManager.get().moshi.adapter<List<Account>>(listMyData)
 
-        val currentPlace = placeAutoCompleteTextView.getCurrentlySelectedItem()
+        val currentPlace = placeTextView.tag as Place?
 
         val eventDraft = EventDraft(id = draftId,
                                     title = titleEditText.text.toString(),
@@ -158,7 +164,7 @@ class SchedulerActivity : AppCompatActivity() {
             return
         }
 
-        val placeId = placeAutoCompleteTextView.getCurrentlySelectedItem()?.placeId
+        val placeId = (placeTextView.tag as Place?)?.placeId
         if (placeId == null) {
             Toast.makeText(this,
                            "Please select a valid place.",
@@ -197,6 +203,12 @@ class SchedulerActivity : AppCompatActivity() {
                 })
     }
 
+    @OnClick(R.id.places_textview)
+    fun onPlacesTextViewClicked() {
+        startActivityForResult(Intent(this, PlaceSelectionActivity::class.java),
+                               PLACE_AUTOCOMPLETE_REQUEST_CODE)
+    }
+
     fun maybeDisplayDraftFromIntent() {
         intent?.getParcelableExtra<EventDraft>(EVENT_DRAFT_KEY)?.let{
             draftId = it.id
@@ -212,5 +224,6 @@ class SchedulerActivity : AppCompatActivity() {
 
     companion object {
         const val EVENT_DRAFT_KEY = "event_draft"
+        const val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1337
     }
 }
