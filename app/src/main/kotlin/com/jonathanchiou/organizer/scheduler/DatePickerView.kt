@@ -92,11 +92,21 @@ class DatePickerView(context: Context, attributeSet: AttributeSet) :
      * Gets the current date & time combination selected by this view and returns a epoch ms
      * representation of it.
      */
-    fun getCurrentlySelectedTime(defaultNow: Boolean = true): Long {
+    fun getCurrentlySelectedTime(): Long {
         return (if (!nowSwitch.isChecked) scheduledTime else Calendar.getInstance()).timeInMillis
     }
 
-    fun getUserSelectedTime(): Long {
+    fun setSelectedTime(timeinMillis: Long) {
+        val isTimeSelected = (timeinMillis == NO_TIME_SELECTED)
+        nowSwitch.isChecked = isTimeSelected
+        if (!isTimeSelected) {
+            scheduledTime.timeInMillis = timeinMillis
+            dateTextView.text = DATE_FORMAT.format(scheduledTime.time)
+            timeTextView.text = TIME_FORMAT.format(scheduledTime.time)
+        }
+    }
+
+    fun getUserSelectedCurrentTime(): Long {
         return if (!nowSwitch.isChecked) scheduledTime.timeInMillis else NO_TIME_SELECTED
     }
 

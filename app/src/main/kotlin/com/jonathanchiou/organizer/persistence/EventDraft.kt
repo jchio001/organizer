@@ -19,7 +19,7 @@ data class EventDraft(@PrimaryKey(autoGenerate = true)
                       @ColumnInfo(name = "place_name")
                       val placeName: String?,
                       @ColumnInfo(name = "scheduled_time")
-                      val scheduledTime: Long?,
+                      val scheduledTime: Long,
                       @ColumnInfo(name = "invited_accounts")
                       val invitedAccounts: String?,
                       @ColumnInfo(name = "description")

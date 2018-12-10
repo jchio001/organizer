@@ -139,7 +139,7 @@ class SchedulerActivity : AppCompatActivity() {
                                     title = titleEditText.text.toString(),
                                     placeId = currentPlace?.placeId,
                                     placeName = currentPlace?.name,
-                                    scheduledTime = datePickerView.getUserSelectedTime(),
+                                    scheduledTime = datePickerView.getUserSelectedCurrentTime(),
                                     invitedAccounts = adapter.toJson(accountChipGroup.getModels()),
                                     description = descriptionTextView.text.toString())
 
@@ -152,7 +152,6 @@ class SchedulerActivity : AppCompatActivity() {
                         val intent = Intent()
                         intent.putExtra(DRAFT_INDEX_KEY, draftIndex)
                         intent.putExtra(EVENT_DRAFT_KEY, eventDraft)
-
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
@@ -231,6 +230,8 @@ class SchedulerActivity : AppCompatActivity() {
                     placeTextView.text = place.name
                     placeTextView.tag = place
                 }
+
+                datePickerView.setSelectedTime(it.scheduledTime)
 
                 descriptionTextView.text = it.description
                 it.invitedAccounts?.let {
