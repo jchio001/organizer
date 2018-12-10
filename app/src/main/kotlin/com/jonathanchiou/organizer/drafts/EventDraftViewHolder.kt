@@ -27,8 +27,7 @@ class EventDraftViewHolder(itemView: View) : AbsViewHolder<EventDraft>(itemView)
         eventDraftTitle.text = if (title.isEmpty()) "(No title)" else title
 
         val description = listItem.description
-        eventDraftLastUpdatedText.text =  if (description.isEmpty()) "(No description)" else
-            "Last updated ${DATE_FORMAT.format(listItem.lastUpdatedTime)}"
+        eventDraftLastUpdatedText.text = "Last updated ${DATE_FORMAT.format(listItem.lastUpdatedTime)}"
     }
 
     companion object {

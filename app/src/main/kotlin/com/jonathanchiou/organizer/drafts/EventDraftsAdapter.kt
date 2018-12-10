@@ -15,12 +15,21 @@ class EventDraftsAdapter(recyclerView: RecyclerView) : Adapter<AbsViewHolder<Eve
 
     private val eventDrafts = ArrayList<EventDraft>(3)
 
-    var itemConsumer: Consumer<EventDraft>? = null
+    var itemConsumer: Consumer<Int>? = null
 
     private val onClickListener = object: DebouncingOnClickListener() {
         override fun doClick(v: View) {
-            itemConsumer?.accept(eventDrafts.get(recyclerView.getChildAdapterPosition(v)))
+            itemConsumer?.accept(recyclerView.getChildAdapterPosition(v))
         }
+    }
+
+    fun getItem(position: Int): EventDraft {
+        return eventDrafts[position]
+    }
+
+    fun updateItem(position: Int, updatedDraft: EventDraft) {
+        eventDrafts.set(position, updatedDraft)
+        notifyItemChanged(position)
     }
 
     override fun getItemCount(): Int {

@@ -74,6 +74,11 @@ class SchedulerActivity : AppCompatActivity() {
 
     var draftId = 0L
 
+    // If we're arriving to this activity from a previous draft, we'll receive an index in our
+    // intent. This is so that we can update the corresponding draft in DraftsActivity without
+    // re-querying SQLite.
+    var draftIndex = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheduler)
@@ -95,7 +100,7 @@ class SchedulerActivity : AppCompatActivity() {
             }
         }
 
-        maybeDisplayDraftFromIntent()
+        maybeLoadDraftFromIntent()
     }
 
     override fun onStop() {
@@ -144,6 +149,11 @@ class SchedulerActivity : AppCompatActivity() {
                 .toDbUIModelStream()
                 .subscribe {
                     if (it.state == DbUIModel.State.SUCCESS) {
+                        val intent = Intent()
+                        intent.putExtra(DRAFT_INDEX_KEY, draftIndex)
+                        intent.putExtra(EVENT_DRAFT_KEY, eventDraft)
+
+                        setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
                 })
@@ -209,27 +219,32 @@ class SchedulerActivity : AppCompatActivity() {
                                PLACE_AUTOCOMPLETE_REQUEST_CODE)
     }
 
-    fun maybeDisplayDraftFromIntent() {
-        intent?.getParcelableExtra<EventDraft>(EVENT_DRAFT_KEY)?.let{
-            draftId = it.id
-            titleEditText.setText(it.title)
+    private fun maybeLoadDraftFromIntent() {
+        intent?.let {
+            draftIndex = it.getIntExtra(DRAFT_INDEX_KEY, -1)
+            it.getParcelableExtra<EventDraft>(EVENT_DRAFT_KEY)?.let {
+                draftId = it.id
+                titleEditText.setText(it.title)
 
-            if (it.placeId != null && it.placeName != null) {
-                val place = Place(it.placeId, it.placeName)
-                placeTextView.text = place.name
-                placeTextView.tag = place
-            }
+                if (it.placeId != null && it.placeName != null) {
+                    val place = Place(it.placeId, it.placeName)
+                    placeTextView.text = place.name
+                    placeTextView.tag = place
+                }
 
-            descriptionTextView.text = it.description
-            it.invitedAccounts?.let{
-                val listMyData = Types.newParameterizedType(List::class.java, Account::class.java)
-                val adapter = clientManager.moshi.adapter<List<Account>>(listMyData)
-                accountChipGroup.addChips(adapter.fromJson(it)!!)
+                descriptionTextView.text = it.description
+                it.invitedAccounts?.let {
+                    val listMyData = Types.newParameterizedType(List::class.java,
+                                                                Account::class.java)
+                    val adapter = clientManager.moshi.adapter<List<Account>>(listMyData)
+                    accountChipGroup.addChips(adapter.fromJson(it)!!)
+                }
             }
         }
     }
 
     companion object {
+        const val DRAFT_INDEX_KEY = "draft_index"
         const val EVENT_DRAFT_KEY = "event_draft"
         const val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1337
     }
