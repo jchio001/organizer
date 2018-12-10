@@ -213,6 +213,13 @@ class SchedulerActivity : AppCompatActivity() {
         intent?.getParcelableExtra<EventDraft>(EVENT_DRAFT_KEY)?.let{
             draftId = it.id
             titleEditText.setText(it.title)
+
+            if (it.placeId != null && it.placeName != null) {
+                val place = Place(it.placeId, it.placeName)
+                placeTextView.text = place.name
+                placeTextView.tag = place
+            }
+
             descriptionTextView.text = it.description
             it.invitedAccounts?.let{
                 val listMyData = Types.newParameterizedType(List::class.java, Account::class.java)
