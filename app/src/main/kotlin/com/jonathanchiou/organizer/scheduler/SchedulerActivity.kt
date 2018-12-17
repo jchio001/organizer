@@ -21,12 +21,9 @@ import com.jonathanchiou.organizer.persistence.DbUIModel
 import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
 import com.jonathanchiou.organizer.persistence.toDbUIModelStream
-import com.jonathanchiou.organizer.scheduler.AutoCompleteActivity.Companion.AUTO_COMPLETE_RESULT_KEY
 import com.squareup.moshi.Types
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
-import io.reactivex.functions.Function
 
 // TODO: I'm 99% sure this entire layout bricks when the layout is stopped and then restarted. Deal
 // TODO: with this eventually.
@@ -41,8 +38,8 @@ class SchedulerActivity : AppCompatActivity() {
     @BindView(R.id.places_textview)
     lateinit var placeTextView: TextView
 
-    @BindView(R.id.account_autocompletetextview)
-    lateinit var accountAutoCompleteTextView: ServerSidedAutoCompleteTextView<Account>
+    @BindView(R.id.account_textview)
+    lateinit var accountTextView: TextView
 
     @BindView(R.id.account_chipgroup)
     lateinit var accountChipGroup: ActionChipGroup<Account>
@@ -83,28 +80,10 @@ class SchedulerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheduler)
         ButterKnife.bind(this)
-
-        // IGNORE ANDROID STUDIOS. Replacing an interface with a lambda only works if the accepting
-        // code is written in Java. It is not.
-        accountAutoCompleteTextView.apiUiModelObservableSupplier =
-            object : Function<String, Observable<ApiUIModel<List<Account>>>> {
-                override fun apply(query: String): Observable<ApiUIModel<List<Account>>> {
-                    return foodOrganizerClient.searchAccounts(42, query)
-                }
-            }
-
-        accountAutoCompleteTextView.clickedItemConsumer = object : Consumer<Account> {
-            override fun accept(account: Account) {
-                accountAutoCompleteTextView.text = null
-                accountChipGroup.addChip(account)
-            }
-        }
-
         maybeLoadDraftFromIntent()
     }
 
     override fun onStop() {
-        accountAutoCompleteTextView.cancelPendingRequest()
         compositeDisposable.clear()
         super.onStop()
     }
@@ -113,7 +92,7 @@ class SchedulerActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-                data?.getParcelableExtra<Place>(AUTO_COMPLETE_RESULT_KEY)?.let {
+                data?.getParcelableExtra<Place>(PlaceAutoCompleteView.PLACE_RESULT)?.let {
                     placeTextView.text = it.getTextForViewHolder()
                     placeTextView.tag = it
                 }
@@ -123,7 +102,7 @@ class SchedulerActivity : AppCompatActivity() {
 
     @OnClick(R.id.close_icon)
     fun onCloseIconClicked() {
-        accountAutoCompleteTextView.cancelPendingRequest()
+        // accountTextView.cancelPendingRequest()
         compositeDisposable.clear()
         finish()
     }

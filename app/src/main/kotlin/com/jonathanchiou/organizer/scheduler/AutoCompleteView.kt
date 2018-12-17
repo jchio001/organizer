@@ -1,17 +1,15 @@
 package com.jonathanchiou.organizer.scheduler
 
-import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
+import android.content.Context
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
@@ -19,7 +17,6 @@ import butterknife.ButterKnife
 import butterknife.internal.DebouncingOnClickListener
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.ApiUIModel
-import com.jonathanchiou.organizer.api.model.ApiUIModel.State
 import com.jonathanchiou.organizer.api.model.toApiUIModelStream
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,17 +32,21 @@ class AutoCompleteAdapter<T: AutoCompleteModel>(private val recyclerView: Recycl
 
     private var autoCompleteModels = emptyList<T>()
 
-    var itemConsumer: Consumer<T>? = null
+    var itemConsumer: Consumer<Int>? = null
 
     private val onClickListener = object: DebouncingOnClickListener() {
         override fun doClick(v: View) {
-            itemConsumer?.accept(autoCompleteModels.get(recyclerView.getChildAdapterPosition(v)))
+            itemConsumer?.accept(recyclerView.getChildAdapterPosition(v))
         }
     }
 
     fun setResults(results: List<T>) {
         this.autoCompleteModels = results
         notifyDataSetChanged()
+    }
+
+    fun getItem(position: Int): T {
+        return autoCompleteModels.get(position)
     }
 
     override fun getItemCount(): Int {
@@ -68,8 +69,9 @@ class AutoCompleteAdapter<T: AutoCompleteModel>(private val recyclerView: Recycl
     }
 }
 
-abstract class AutoCompleteActivity<T> :
-    AppCompatActivity() where T : AutoCompleteModel, T : Parcelable {
+abstract class AutoCompleteView<T>(context: Context,
+                                attributeSet: AttributeSet):
+    LinearLayout(context, attributeSet) where T : AutoCompleteModel, T : Parcelable {
 
     @BindView(R.id.query_edittext)
     lateinit var queryTextView: EditText
@@ -83,25 +85,20 @@ abstract class AutoCompleteActivity<T> :
 
     lateinit var autoCompleteAdapter: AutoCompleteAdapter<T>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_autocomplete)
+    init {
+        inflate(context, R.layout.view_auto_complete, this)
+        orientation = VERTICAL
         ButterKnife.bind(this)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         autoCompleteAdapter = AutoCompleteAdapter(autoCompleteRecyclerView)
-        autoCompleteAdapter.itemConsumer = object: Consumer<T> {
-            override fun accept(listItem: T) {
-                val intent = Intent()
-                intent.putExtra(AUTO_COMPLETE_RESULT_KEY, listItem)
-                this@AutoCompleteActivity.setResult(Activity.RESULT_OK, intent)
-                finish();
+        autoCompleteAdapter.itemConsumer = object: Consumer<Int> {
+            override fun accept(position: Int) {
+                onItemSelected(position)
             }
         }
 
         autoCompleteRecyclerView.adapter = autoCompleteAdapter
-        autoCompleteRecyclerView.layoutManager = LinearLayoutManager(this)
+        autoCompleteRecyclerView.layoutManager = LinearLayoutManager(context)
 
         queryTextView.addTextChangedListener(object: TextWatcher {
 
@@ -133,8 +130,8 @@ abstract class AutoCompleteActivity<T> :
             }
             .subscribe{
                 when (it.state) {
-                    State.PENDING -> autoCompleteRecyclerView.visibility = View.GONE
-                    State.SUCCESS -> {
+                    ApiUIModel.State.PENDING -> autoCompleteRecyclerView.visibility = View.GONE
+                    ApiUIModel.State.SUCCESS -> {
                         autoCompleteAdapter.setResults(it.model!!)
                         autoCompleteRecyclerView.visibility = View.VISIBLE
                     }
@@ -142,23 +139,11 @@ abstract class AutoCompleteActivity<T> :
             }
     }
 
-    override fun onStop() {
-        super.onStop()
+    fun stopAutoCompleting() {
         disposable?.dispose()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
+    abstract fun onItemSelected(position: Int)
 
     abstract fun queryForResults(query: CharSequence): Observable<ApiUIModel<List<T>>>
-
-    companion object {
-        const val AUTO_COMPLETE_RESULT_KEY = "autocomplete_result";
-    }
 }

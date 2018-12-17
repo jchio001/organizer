@@ -158,12 +158,10 @@
                         android:layout_marginBottom="4dp"
                         android:textSize="16sp"/>
 
-                    <com.jonathanchiou.organizer.scheduler.ServerSidedAutoCompleteTextView
-                        android:id="@+id/account_autocompletetextview"
+                    <TextView
+                        android:id="@+id/account_textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:completionThreshold="1"
                         android:hint="Invite people"
                         android:minLines="1"
                         android:textColor="@color/text_color"

@@ -1,15 +1,26 @@
 package com.jonathanchiou.organizer.scheduler
 
-import com.jonathanchiou.organizer.api.ClientManager
-import com.jonathanchiou.organizer.api.model.ApiUIModel
-import com.jonathanchiou.organizer.api.model.Place
-import io.reactivex.Observable
+import android.app.Activity
+import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import com.jonathanchiou.organizer.R
 
-class PlaceSelectionActivity(): AutoCompleteActivity<Place>() {
+class PlaceSelectionActivity: AppCompatActivity() {
 
-    val organizerClient = ClientManager.get().organizerClient
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_place_selection)
 
-    override fun queryForResults(query: CharSequence): Observable<ApiUIModel<List<Place>>> {
-        return organizerClient.getPlaces(query.toString(), null)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
