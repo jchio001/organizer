@@ -39,6 +39,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".drafts.DraftsActivity"
+            android:label="@string/drafts"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

@@ -15,4 +15,7 @@
     <string name="log_out_prompt">Are you sure you want to logout?</string>
     <string name="log_out">Log out</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Drafts Activity -->
+    <string name="drafts">Drafts</string>
 </resources>

@@ -13,7 +13,7 @@ import io.reactivex.functions.Consumer
 
 class EventDraftsAdapter(recyclerView: RecyclerView) : Adapter<AbsViewHolder<EventDraft>>() {
 
-    private val eventDrafts = ArrayList<EventDraft>(3)
+    private var eventDrafts = ArrayList<EventDraft>(3)
 
     var itemConsumer: Consumer<Int>? = null
 
@@ -28,8 +28,24 @@ class EventDraftsAdapter(recyclerView: RecyclerView) : Adapter<AbsViewHolder<Eve
     }
 
     fun updateItem(position: Int, updatedDraft: EventDraft) {
+        // I'm notifying twice about changes to the dataset because I want the recyclerview to
+        // - update the corresponding draft
+        // - animate & move said draft to the top of the list
+        // Which is not the effect of notifyItemRangeChanged()
         eventDrafts.set(position, updatedDraft)
         notifyItemChanged(position)
+
+        val updatedDrafts = ArrayList<EventDraft>(eventDrafts.size)
+        updatedDrafts.add(updatedDraft)
+
+        for (i in 0 until eventDrafts.size) {
+            if (i != position) {
+                updatedDrafts.add(eventDrafts[i])
+            }
+        }
+
+        eventDrafts = updatedDrafts
+        notifyItemMoved(position, 0)
     }
 
     override fun getItemCount(): Int {
