@@ -14,7 +14,7 @@ interface OrganizerService {
     @PUT("connect")
     fun connect(@Query("google_id_token") googleIdToken: String): Observable<Response<Token>>
 
-    @POST("token")
+    @GET("token")
     @Headers("required: authorization", "skip-refresh: true")
     fun refreshToken(): Observable<Response<Token>>
 
