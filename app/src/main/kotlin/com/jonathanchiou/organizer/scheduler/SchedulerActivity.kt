@@ -102,7 +102,6 @@ class SchedulerActivity : AppCompatActivity() {
 
     @OnClick(R.id.close_icon)
     fun onCloseIconClicked() {
-        // accountTextView.cancelPendingRequest()
         compositeDisposable.clear()
         finish()
     }
@@ -197,6 +196,12 @@ class SchedulerActivity : AppCompatActivity() {
                                PLACE_AUTOCOMPLETE_REQUEST_CODE)
     }
 
+    @OnClick(R.id.account_textview)
+    fun onAccountTextViewClicked() {
+        startActivityForResult(Intent(this, AccountsSelectionActivity::class.java),
+                               ACCOUNTS_AUTOCOMPLETE_REQUEST_CODE)
+    }
+
     private fun maybeLoadDraftFromIntent() {
         intent?.let {
             draftIndex = it.getIntExtra(DRAFT_INDEX_KEY, -1)
@@ -227,5 +232,6 @@ class SchedulerActivity : AppCompatActivity() {
         const val DRAFT_INDEX_KEY = "draft_index"
         const val EVENT_DRAFT_KEY = "event_draft"
         const val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1337
+        const val ACCOUNTS_AUTOCOMPLETE_REQUEST_CODE = 1338
     }
 }

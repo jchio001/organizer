@@ -70,11 +70,11 @@ class AutoCompleteAdapter<T: AutoCompleteModel>(private val recyclerView: Recycl
 }
 
 abstract class AutoCompleteView<T>(context: Context,
-                                attributeSet: AttributeSet):
+                                   attributeSet: AttributeSet):
     LinearLayout(context, attributeSet) where T : AutoCompleteModel, T : Parcelable {
 
     @BindView(R.id.query_edittext)
-    lateinit var queryTextView: EditText
+    lateinit var queryEditText: EditText
 
     @BindView(R.id.autocomplete_recyclerview)
     lateinit var autoCompleteRecyclerView: RecyclerView
@@ -83,12 +83,24 @@ abstract class AutoCompleteView<T>(context: Context,
 
     var disposable: Disposable? = null
 
-    lateinit var autoCompleteAdapter: AutoCompleteAdapter<T>
+    var autoCompleteAdapter: AutoCompleteAdapter<T>
 
     init {
-        inflate(context, R.layout.view_auto_complete, this)
-        orientation = VERTICAL
-        ButterKnife.bind(this)
+        val resources = context.resources
+        val attributes = resources.obtainAttributes(attributeSet, R.styleable.AutoCompleteView)
+        try {
+            val layoutResource = attributes.getResourceId(R.styleable.AutoCompleteView_layout,
+                                                          R.layout.view_auto_complete)
+            val hintStringId = attributes.getResourceId(R.styleable.AutoCompleteView_hint, -1)
+
+            inflate(context, layoutResource, this)
+            orientation = VERTICAL
+            ButterKnife.bind(this)
+
+            queryEditText.setHint(hintStringId)
+        } finally {
+            attributes.recycle()
+        }
 
         autoCompleteAdapter = AutoCompleteAdapter(autoCompleteRecyclerView)
         autoCompleteAdapter.itemConsumer = object: Consumer<Int> {
@@ -100,7 +112,7 @@ abstract class AutoCompleteView<T>(context: Context,
         autoCompleteRecyclerView.adapter = autoCompleteAdapter
         autoCompleteRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        queryTextView.addTextChangedListener(object: TextWatcher {
+        queryEditText.addTextChangedListener(object: TextWatcher {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }

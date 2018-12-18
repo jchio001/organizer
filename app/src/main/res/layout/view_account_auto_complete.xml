@@ -8,7 +8,16 @@
         android:id="@+id/query_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Enter in a location."
         android:textSize="16sp" />
+
+    <com.jonathanchiou.organizer.scheduler.ActionChipGroup
+        android:id="@+id/account_chipgroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="16sp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/autocomplete_recyclerview"

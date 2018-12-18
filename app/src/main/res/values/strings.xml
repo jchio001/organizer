@@ -11,6 +11,12 @@
     <!-- Scheduler Activity -->
     <string name="sharing">Sharing&#8230;</string>
 
+    <!-- Place Selection Activity -->
+    <string name="place_selection_hint">Enter in a location</string>
+
+    <!-- Accounts Selection Activity -->
+    <string name="accounts_selection_hint">Enter in a name</string>
+
     <!-- Settings Activity -->
     <string name="log_out_prompt">Are you sure you want to logout?</string>
     <string name="log_out">Log out</string>
