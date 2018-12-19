@@ -13,9 +13,6 @@ class AccountAutoCompleteView(context: Context,
 
     val organizerClient = ClientManager.get().organizerClient
 
-    override fun onItemSelected(position: Int) {
-    }
-
     override fun queryForResults(query: CharSequence): Observable<ApiUIModel<List<Account>>> {
         return organizerClient.searchAccounts(73, query.toString())
     }

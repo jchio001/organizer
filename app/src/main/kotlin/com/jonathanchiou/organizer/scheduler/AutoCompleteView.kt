@@ -17,10 +17,12 @@ import butterknife.ButterKnife
 import butterknife.internal.DebouncingOnClickListener
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.ApiUIModel
+import com.jonathanchiou.organizer.api.model.Place
 import com.jonathanchiou.organizer.api.model.toApiUIModelStream
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiConsumer
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -32,11 +34,12 @@ class AutoCompleteAdapter<T: AutoCompleteModel>(private val recyclerView: Recycl
 
     private var autoCompleteModels = emptyList<T>()
 
-    var itemConsumer: Consumer<Int>? = null
+    var itemConsumer: BiConsumer<T, Int>? = null
 
     private val onClickListener = object: DebouncingOnClickListener() {
         override fun doClick(v: View) {
-            itemConsumer?.accept(recyclerView.getChildAdapterPosition(v))
+            val position = recyclerView.getChildAdapterPosition(v)
+            itemConsumer?.accept(autoCompleteModels[position], position)
         }
     }
 
@@ -103,11 +106,6 @@ abstract class AutoCompleteView<T>(context: Context,
         }
 
         autoCompleteAdapter = AutoCompleteAdapter(autoCompleteRecyclerView)
-        autoCompleteAdapter.itemConsumer = object: Consumer<Int> {
-            override fun accept(position: Int) {
-                onItemSelected(position)
-            }
-        }
 
         autoCompleteRecyclerView.adapter = autoCompleteAdapter
         autoCompleteRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -151,11 +149,13 @@ abstract class AutoCompleteView<T>(context: Context,
             }
     }
 
+    fun setOnItemSelectedListener(listener: BiConsumer<T, Int>) {
+        autoCompleteAdapter.itemConsumer = listener
+    }
+
     fun stopAutoCompleting() {
         disposable?.dispose()
     }
-
-    abstract fun onItemSelected(position: Int)
 
     abstract fun queryForResults(query: CharSequence): Observable<ApiUIModel<List<T>>>
 }
