@@ -111,13 +111,9 @@ class DatePickerView(context: Context, attributeSet: AttributeSet) :
     }
 
     companion object {
-        private val DATE_FORMAT by lazy {
-            SimpleDateFormat("EEE MMM, dd, yyyy", Locale.US)
-        }
+        val DATE_FORMAT = SimpleDateFormat("EEE MMM, dd, yyyy", Locale.US)
 
-        private val TIME_FORMAT by lazy {
-            SimpleDateFormat("hh:mm aa", Locale.US)
-        }
+        val TIME_FORMAT = SimpleDateFormat("hh:mm aa", Locale.US)
 
         const val NO_TIME_SELECTED = -1L
     }
