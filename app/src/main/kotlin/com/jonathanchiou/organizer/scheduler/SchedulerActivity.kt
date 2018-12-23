@@ -93,7 +93,7 @@ class SchedulerActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
                 data?.getParcelableExtra<Place>(PlaceSelectionActivity.PLACE_RESULT)?.let {
-                    placeTextView.text = it.getTextForViewHolder()
+                    placeTextView.text = it.name
                     placeTextView.tag = it
                 }
             }

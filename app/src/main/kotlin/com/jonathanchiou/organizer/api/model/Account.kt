@@ -1,7 +1,6 @@
 package com.jonathanchiou.organizer.api.model
 
 import android.os.Parcelable
-import com.jonathanchiou.organizer.scheduler.AutoCompleteModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
@@ -34,14 +33,10 @@ class Account(@Json(name = "id") val id: Int,
               @Json(name = "first_name") val firstName: String,
               @Json(name = "last_name") val lastName: String,
               @Json(name = "profile_image") val profileImage: String):
-    AutoCompleteModel, Parcelable {
+    Parcelable {
 
     override fun equals(other: Any?): Boolean {
         return if (other == null || other !is Account) false else return id == other.id
-    }
-
-    override fun getTextForViewHolder(): String {
-        return "$firstName $lastName"
     }
 
     override fun toString(): String {

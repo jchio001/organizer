@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.util.closeKeyboard
 import io.reactivex.functions.BiConsumer
 
 class PlaceSelectionActivity: AppCompatActivity() {
@@ -28,6 +29,11 @@ class PlaceSelectionActivity: AppCompatActivity() {
             setResult(Activity.RESULT_OK, intent)
             finish()
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        closeKeyboard()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
