@@ -35,8 +35,13 @@ class Account(@Json(name = "id") val id: Int,
               @Json(name = "profile_image") val profileImage: String):
     Parcelable {
 
+    override fun hashCode(): Int {
+        return id
+    }
+
     override fun equals(other: Any?): Boolean {
-        return if (other == null || other !is Account) false else return id == other.id
+        return if (other == null || other !is Account) false
+        else return hashCode() == other.hashCode()
     }
 
     override fun toString(): String {

@@ -21,6 +21,8 @@ import com.jonathanchiou.organizer.persistence.DbUIModel
 import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
 import com.jonathanchiou.organizer.persistence.toDbUIModelStream
+import com.jonathanchiou.organizer.scheduler.AccountsSelectionActivity.Companion.SELECTED_ACCOUNTS_KEY
+import com.jonathanchiou.organizer.scheduler.PlaceSelectionActivity.Companion.PLACE_RESULT
 import com.squareup.moshi.Types
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -92,10 +94,13 @@ class SchedulerActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-                data?.getParcelableExtra<Place>(PlaceSelectionActivity.PLACE_RESULT)?.let {
+                data?.getParcelableExtra<Place>(PLACE_RESULT)?.let {
                     placeTextView.text = it.name
                     placeTextView.tag = it
                 }
+            } else if (requestCode == ACCOUNTS_AUTOCOMPLETE_REQUEST_CODE) {
+                data?.getParcelableArrayListExtra<Account>(SELECTED_ACCOUNTS_KEY)?.
+                    let(accountChipGroup::addChips)
             }
         }
     }

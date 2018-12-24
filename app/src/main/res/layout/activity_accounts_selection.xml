@@ -2,6 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,5 +13,17 @@
         android:padding="16dp"
         app:hint="@string/accounts_selection_hint"
         app:layout="@layout/view_account_auto_complete"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/done_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_checkmark"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorAccent"
+        app:tint="@color/white"
+        tools:visibility="visible"/>
 
 </FrameLayout>

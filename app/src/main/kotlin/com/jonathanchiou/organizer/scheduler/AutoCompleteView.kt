@@ -32,9 +32,12 @@ abstract class AutoCompleteAdapter<MODEL, VIEWHOLDER>:
 
     protected var autoCompleteModels = emptyList<MODEL>()
 
+    private var isVisible = true
+    private var isClickable = true
+
     fun setResults(results: List<MODEL>) {
         this.autoCompleteModels = results
-        notifyDataSetChanged()
+        changeVisibility(true)
     }
 
     override fun getItemCount(): Int {
@@ -44,8 +47,27 @@ abstract class AutoCompleteAdapter<MODEL, VIEWHOLDER>:
     abstract override fun onCreateViewHolder(parent: ViewGroup,
                                              viewType: Int): ViewHolder
 
-    abstract override fun onBindViewHolder(viewHolder: ViewHolder,
-                                           position: Int)
+    final override fun onBindViewHolder(viewHolder: ViewHolder,
+                                        position: Int) {
+        viewHolder.itemView.isClickable = isClickable
+        if (isVisible) {
+            viewHolder.itemView.visibility = View.VISIBLE
+            doBindViewHolder(viewHolder, position)
+        } else {
+            viewHolder.itemView.visibility = View.INVISIBLE
+        }
+    }
+
+    abstract fun doBindViewHolder(viewHolder: ViewHolder,
+                                  position: Int)
+
+    // This is to deal with some weird issue related to the recyclerview overlapping with a FAB
+    // where changing the recyclerview's visibility propagates to the FAB. THANKS BIG DADDY G!
+    fun changeVisibility(isVisible: Boolean) {
+        this.isVisible = isVisible
+        this.isClickable = isVisible
+        notifyDataSetChanged()
+    }
 }
 
 abstract class AutoCompleteView<MODEL, VIEWHOLDER, ADAPTER>(context: Context,
@@ -93,6 +115,7 @@ abstract class AutoCompleteView<MODEL, VIEWHOLDER, ADAPTER>(context: Context,
         queryEditText.addTextChangedListener(object: TextWatcher {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                autoCompleteAdapter?.changeVisibility(false)
             }
 
             override fun onTextChanged(s: CharSequence,
@@ -120,10 +143,8 @@ abstract class AutoCompleteView<MODEL, VIEWHOLDER, ADAPTER>(context: Context,
             }
             .subscribe{
                 when (it.state) {
-                    ApiUIModel.State.PENDING -> autoCompleteRecyclerView.visibility = View.GONE
                     ApiUIModel.State.SUCCESS -> {
                         autoCompleteAdapter?.setResults(it.model!!)
-                        autoCompleteRecyclerView.visibility = View.VISIBLE
                     }
                 }
             }

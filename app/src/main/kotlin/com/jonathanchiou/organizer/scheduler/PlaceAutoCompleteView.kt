@@ -44,7 +44,7 @@ class PlaceAutoCompleteAdapter(val recyclerView: RecyclerView):
         return PlaceViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    override fun doBindViewHolder(viewHolder: ViewHolder, position: Int) {
         (viewHolder as PlaceViewHolder).display(autoCompleteModels[position])
     }
 }

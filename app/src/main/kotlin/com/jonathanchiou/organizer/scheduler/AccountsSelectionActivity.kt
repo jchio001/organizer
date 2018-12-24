@@ -1,13 +1,16 @@
 package com.jonathanchiou.organizer.scheduler
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Consumer
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jonathanchiou.organizer.R
-import com.jonathanchiou.organizer.api.model.Account
 import com.jonathanchiou.organizer.util.closeKeyboard
 
 class AccountsSelectionActivity: AppCompatActivity() {
@@ -15,8 +18,8 @@ class AccountsSelectionActivity: AppCompatActivity() {
     @BindView(R.id.account_autocompleteview)
     lateinit var accountAutoCompleteView: AccountAutoCompleteView
 
-    @BindView(R.id.account_chipgroup)
-    lateinit var accountChipGroup: ActionChipGroup<Account>
+    @BindView(R.id.done_fab)
+    lateinit var doneFab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +27,19 @@ class AccountsSelectionActivity: AppCompatActivity() {
         ButterKnife.bind(this)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        accountAutoCompleteView.setAccountsSelectedListener(Consumer {
+            if (it) doneFab.show() else doneFab.hide()
+        })
+    }
+
+    @OnClick(R.id.done_fab)
+    fun onDoneFabClicked() {
+        setResult(Activity.RESULT_OK,
+                  Intent().putParcelableArrayListExtra(SELECTED_ACCOUNTS_KEY,
+                                                       accountAutoCompleteView
+                                                           .getCurrentlySelectedAccounts()))
+        finish()
     }
 
     override fun onStop() {
@@ -38,5 +54,9 @@ class AccountsSelectionActivity: AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        const val SELECTED_ACCOUNTS_KEY = "selected_accounts"
     }
 }

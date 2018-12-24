@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.content.ContextCompat
+import androidx.core.util.Consumer
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.jonathanchiou.organizer.R
 
-class CloseableChip(context: Context) : Chip(context,
+class CloseableChip<T>(context: Context) : Chip(context,
                                              null,
                                              R.style.Widget_MaterialComponents_Chip_Action) {
+
+    var onItemsSelectedListener: Consumer<Boolean>? = null
+
+    var onItemClosedListener: Consumer<T>? = null
 
     init {
         isCheckedIconVisible = false
@@ -25,7 +30,10 @@ class CloseableChip(context: Context) : Chip(context,
 
             if (parent.childCount == 0) {
                 parent.visibility = View.GONE
+                onItemsSelectedListener?.accept(false)
             }
+
+            onItemClosedListener?.accept(tag as T)
         }
     }
 
@@ -40,6 +48,11 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
 
     val textColor: Int
     val textSize: Int
+
+    // true = this view has chips, false = this view is empty
+    var onItemsSelectedListener: Consumer<Boolean>? = null
+
+    var onItemClosedListener: Consumer<T>? = null
 
     init {
         val resources = context.resources
@@ -59,20 +72,28 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
     }
 
     fun addChip(chipModel: T) {
-        for (i in 0 until childCount) {
+        val previousChildCount = childCount
+
+        for (i in 0 until previousChildCount) {
             if (getChildAt(i).tag == chipModel) {
                 return
             }
         }
 
-        val closeableChip = CloseableChip(context)
+        val closeableChip = CloseableChip<T>(context)
         closeableChip.tag = chipModel
         closeableChip.text = chipModel.toString()
         closeableChip.setTextColor(textColor)
         closeableChip.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+        closeableChip.onItemsSelectedListener = onItemsSelectedListener
+        closeableChip.onItemClosedListener = onItemClosedListener
         addView(closeableChip)
 
         visibility = View.VISIBLE
+
+        if (previousChildCount == 0) {
+            onItemsSelectedListener?.accept(true)
+        }
     }
 
     fun addChips(chipModels: List<T>) {
@@ -81,8 +102,29 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    fun getModels(): List<T> {
-        return (0 until childCount).asIterable()
-            .map { getChildAt(it).tag as T }
+    fun removeChip(chipModel: T) {
+        val previousChildCount = childCount
+
+        for (i in 0 until previousChildCount) {
+            if (getChildAt(i).tag == chipModel) {
+                removeViewAt(i)
+
+                if (previousChildCount == 1) {
+                    onItemsSelectedListener?.accept(false)
+                }
+
+                return
+            }
+        }
+    }
+
+    fun getModels(): ArrayList<T> {
+        val modelsList = ArrayList<T>(childCount)
+
+        for (i in 0 until childCount) {
+            modelsList.add(getChildAt(i).getTag() as T)
+        }
+
+        return modelsList
     }
 }

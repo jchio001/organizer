@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.util.Consumer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import butterknife.BindView
@@ -30,8 +31,8 @@ class AccountViewHolder(itemView: View): ViewHolder(itemView) {
         ButterKnife.bind(this, itemView)
     }
 
-    fun display(account: Account, isSelected: Boolean) {
-        checkIcon.visibility = if (isSelected) View.VISIBLE else View.INVISIBLE
+    fun display(account: Account, isSelected: Boolean?) {
+        checkIcon.visibility = if (isSelected == true) View.VISIBLE else View.INVISIBLE
         accountTextView.text = account.toString()
     }
 }
@@ -40,10 +41,26 @@ class AccountAutoCompleteAdapter(val recyclerView: RecyclerView,
                                  val accountChipGroup: ActionChipGroup<Account>):
     AutoCompleteAdapter<Account, AccountViewHolder>() {
 
+    // NOTE: I'm pretty sure this code isn't completely safe from all the possible combinations of
+    // asynchronous UI interactions that require changes to the adapter, but I'm fairly certain my
+    // code will work unless someone's actively spamming all the UI interactions ever.
+    private val accountToIsSelectedMap = HashMap<Account, Boolean>()
+
     private val onClickListener = object: DebouncingOnClickListener() {
         override fun doClick(v: View) {
             val position = recyclerView.getChildAdapterPosition(v)
-            accountChipGroup.addChip(autoCompleteModels[position])
+            val account = autoCompleteModels[position]
+
+            val isSelected = accountToIsSelectedMap[account]
+            if (isSelected == true) {
+                accountToIsSelectedMap[account] = false
+                accountChipGroup.removeChip(account)
+            } else {
+                accountToIsSelectedMap[account] = true
+                accountChipGroup.addChip(autoCompleteModels[position])
+            }
+
+            notifyItemChanged(position)
         }
     }
 
@@ -56,8 +73,19 @@ class AccountAutoCompleteAdapter(val recyclerView: RecyclerView,
         return AccountViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        (viewHolder as AccountViewHolder).display(autoCompleteModels[position], false)
+    override fun doBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val account = autoCompleteModels[position]
+        (viewHolder as AccountViewHolder).display(account, accountToIsSelectedMap[account])
+    }
+
+    fun setCheckedState(account: Account, isChecked: Boolean) {
+        accountToIsSelectedMap[account] = isChecked
+        for (i in 0 until autoCompleteModels.size) {
+            if (autoCompleteModels[i] == account) {
+                notifyItemChanged(i)
+                return
+            }
+        }
     }
 }
 
@@ -75,9 +103,20 @@ class AccountAutoCompleteView(context: Context,
         ButterKnife.bind(this, this)
         autoCompleteAdapter = AccountAutoCompleteAdapter(autoCompleteRecyclerView,
                                                          accountChipGroup)
+        accountChipGroup.onItemClosedListener = Consumer {
+            autoCompleteAdapter?.setCheckedState(it, false)
+        }
     }
 
     override fun queryForResults(query: CharSequence): Observable<ApiUIModel<List<Account>>> {
         return organizerClient.searchAccounts(73, query.toString())
+    }
+
+    fun setAccountsSelectedListener(onAccountsSelectedListener: Consumer<Boolean>) {
+        accountChipGroup.onItemsSelectedListener = onAccountsSelectedListener
+    }
+
+    fun getCurrentlySelectedAccounts(): ArrayList<Account> {
+        return accountChipGroup.getModels()
     }
 }

@@ -97,6 +97,7 @@ class OrganizerClient(val organizerService: OrganizerService) {
 
     fun searchAccounts(groupId: Int, query: String?): Observable<ApiUIModel<List<Account>>> {
         return Observable.just(Response.success(createAccounts()))
+            .delay(500, TimeUnit.MILLISECONDS)
             .toApiUIModelStream()
     }
 
