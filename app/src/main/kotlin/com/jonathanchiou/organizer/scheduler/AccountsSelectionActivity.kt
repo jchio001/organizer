@@ -14,7 +14,7 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.Account
 import com.jonathanchiou.organizer.util.closeKeyboard
 
-class AccountsSelectionActivity : AppCompatActivity() {
+class AccountsSelectionActivity: AppCompatActivity() {
 
     @BindView(R.id.account_autocompleteview)
     lateinit var accountAutoCompleteView: AccountAutoCompleteView

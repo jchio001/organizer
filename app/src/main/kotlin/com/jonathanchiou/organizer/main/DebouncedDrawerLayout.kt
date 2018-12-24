@@ -9,7 +9,7 @@ import com.google.android.material.navigation.NavigationView
 import io.reactivex.functions.Consumer
 
 class DebouncedDrawerLayout(context: Context,
-                            attributeSet: AttributeSet) :
+                            attributeSet: AttributeSet):
     DrawerLayout(context, attributeSet) {
 
     protected lateinit var navigationView: NavigationView
@@ -41,7 +41,7 @@ class DebouncedDrawerLayout(context: Context,
 
         navigationView = maybeNavigationView
 
-        addDrawerListener(object : DrawerListener {
+        addDrawerListener(object: DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             }
 

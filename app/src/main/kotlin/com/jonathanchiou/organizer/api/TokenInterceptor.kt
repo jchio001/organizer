@@ -39,7 +39,7 @@ fun createStubbedResponse(request: Request,
 
 class TokenInterceptor(sharedPreferences: SharedPreferences,
                        val jwtPayloadAdapter: JsonAdapter<JwtPayload>,
-                       val lazyOrganizerService: Lazy<OrganizerService>) : Interceptor {
+                       val lazyOrganizerService: Lazy<OrganizerService>): Interceptor {
 
     private val sharedPreferencesReference = WeakReference(sharedPreferences)
 

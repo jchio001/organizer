@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 class Place(@Json(name = "place_id")
             val placeId: String,
             @Json(name = "name")
-            val name: String) : Parcelable {
+            val name: String): Parcelable {
 
     // TODO: This is kind of janky (placeId should be used as the hash code). Fix later!
     override fun equals(other: Any?): Boolean {

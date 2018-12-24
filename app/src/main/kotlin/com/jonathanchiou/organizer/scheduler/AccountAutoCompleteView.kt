@@ -19,7 +19,7 @@ import com.jonathanchiou.organizer.api.model.Account
 import com.jonathanchiou.organizer.api.model.ApiUIModel
 import io.reactivex.Observable
 
-class AccountViewHolder(itemView: View) : ViewHolder(itemView) {
+class AccountViewHolder(itemView: View): ViewHolder(itemView) {
 
     @BindView(R.id.check_icon)
     lateinit var checkIcon: ImageView
@@ -38,7 +38,7 @@ class AccountViewHolder(itemView: View) : ViewHolder(itemView) {
 }
 
 class AccountAutoCompleteAdapter(val recyclerView: RecyclerView,
-                                 val accountChipGroup: ActionChipGroup<Account>) :
+                                 val accountChipGroup: ActionChipGroup<Account>):
     AutoCompleteAdapter<Account, AccountViewHolder>() {
 
     // NOTE: I'm pretty sure this code isn't completely safe from all the possible combinations of
@@ -46,7 +46,7 @@ class AccountAutoCompleteAdapter(val recyclerView: RecyclerView,
     // code will work unless someone's actively spamming all the UI interactions ever.
     private val accountToIsSelectedMap = HashMap<Account, Boolean>()
 
-    private val onClickListener = object : DebouncingOnClickListener() {
+    private val onClickListener = object: DebouncingOnClickListener() {
         override fun doClick(v: View) {
             val position = recyclerView.getChildAdapterPosition(v)
             val account = autoCompleteModels[position]
@@ -101,7 +101,7 @@ class AccountAutoCompleteAdapter(val recyclerView: RecyclerView,
 }
 
 class AccountAutoCompleteView(context: Context,
-                              attributeSet: AttributeSet) :
+                              attributeSet: AttributeSet):
     AutoCompleteView<Account, AccountViewHolder, AccountAutoCompleteAdapter>(context,
                                                                              attributeSet) {
 

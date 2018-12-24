@@ -30,7 +30,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 // TODO: I'm 99% sure this entire layout bricks when the layout is stopped and then restarted. Deal
 // TODO: with this eventually.
-class SchedulerActivity : AppCompatActivity() {
+class SchedulerActivity: AppCompatActivity() {
 
     @BindView(R.id.title_edittext)
     lateinit var titleEditText: EditText

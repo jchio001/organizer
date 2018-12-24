@@ -22,7 +22,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
-class DraftsActivity : AppCompatActivity() {
+class DraftsActivity: AppCompatActivity() {
 
     @BindView(R.id.draft_recyclerview)
     lateinit var draftRecyclerView: RecyclerView
@@ -45,7 +45,7 @@ class DraftsActivity : AppCompatActivity() {
         draftRecyclerView.layoutManager = LinearLayoutManager(this)
         draftRecyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        eventDraftsAdapter.itemConsumer = object : Consumer<Int> {
+        eventDraftsAdapter.itemConsumer = object: Consumer<Int> {
             override fun accept(position: Int) {
                 val intent = Intent(this@DraftsActivity,
                                     SchedulerActivity::class.java)

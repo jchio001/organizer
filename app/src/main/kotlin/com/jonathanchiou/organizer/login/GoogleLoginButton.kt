@@ -16,7 +16,7 @@ import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.ApiUIModel
 import io.reactivex.disposables.Disposable
 
-class GoogleLoginButton(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
+class GoogleLoginButton(context: Context, attrs: AttributeSet): FrameLayout(context, attrs) {
 
     interface LoginListener {
         fun onLoginPending()

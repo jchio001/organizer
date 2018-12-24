@@ -11,7 +11,7 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.util.closeKeyboard
 import io.reactivex.functions.BiConsumer
 
-class PlaceSelectionActivity : AppCompatActivity() {
+class PlaceSelectionActivity: AppCompatActivity() {
 
     @BindView(R.id.place_autocompleteview)
     lateinit var placeAutoCompleteView: PlaceAutoCompleteView

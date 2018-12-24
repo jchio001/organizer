@@ -21,7 +21,7 @@ import com.jonathanchiou.organizer.settings.SettingsActivity
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
 
     @BindView(R.id.drawer_layout)
     lateinit var debouncedDrawerLayout: DebouncedDrawerLayout

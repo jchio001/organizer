@@ -11,10 +11,10 @@ import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 // Sealed classes don't work cross files yet.
 interface MainFeedModel
 
-class TitleModel(val title: String) : MainFeedModel
-class ButtonModel(val text: String) : MainFeedModel
+class TitleModel(val title: String): MainFeedModel
+class ButtonModel(val text: String): MainFeedModel
 
-class MainFeedAdapter(mainFeedModels: List<MainFeedModel> = emptyList()) :
+class MainFeedAdapter(mainFeedModels: List<MainFeedModel> = emptyList()):
     Adapter<AbsViewHolder<MainFeedModel>>() {
 
     val mainFeedModels = ArrayList<MainFeedModel>(13)

@@ -7,7 +7,7 @@ import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.login.LoginActivity
 import com.jonathanchiou.organizer.main.MainActivity
 
-class SplashActivity : Activity() {
+class SplashActivity: Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

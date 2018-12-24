@@ -8,7 +8,7 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.Notification
 import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 
-class NotificationViewHolder(itemView: View) : AbsViewHolder<MainFeedModel>(itemView) {
+class NotificationViewHolder(itemView: View): AbsViewHolder<MainFeedModel>(itemView) {
 
     @BindView(R.id.notification_title)
     lateinit var notificationTitle: TextView

@@ -23,4 +23,4 @@ data class EventDraft(@PrimaryKey(autoGenerate = true)
                       @ColumnInfo(name = "invited_accounts")
                       val invitedAccounts: String?,
                       @ColumnInfo(name = "description")
-                      val description: String) : Parcelable
+                      val description: String): Parcelable

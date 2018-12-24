@@ -13,7 +13,7 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.login.LoginActivity
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity: AppCompatActivity() {
 
     @BindView(R.id.settings_navigation_view)
     lateinit var settingsNavigationView: NavigationView

@@ -11,7 +11,7 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.main.MainActivity
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity: AppCompatActivity() {
 
     @BindView(R.id.google_login_button)
     lateinit var googleLoginButton: GoogleLoginButton
@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
 
         googleLoginButton
             .attachClient(clientManager)
-            .listen(object : GoogleLoginButton.LoginListener {
+            .listen(object: GoogleLoginButton.LoginListener {
                 override fun onLoginPending() {
                     progressDialog.show()
                 }

@@ -17,7 +17,7 @@ import com.jonathanchiou.organizer.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DatePickerView(context: Context, attributeSet: AttributeSet) :
+class DatePickerView(context: Context, attributeSet: AttributeSet):
     LinearLayout(context, attributeSet) {
 
     @BindView(R.id.now_switch)

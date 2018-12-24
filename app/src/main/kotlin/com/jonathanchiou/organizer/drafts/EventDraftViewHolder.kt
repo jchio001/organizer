@@ -10,7 +10,7 @@ import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EventDraftViewHolder(itemView: View) : AbsViewHolder<EventDraft>(itemView) {
+class EventDraftViewHolder(itemView: View): AbsViewHolder<EventDraft>(itemView) {
 
     @BindView(R.id.event_draft_title)
     lateinit var eventDraftTitle: TextView

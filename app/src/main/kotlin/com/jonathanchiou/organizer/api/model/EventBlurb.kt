@@ -89,4 +89,4 @@ fun createPastEventBlurbs(): List<EventBlurb> {
 data class EventBlurb(@Json(name = "id") val id: Int,
                       @Json(name = "title") val title: String,
                       @Json(name = "date") val date: Long,
-                      @Json(name = "creator") val creator: Account) : MainFeedModel
+                      @Json(name = "creator") val creator: Account): MainFeedModel

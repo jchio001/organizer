@@ -11,13 +11,13 @@ import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 import io.reactivex.functions.Consumer
 
-class EventDraftsAdapter(recyclerView: RecyclerView) : Adapter<AbsViewHolder<EventDraft>>() {
+class EventDraftsAdapter(recyclerView: RecyclerView): Adapter<AbsViewHolder<EventDraft>>() {
 
     private var eventDrafts = ArrayList<EventDraft>(3)
 
     var itemConsumer: Consumer<Int>? = null
 
-    private val onClickListener = object : DebouncingOnClickListener() {
+    private val onClickListener = object: DebouncingOnClickListener() {
         override fun doClick(v: View) {
             itemConsumer?.accept(recyclerView.getChildAdapterPosition(v))
         }

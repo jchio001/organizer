@@ -12,9 +12,9 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.jonathanchiou.organizer.R
 
-class CloseableChip<T>(context: Context) : Chip(context,
-                                                null,
-                                                R.style.Widget_MaterialComponents_Chip_Action) {
+class CloseableChip<T>(context: Context): Chip(context,
+                                               null,
+                                               R.style.Widget_MaterialComponents_Chip_Action) {
 
     var onItemsSelectedListener: Consumer<Boolean>? = null
 
@@ -43,7 +43,7 @@ class CloseableChip<T>(context: Context) : Chip(context,
     }
 }
 
-class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
+class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet):
     ChipGroup(context, attributeSet) {
 
     val textColor: Int

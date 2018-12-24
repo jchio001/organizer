@@ -31,7 +31,7 @@ class DbUIModel<T>(val state: State) {
 
     var model: T? = null
 
-    constructor(state: State, model: T) : this(state) {
+    constructor(state: State, model: T): this(state) {
         this.model = model
     }
 }

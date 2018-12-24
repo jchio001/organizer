@@ -25,10 +25,10 @@ import io.reactivex.subjects.PublishSubject
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
-abstract class AutoCompleteAdapter<MODEL, VIEWHOLDER> :
+abstract class AutoCompleteAdapter<MODEL, VIEWHOLDER>:
     RecyclerView.Adapter<RecyclerView.ViewHolder>()
-    where MODEL : Parcelable,
-          VIEWHOLDER : ViewHolder {
+    where MODEL: Parcelable,
+          VIEWHOLDER: ViewHolder {
 
     protected var autoCompleteModels = emptyList<MODEL>()
 
@@ -71,11 +71,11 @@ abstract class AutoCompleteAdapter<MODEL, VIEWHOLDER> :
 }
 
 abstract class AutoCompleteView<MODEL, VIEWHOLDER, ADAPTER>(context: Context,
-                                                            attributeSet: AttributeSet) :
+                                                            attributeSet: AttributeSet):
     LinearLayout(context, attributeSet)
-    where MODEL : Parcelable,
-          VIEWHOLDER : ViewHolder,
-          ADAPTER : AutoCompleteAdapter<MODEL, VIEWHOLDER> {
+    where MODEL: Parcelable,
+          VIEWHOLDER: ViewHolder,
+          ADAPTER: AutoCompleteAdapter<MODEL, VIEWHOLDER> {
 
     @BindView(R.id.query_edittext)
     lateinit var queryEditText: EditText
@@ -112,7 +112,7 @@ abstract class AutoCompleteView<MODEL, VIEWHOLDER, ADAPTER>(context: Context,
 
         autoCompleteRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        queryEditText.addTextChangedListener(object : TextWatcher {
+        queryEditText.addTextChangedListener(object: TextWatcher {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 autoCompleteAdapter?.changeVisibility(false)
