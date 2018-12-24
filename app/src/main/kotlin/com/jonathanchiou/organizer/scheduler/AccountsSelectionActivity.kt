@@ -11,6 +11,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.api.model.Account
 import com.jonathanchiou.organizer.util.closeKeyboard
 
 class AccountsSelectionActivity: AppCompatActivity() {
@@ -28,6 +29,9 @@ class AccountsSelectionActivity: AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        intent.getParcelableArrayListExtra<Account>(SELECTED_ACCOUNTS_KEY)?.
+            let(accountAutoCompleteView::setSelectedAccounts)
+
         accountAutoCompleteView.setAccountsSelectedListener(Consumer {
             if (it) doneFab.show() else doneFab.hide()
         })
@@ -38,7 +42,7 @@ class AccountsSelectionActivity: AppCompatActivity() {
         setResult(Activity.RESULT_OK,
                   Intent().putParcelableArrayListExtra(SELECTED_ACCOUNTS_KEY,
                                                        accountAutoCompleteView
-                                                           .getCurrentlySelectedAccounts()))
+                                                           .getSelectedAccounts()))
         finish()
     }
 

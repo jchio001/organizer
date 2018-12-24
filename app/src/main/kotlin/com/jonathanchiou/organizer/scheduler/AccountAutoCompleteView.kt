@@ -78,6 +78,17 @@ class AccountAutoCompleteAdapter(val recyclerView: RecyclerView,
         (viewHolder as AccountViewHolder).display(account, accountToIsSelectedMap[account])
     }
 
+    fun addSelectedAccounts(accounts: ArrayList<Account>,
+                            notifyDataSetChanged: Boolean = false) {
+        for (i in 0 until accounts.size) {
+            accountToIsSelectedMap[accounts[i]] = true
+        }
+
+        if (notifyDataSetChanged) {
+            notifyDataSetChanged()
+        }
+    }
+
     fun setCheckedState(account: Account, isChecked: Boolean) {
         accountToIsSelectedMap[account] = isChecked
         for (i in 0 until autoCompleteModels.size) {
@@ -116,7 +127,12 @@ class AccountAutoCompleteView(context: Context,
         accountChipGroup.onItemsSelectedListener = onAccountsSelectedListener
     }
 
-    fun getCurrentlySelectedAccounts(): ArrayList<Account> {
+    fun getSelectedAccounts(): ArrayList<Account> {
         return accountChipGroup.getModels()
+    }
+
+    fun setSelectedAccounts(accounts: ArrayList<Account>) {
+        autoCompleteAdapter?.addSelectedAccounts(accounts)
+        accountChipGroup.setChips(accounts)
     }
 }

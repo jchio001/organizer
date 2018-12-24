@@ -162,7 +162,7 @@
                         android:id="@+id/account_textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Invite people"
+                        android:hint="@string/invite_people"
                         android:minLines="1"
                         android:textColor="@color/text_color"
                         android:textSize="18sp"/>

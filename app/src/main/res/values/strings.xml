@@ -10,6 +10,8 @@
 
     <!-- Scheduler Activity -->
     <string name="sharing">Sharing&#8230;</string>
+    <string name="invite_people">Invite people</string>
+    <string name="invite_more_people">Invite more people</string>
 
     <!-- Place Selection Activity -->
     <string name="place_selection_hint">Enter in a location</string>

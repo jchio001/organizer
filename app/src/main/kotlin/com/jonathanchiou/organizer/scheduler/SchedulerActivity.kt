@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Consumer
 import androidx.room.Room
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -82,6 +83,12 @@ class SchedulerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheduler)
         ButterKnife.bind(this)
+
+        accountChipGroup.onItemsSelectedListener = Consumer {
+            accountTextView.setHint(if (it) R.string.invite_more_people
+                                    else R.string.invite_people)
+        }
+
         maybeLoadDraftFromIntent()
     }
 
@@ -100,7 +107,7 @@ class SchedulerActivity : AppCompatActivity() {
                 }
             } else if (requestCode == ACCOUNTS_AUTOCOMPLETE_REQUEST_CODE) {
                 data?.getParcelableArrayListExtra<Account>(SELECTED_ACCOUNTS_KEY)?.
-                    let(accountChipGroup::addChips)
+                    let(accountChipGroup::setChips)
             }
         }
     }
@@ -203,7 +210,9 @@ class SchedulerActivity : AppCompatActivity() {
 
     @OnClick(R.id.account_textview)
     fun onAccountTextViewClicked() {
-        startActivityForResult(Intent(this, AccountsSelectionActivity::class.java),
+        startActivityForResult(Intent(this, AccountsSelectionActivity::class.java)
+                                   .putParcelableArrayListExtra(SELECTED_ACCOUNTS_KEY,
+                                                                accountChipGroup.getModels()),
                                ACCOUNTS_AUTOCOMPLETE_REQUEST_CODE)
     }
 
@@ -227,7 +236,7 @@ class SchedulerActivity : AppCompatActivity() {
                     val listMyData = Types.newParameterizedType(List::class.java,
                                                                 Account::class.java)
                     val adapter = clientManager.moshi.adapter<List<Account>>(listMyData)
-                    accountChipGroup.addChips(adapter.fromJson(it)!!)
+                    accountChipGroup.setChips(ArrayList(adapter.fromJson(it)!!))
                 }
             }
         }

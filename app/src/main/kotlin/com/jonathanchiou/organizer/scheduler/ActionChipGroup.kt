@@ -51,6 +51,10 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
 
     // true = this view has chips, false = this view is empty
     var onItemsSelectedListener: Consumer<Boolean>? = null
+    set(value) {
+        field = value
+        value?.accept(childCount != 0)
+    }
 
     var onItemClosedListener: Consumer<T>? = null
 
@@ -81,12 +85,7 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
         }
 
         val closeableChip = CloseableChip<T>(context)
-        closeableChip.tag = chipModel
-        closeableChip.text = chipModel.toString()
-        closeableChip.setTextColor(textColor)
-        closeableChip.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
-        closeableChip.onItemsSelectedListener = onItemsSelectedListener
-        closeableChip.onItemClosedListener = onItemClosedListener
+        populate(closeableChip, chipModel)
         addView(closeableChip)
 
         visibility = View.VISIBLE
@@ -96,9 +95,41 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    fun addChips(chipModels: List<T>) {
-        for (chipModel in chipModels) {
-            addChip(chipModel)
+    private fun populate(closeableChip: CloseableChip<T>, chipModel: T) {
+        closeableChip.tag = chipModel
+        closeableChip.text = chipModel.toString()
+        closeableChip.setTextColor(textColor)
+        closeableChip.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+        closeableChip.onItemsSelectedListener = onItemsSelectedListener
+        closeableChip.onItemClosedListener = onItemClosedListener
+    }
+
+    fun setChips(chipModels: ArrayList<T>) {
+        val previousChildCount = childCount
+        val newChildCount = chipModels.size
+        val reuseIndex = Math.min(newChildCount, previousChildCount)
+
+        for (i in 0 until reuseIndex) {
+            populate(getChildAt(i) as CloseableChip<T>, chipModels[i])
+        }
+
+        val context = context
+        for (i in previousChildCount until newChildCount) {
+            val closeableChip = CloseableChip<T>(context)
+            populate(closeableChip, chipModels[i])
+            addView(closeableChip)
+        }
+
+        for (i in newChildCount until previousChildCount) {
+            removeViewAt(newChildCount)
+        }
+
+        visibility = if (newChildCount != 0) View.VISIBLE else View.GONE
+
+        if (previousChildCount == 0 && newChildCount != 0) {
+            onItemsSelectedListener?.accept(true)
+        } else if (previousChildCount != 0 && newChildCount == 0) {
+            onItemsSelectedListener?.accept(false)
         }
     }
 
