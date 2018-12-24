@@ -14,11 +14,9 @@ import androidx.room.Room
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.jonathanchiou.organizer.R
-import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.EventDraftDao
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
 import com.jonathanchiou.organizer.scheduler.SchedulerActivity
-import com.jonathanchiou.organizer.scheduler.SchedulerActivity.Companion.DRAFT_INDEX_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
@@ -47,7 +45,7 @@ class DraftsActivity : AppCompatActivity() {
         draftRecyclerView.layoutManager = LinearLayoutManager(this)
         draftRecyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        eventDraftsAdapter.itemConsumer = object: Consumer<Int> {
+        eventDraftsAdapter.itemConsumer = object : Consumer<Int> {
             override fun accept(position: Int) {
                 val intent = Intent(this@DraftsActivity,
                                     SchedulerActivity::class.java)

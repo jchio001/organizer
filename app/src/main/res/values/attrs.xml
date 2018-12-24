@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ActionChipGroup">
-        <attr name="android:textColor"/>
-        <attr name="android:textSize"/>
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
     </declare-styleable>
-    
+
     <declare-styleable name="AutoCompleteView">
-        <attr name="hint" format="reference"/>
-        <attr name="layout" format="reference"/>
+        <attr name="hint" format="reference" />
+        <attr name="layout" format="reference" />
     </declare-styleable>
 </resources>

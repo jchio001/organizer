@@ -15,7 +15,7 @@
         android:src="@drawable/ic_checkmark_circled"
         android:tint="@color/green"
         android:visibility="invisible"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/account_textview"
@@ -26,6 +26,6 @@
         android:maxLines="1"
         android:textColor="@color/text_color"
         android:textSize="20sp"
-        tools:text="Dwight Schrute"/>
+        tools:text="Dwight Schrute" />
 
 </LinearLayout>

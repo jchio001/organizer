@@ -106,8 +106,7 @@ class SchedulerActivity : AppCompatActivity() {
                     placeTextView.tag = it
                 }
             } else if (requestCode == ACCOUNTS_AUTOCOMPLETE_REQUEST_CODE) {
-                data?.getParcelableArrayListExtra<Account>(SELECTED_ACCOUNTS_KEY)?.
-                    let(accountChipGroup::setChips)
+                data?.getParcelableArrayListExtra<Account>(SELECTED_ACCOUNTS_KEY)?.let(accountChipGroup::setChips)
             }
         }
     }

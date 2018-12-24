@@ -48,7 +48,7 @@ class OrganizerClient(val organizerService: OrganizerService) {
             getNotification(),
             getUpcomingEvents(),
             getPastEvents(),
-            object: Function3<
+            object : Function3<
                 ApiUIModel<Notification>,
                 ApiUIModel<List<EventBlurb>>,
                 ApiUIModel<List<EventBlurb>>,

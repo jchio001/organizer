@@ -13,8 +13,8 @@ import com.google.android.material.chip.ChipGroup
 import com.jonathanchiou.organizer.R
 
 class CloseableChip<T>(context: Context) : Chip(context,
-                                             null,
-                                             R.style.Widget_MaterialComponents_Chip_Action) {
+                                                null,
+                                                R.style.Widget_MaterialComponents_Chip_Action) {
 
     var onItemsSelectedListener: Consumer<Boolean>? = null
 
@@ -51,10 +51,10 @@ class ActionChipGroup<T>(context: Context, attributeSet: AttributeSet) :
 
     // true = this view has chips, false = this view is empty
     var onItemsSelectedListener: Consumer<Boolean>? = null
-    set(value) {
-        field = value
-        value?.accept(childCount != 0)
-    }
+        set(value) {
+            field = value
+            value?.accept(childCount != 0)
+        }
 
     var onItemClosedListener: Consumer<T>? = null
 

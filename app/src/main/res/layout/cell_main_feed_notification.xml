@@ -33,7 +33,7 @@
                     android:id="@+id/notification_icon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_calendar"/>
+                    android:src="@drawable/ic_calendar" />
 
                 <TextView
                     android:id="@+id/notification_title"
@@ -43,7 +43,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/text_color"
                     android:textSize="14sp"
-                    tools:text="Order some pizza"/>
+                    tools:text="Order some pizza" />
 
             </LinearLayout>
 
@@ -55,7 +55,7 @@
                 android:gravity="center"
                 android:layout_gravity="top|end"
                 android:textColor="@color/white"
-                tools:text="1"/>
+                tools:text="1" />
 
         </FrameLayout>
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="@color/text_color"
-            tools:text="pizzahut.com"/>
+            tools:text="pizzahut.com" />
 
         <TextView
             android:id="@+id/notification_action_text"
@@ -75,7 +75,7 @@
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            tools:text="Respond now"/>
+            tools:text="Respond now" />
 
     </LinearLayout>
 

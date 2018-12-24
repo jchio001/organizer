@@ -16,7 +16,7 @@ import butterknife.OnClick
 import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.scheduler.SchedulerActivity
 
-class MainFeedFragment: Fragment {
+class MainFeedFragment : Fragment {
 
     @BindView(R.id.main_recyclerview)
     lateinit var mainRecyclerView: RecyclerView

@@ -22,7 +22,7 @@
             android:padding="4dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_close_round"
-            android:tint="@color/text_color"/>
+            android:tint="@color/text_color" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
                     android:gravity="center"
                     android:text="Save"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -65,7 +65,7 @@
                     android:gravity="center"
                     android:text="Share"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -84,12 +84,12 @@
         android:minLines="1"
         android:padding="4dp"
         android:textColor="@color/text_color"
-        android:textSize="24sp"/>
+        android:textSize="24sp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,12 +106,12 @@
                     android:id="@+id/clock_icon"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:src="@drawable/ic_clock"/>
+                    android:src="@drawable/ic_clock" />
 
                 <com.jonathanchiou.organizer.scheduler.DatePickerView
                     android:id="@+id/datepickerview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -123,7 +123,7 @@
 
                 <ImageView
                     style="@style/SchedulerIconTheme"
-                    android:src="@drawable/ic_location"/>
+                    android:src="@drawable/ic_location" />
 
                 <TextView
                     android:id="@+id/places_textview"
@@ -132,7 +132,7 @@
                     android:hint="Add location"
                     android:minLines="1"
                     android:textColor="@color/text_color"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -141,10 +141,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="12dp">
-                
+
                 <ImageView
                     style="@style/SchedulerIconTheme"
-                    android:src="@drawable/ic_android_people"/>
+                    android:src="@drawable/ic_android_people" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/account_textview"
@@ -165,7 +165,7 @@
                         android:hint="@string/invite_people"
                         android:minLines="1"
                         android:textColor="@color/text_color"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -179,7 +179,7 @@
 
                 <ImageView
                     style="@style/SchedulerIconTheme"
-                    android:src="@drawable/ic_pencil"/>
+                    android:src="@drawable/ic_pencil" />
 
                 <EditText
                     android:id="@+id/description_textview"
@@ -189,7 +189,7 @@
                     android:hint="Enter description"
                     android:minLines="1"
                     android:textColor="@color/text_color"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
             </LinearLayout>
 

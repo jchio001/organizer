@@ -14,7 +14,7 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.model.Account
 import com.jonathanchiou.organizer.util.closeKeyboard
 
-class AccountsSelectionActivity: AppCompatActivity() {
+class AccountsSelectionActivity : AppCompatActivity() {
 
     @BindView(R.id.account_autocompleteview)
     lateinit var accountAutoCompleteView: AccountAutoCompleteView
@@ -29,8 +29,7 @@ class AccountsSelectionActivity: AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        intent.getParcelableArrayListExtra<Account>(SELECTED_ACCOUNTS_KEY)?.
-            let(accountAutoCompleteView::setSelectedAccounts)
+        intent.getParcelableArrayListExtra<Account>(SELECTED_ACCOUNTS_KEY)?.let(accountAutoCompleteView::setSelectedAccounts)
 
         accountAutoCompleteView.setAccountsSelectedListener(Consumer {
             if (it) doneFab.show() else doneFab.hide()

@@ -32,7 +32,7 @@ fun createAccounts(): List<Account> {
 class Account(@Json(name = "id") val id: Int,
               @Json(name = "first_name") val firstName: String,
               @Json(name = "last_name") val lastName: String,
-              @Json(name = "profile_image") val profileImage: String):
+              @Json(name = "profile_image") val profileImage: String) :
     Parcelable {
 
     override fun hashCode(): Int {

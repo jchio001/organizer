@@ -17,7 +17,7 @@ class EventDraftsAdapter(recyclerView: RecyclerView) : Adapter<AbsViewHolder<Eve
 
     var itemConsumer: Consumer<Int>? = null
 
-    private val onClickListener = object: DebouncingOnClickListener() {
+    private val onClickListener = object : DebouncingOnClickListener() {
         override fun doClick(v: View) {
             itemConsumer?.accept(recyclerView.getChildAdapterPosition(v))
         }

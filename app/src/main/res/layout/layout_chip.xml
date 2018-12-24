@@ -8,4 +8,4 @@
     android:textSize="18sp"
     android:padding="2dp"
     app:checkedIconEnabled="false"
-    app:closeIconEnabled="true"/>
+    app:closeIconEnabled="true" />

@@ -11,4 +11,4 @@
     android:textColor="@color/text_color"
     android:textSize="28sp"
     android:textStyle="bold"
-    tools:text="Dance minion dance!"/>
+    tools:text="Dance minion dance!" />

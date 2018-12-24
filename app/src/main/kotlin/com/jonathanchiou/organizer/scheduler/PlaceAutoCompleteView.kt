@@ -16,19 +16,19 @@ import com.jonathanchiou.organizer.api.model.Place
 import io.reactivex.Observable
 import io.reactivex.functions.BiConsumer
 
-class PlaceViewHolder(itemView: View): ViewHolder(itemView) {
+class PlaceViewHolder(itemView: View) : ViewHolder(itemView) {
 
     fun display(place: Place) {
         (itemView as TextView).text = place.name
     }
 }
 
-class PlaceAutoCompleteAdapter(val recyclerView: RecyclerView):
+class PlaceAutoCompleteAdapter(val recyclerView: RecyclerView) :
     AutoCompleteAdapter<Place, PlaceViewHolder>() {
 
     var itemConsumer: BiConsumer<Place, Int>? = null
 
-    private val onClickListener = object: DebouncingOnClickListener() {
+    private val onClickListener = object : DebouncingOnClickListener() {
         override fun doClick(v: View) {
             val position = recyclerView.getChildAdapterPosition(v)
             itemConsumer?.accept(autoCompleteModels[position], position)
@@ -50,7 +50,7 @@ class PlaceAutoCompleteAdapter(val recyclerView: RecyclerView):
 }
 
 class PlaceAutoCompleteView(context: Context,
-                            attributeSet: AttributeSet):
+                            attributeSet: AttributeSet) :
     AutoCompleteView<Place, PlaceViewHolder, PlaceAutoCompleteAdapter>(context, attributeSet) {
 
     private val organizerClient = ClientManager.get().organizerClient

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:padding="16dp"
         app:hint="@string/accounts_selection_hint"
-        app:layout="@layout/view_account_auto_complete"/>
+        app:layout="@layout/view_account_auto_complete" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/done_fab"
@@ -24,6 +24,6 @@
         android:visibility="gone"
         app:backgroundTint="@color/colorAccent"
         app:tint="@color/white"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </FrameLayout>

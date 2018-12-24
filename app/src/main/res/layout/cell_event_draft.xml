@@ -17,7 +17,7 @@
         android:textColor="@color/text_color"
         android:textSize="22sp"
         android:textStyle="bold"
-        tools:text="Punch someone so hard that they explode!"/>
+        tools:text="Punch someone so hard that they explode!" />
 
     <TextView
         android:id="@+id/event_draft_last_updated_text"
@@ -29,6 +29,6 @@
         android:maxLines="1"
         android:textColor="@color/subtext_color"
         android:textSize="14sp"
-        tools:text="Last updated Oct 31, 2018 9:34 AM"/>
+        tools:text="Last updated Oct 31, 2018 9:34 AM" />
 
 </LinearLayout>

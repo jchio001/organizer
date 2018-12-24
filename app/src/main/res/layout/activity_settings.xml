@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         app:itemTextColor="@color/text_color"
-        app:menu="@menu/settings_menu"/>
+        app:menu="@menu/settings_menu" />
 
 </FrameLayout>
