@@ -10,7 +10,6 @@ import com.jonathanchiou.organizer.viewholder.AbsViewHolder
 
 // Sealed classes don't work cross files yet.
 interface MainFeedModel
-
 class TitleModel(val title: String): MainFeedModel
 class ButtonModel(val text: String): MainFeedModel
 
@@ -27,9 +26,8 @@ class MainFeedAdapter(mainFeedModels: List<MainFeedModel> = emptyList()):
         return mainFeedModels.size
     }
 
-    // TODO: FIXED JANK STUBBED LOGIC
     override fun getItemViewType(position: Int): Int {
-        return when (mainFeedModels.get(position)) {
+        return when (mainFeedModels[position]) {
             is Notification -> 1
             is EventBlurb -> 2
             is TitleModel -> 3
