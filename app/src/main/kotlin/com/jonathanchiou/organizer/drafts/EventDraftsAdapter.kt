@@ -13,7 +13,7 @@ import io.reactivex.functions.Consumer
 
 class EventDraftsAdapter(recyclerView: RecyclerView): Adapter<AbsViewHolder<EventDraft>>() {
 
-    private var eventDrafts = ArrayList<EventDraft>(3)
+    var eventDrafts = ArrayList<EventDraft>(3)
 
     var itemConsumer: Consumer<Int>? = null
 
@@ -87,7 +87,7 @@ class EventDraftsAdapter(recyclerView: RecyclerView): Adapter<AbsViewHolder<Even
             if (deletedDraftsIndex < deletedDraftsCount) {
                 val currentDeletedDraft = deletedDrafts[deletedDraftsIndex]
 
-                if (currentDeletedDraft.id > currentDraft.id) {
+                if (currentDeletedDraft.lastUpdatedTime > currentDraft.lastUpdatedTime) {
                     restoredEventDrafts.add(currentDeletedDraft)
 
                     if (lowestChangedIndex == -1) {

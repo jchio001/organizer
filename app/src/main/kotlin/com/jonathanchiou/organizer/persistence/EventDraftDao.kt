@@ -9,7 +9,7 @@ interface EventDraftDao {
     // Making this return an observable means that every time I add/delete rows, an event is
     // published with the new rows. This is FREAKING ANNOYING when I'm trying to maintain the data
     // myself to ensure my RecyclerView interactions behave correctly.
-    @Query("SELECT * FROM event ORDER BY last_updated_time DESC")
+    @Query("SELECT * FROM event ORDER BY last_updated_time DESC, id DESC")
     fun getAll(): List<EventDraft>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

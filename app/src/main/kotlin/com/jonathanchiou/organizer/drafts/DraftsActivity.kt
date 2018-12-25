@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Adapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,6 +18,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.google.android.material.snackbar.Snackbar
 import com.jonathanchiou.organizer.R
+import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
 import com.jonathanchiou.organizer.scheduler.SchedulerActivity
 import io.reactivex.Observable
@@ -24,6 +26,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
 class DraftsActivity: AppCompatActivity() {
 
@@ -58,6 +61,7 @@ class DraftsActivity: AppCompatActivity() {
         draftRecyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
+
         eventDraftsAdapter.deleteConsumer = Consumer { deletedDrafts ->
             compositeDisposable.add(
                 Observable
@@ -82,7 +86,7 @@ class DraftsActivity: AppCompatActivity() {
                                 { Log.d("DraftsActivity", "Re-added drafts!") },
                                 {
                                     Log.e("DraftsActivity",
-                                          "Failed to delete drafts: ${it.message}")
+                                          "Failed to restore drafts: ${it.message}")
                                 }))
 
                     eventDraftsAdapter.undoDeletion(deletedDrafts)
