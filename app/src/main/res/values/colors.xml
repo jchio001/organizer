@@ -8,5 +8,7 @@
     <color name="text_color">#FF2B4848</color>
     <color name="subtext_color">#FFBDBDBD</color>
 
+    <color name="trash_icon_color">#FF939393</color>
+
     <color name="green">#FF008000</color>
 </resources>

@@ -1,6 +1,7 @@
 package com.jonathanchiou.organizer.drafts
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -17,6 +18,9 @@ class EventDraftViewHolder(itemView: View): AbsViewHolder<EventDraft>(itemView) 
 
     @BindView(R.id.event_draft_last_updated_text)
     lateinit var eventDraftLastUpdatedText: TextView
+
+    @BindView(R.id.delete_icon)
+    lateinit var deleteIcon: ImageView
 
     init {
         ButterKnife.bind(this, itemView)

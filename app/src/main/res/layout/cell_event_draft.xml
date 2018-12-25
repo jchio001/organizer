@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
+    android:paddingTop="12dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="6dp"
+    android:paddingBottom="12dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/event_draft_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/delete_icon"
         android:ellipsize="end"
         android:minLines="1"
         android:maxLines="1"
@@ -23,6 +27,8 @@
         android:id="@+id/event_draft_last_updated_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/delete_icon"
+        android:layout_below="@+id/event_draft_title"
         android:layout_marginTop="4dp"
         android:gravity="end"
         android:minLines="1"
@@ -31,4 +37,14 @@
         android:textSize="14sp"
         tools:text="Last updated Oct 31, 2018 9:34 AM" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/delete_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="6dp"
+        android:src="@drawable/ic_trash"
+        android:tint="@color/trash_icon_color"/>
+
+</RelativeLayout>
