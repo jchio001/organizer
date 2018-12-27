@@ -9,6 +9,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     android:background="@drawable/bg_recyclerview_button"
+    android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center"
     android:textColor="@color/colorPrimary"
     android:textSize="16sp"
