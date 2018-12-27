@@ -61,7 +61,6 @@ class DraftsActivity: AppCompatActivity() {
         draftRecyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-
         eventDraftsAdapter.deleteConsumer = Consumer { deletedDrafts ->
             compositeDisposable.add(
                 Observable
@@ -131,10 +130,19 @@ class DraftsActivity: AppCompatActivity() {
         if (requestCode == SCHEDULER_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 data?.let {
+                    val updatedDraft: EventDraft? =
+                        it.getParcelableExtra(SchedulerActivity.EVENT_DRAFT_KEY)
+
                     eventDraftsAdapter.updateItem(
                         it.getIntExtra(SchedulerActivity.DRAFT_INDEX_KEY, -1),
-                        it.getParcelableExtra(SchedulerActivity.EVENT_DRAFT_KEY))
-                    Toast.makeText(this, "Updated draft!", Toast.LENGTH_SHORT).show()
+                        updatedDraft)
+
+                    if (updatedDraft != null) {
+                        Toast.makeText(this,
+                                       "Updated draft!",
+                                       Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             }
         }

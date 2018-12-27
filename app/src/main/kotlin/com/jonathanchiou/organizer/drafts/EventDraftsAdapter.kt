@@ -41,25 +41,30 @@ class EventDraftsAdapter(recyclerView: RecyclerView): Adapter<AbsViewHolder<Even
         return eventDrafts[position]
     }
 
-    fun updateItem(position: Int, updatedDraft: EventDraft) {
-        // I'm notifying twice about changes to the dataset because I want the recyclerview to
-        // - update the corresponding draft
-        // - animate & move said draft to the top of the list
-        // Which is not the effect of notifyItemRangeChanged()
-        eventDrafts[position] = updatedDraft
-        notifyItemChanged(position)
+    fun updateItem(position: Int, updatedDraft: EventDraft?) {
+        if (updatedDraft != null) {
+            // I'm notifying twice about changes to the dataset because I want the recyclerview to
+            // - update the corresponding eventDraftFromDb
+            // - animate & move said eventDraftFromDb to the top of the list
+            // Which is not the effect of notifyItemRangeChanged()
+            eventDrafts[position] = updatedDraft
+            notifyItemChanged(position)
 
-        val updatedDrafts = ArrayList<EventDraft>(eventDrafts.size)
-        updatedDrafts.add(updatedDraft)
+            val updatedDrafts = ArrayList<EventDraft>(eventDrafts.size)
+            updatedDrafts.add(updatedDraft)
 
-        for (i in 0 until eventDrafts.size) {
-            if (i != position) {
-                updatedDrafts.add(eventDrafts[i])
+            for (i in 0 until eventDrafts.size) {
+                if (i != position) {
+                    updatedDrafts.add(eventDrafts[i])
+                }
             }
-        }
 
-        eventDrafts = updatedDrafts
-        notifyItemMoved(position, 0)
+            eventDrafts = updatedDrafts
+            notifyItemMoved(position, 0)
+        } else {
+            eventDrafts.removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 
     fun undoDeletion(deletedDrafts: Array<EventDraft>) {

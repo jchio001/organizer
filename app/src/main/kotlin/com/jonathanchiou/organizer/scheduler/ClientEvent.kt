@@ -9,5 +9,5 @@ import com.jonathanchiou.organizer.api.model.Account
  */
 data class ClientEvent(val title: String,
                        val placeId: String,
-                       val scheduledTime: Long,
+                       val scheduledTime: Long?,
                        val invitedAccounts: List<Account>)

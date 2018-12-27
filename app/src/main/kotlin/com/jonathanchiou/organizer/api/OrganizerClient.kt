@@ -101,12 +101,11 @@ class OrganizerClient(val organizerService: OrganizerService) {
             .toApiUIModelStream()
     }
 
-    fun createEvent(groupId: Int, clientEvent: ClientEvent): Observable<ApiUIModel<EventBlurb>> {
+    fun createEvent(groupId: Int, clientEvent: ClientEvent): Observable<Response<EventBlurb>> {
         return Observable.just(Response.success(EventBlurb(id = 42,
                                                            title = "",
                                                            date = 0,
                                                            creator = createAccount())))
-            .toApiUIModelStream()
     }
 
     companion object {

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -18,15 +20,22 @@ import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.Account
 import com.jonathanchiou.organizer.api.model.ApiUIModel
 import com.jonathanchiou.organizer.api.model.Place
+import com.jonathanchiou.organizer.api.model.toApiUIModelStream
 import com.jonathanchiou.organizer.persistence.DbUIModel
 import com.jonathanchiou.organizer.persistence.EventDraft
 import com.jonathanchiou.organizer.persistence.OrganizerDatabase
 import com.jonathanchiou.organizer.persistence.toDbUIModelStream
 import com.jonathanchiou.organizer.scheduler.AccountsSelectionActivity.Companion.SELECTED_ACCOUNTS_KEY
+import com.jonathanchiou.organizer.scheduler.DatePickerView.Companion.NO_TIME_SELECTED
 import com.jonathanchiou.organizer.scheduler.PlaceSelectionActivity.Companion.PLACE_RESULT
 import com.squareup.moshi.Types
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 
 // TODO: I'm 99% sure this entire layout bricks when the layout is stopped and then restarted. Deal
 // TODO: with this eventually.
@@ -72,11 +81,11 @@ class SchedulerActivity: AppCompatActivity() {
 
     var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    var draftId = 0L
+    var eventDraftFromDb: EventDraft? = null
 
-    // If we're arriving to this activity from a previous draft, we'll receive an index in our
-    // intent. This is so that we can update the corresponding draft in DraftsActivity without
-    // re-querying SQLite.
+    // If we're arriving to this activity from DraftsActivity, we'll receive an index in our
+    // intent. This is so that we can update the corresponding eventDraftFromDb in DraftsActivity
+    // without re-querying SQLite.
     var draftIndex = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,7 +133,7 @@ class SchedulerActivity: AppCompatActivity() {
 
         val currentPlace = placeTextView.tag as Place?
 
-        val eventDraft = EventDraft(id = draftId,
+        val eventDraft = EventDraft(id = eventDraftFromDb?.id ?: 0,
                                     title = titleEditText.text.toString(),
                                     placeId = currentPlace?.placeId,
                                     placeName = currentPlace?.name,
@@ -153,13 +162,14 @@ class SchedulerActivity: AppCompatActivity() {
         val title = if (!enteredTitle.isEmpty()) enteredTitle.toString() else "(No title)"
 
         val scheduledTime = datePickerView.getCurrentlySelectedTime()
-
-        if (System.currentTimeMillis() >= scheduledTime) {
-            Toast.makeText(this,
-                           "EventBlurb must be scheduled at a future time!",
-                           Toast.LENGTH_SHORT)
-                .show()
-            return
+        scheduledTime?.let {
+            if (System.currentTimeMillis() > it) {
+                Toast.makeText(this,
+                               "EventBlurb must be scheduled at a future time!",
+                               Toast.LENGTH_SHORT)
+                    .show()
+                return
+            }
         }
 
         val placeId = (placeTextView.tag as Place?)?.placeId
@@ -180,25 +190,65 @@ class SchedulerActivity: AppCompatActivity() {
             return
         }
 
+        var createEventObservable = foodOrganizerClient
+            .createEvent(42,
+                         ClientEvent(title = title,
+                                     scheduledTime = scheduledTime,
+                                     invitedAccounts = invitedAccounts,
+                                     placeId = placeId))
+
+        // If the event has a local EventDraft db object associated with it, delete the object when
+        // we push the event to the backend.
+        eventDraftFromDb?.let {
+            val deleteDraftObservable = Observable
+                .fromCallable { eventDraftDao.deleteDrafts(arrayOf(it)) }
+
+            createEventObservable = Observable
+                .zip(createEventObservable,
+                     deleteDraftObservable,
+                     BiFunction { createEvent, deleteDraft -> createEvent })
+        }
+
         compositeDisposable.add(
-            foodOrganizerClient
-                .createEvent(42,
-                             ClientEvent(title = title,
-                                         scheduledTime = scheduledTime / 1000,
-                                         invitedAccounts = invitedAccounts,
-                                         placeId = placeId))
-                .subscribe {
-                    if (it.state == ApiUIModel.State.PENDING) {
-                        progressDialog.show()
-                    } else if (it.state == ApiUIModel.State.SUCCESS) {
-                        progressDialog.dismiss()
-                        Toast.makeText(this@SchedulerActivity,
-                                       "EventBlurb scheduled!",
-                                       Toast.LENGTH_SHORT)
-                            .show()
-                        finish()
-                    }
-                })
+            createEventObservable
+                .toApiUIModelStream()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        if (it.state == ApiUIModel.State.PENDING) {
+                            progressDialog.show()
+                        } else if (it.state == ApiUIModel.State.SUCCESS) {
+                            progressDialog.dismiss()
+                            Toast.makeText(this@SchedulerActivity,
+                                           "EventBlurb scheduled!",
+                                           Toast.LENGTH_SHORT)
+                                .show()
+
+                            setResult(RESULT_OK, Intent()
+                                .putExtra(DRAFT_INDEX_KEY, draftIndex)
+                                .putExtra(EVENT_DRAFT_KEY, null as Parcelable?))
+                            finish()
+                        } else {
+                            compositeDisposable.add(
+                                Completable
+                                    .fromAction { eventDraftFromDb?.let(eventDraftDao::upsert) }
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(
+                                        {
+                                            progressDialog.dismiss()
+                                            Toast.makeText(this@SchedulerActivity,
+                                                           "Failed to schedule event.",
+                                                           Toast.LENGTH_SHORT)
+                                                .show()
+                                        },
+                                        { Log.e("SchedulerActivity", it.message) }
+                                    )
+                            )
+                        }
+                    },
+                    { Log.e("SchedulerActivitty", it.message)}))
     }
 
     @OnClick(R.id.places_textview)
@@ -219,7 +269,7 @@ class SchedulerActivity: AppCompatActivity() {
         intent?.let {
             draftIndex = it.getIntExtra(DRAFT_INDEX_KEY, -1)
             it.getParcelableExtra<EventDraft>(EVENT_DRAFT_KEY)?.let {
-                draftId = it.id
+                eventDraftFromDb = it
                 titleEditText.setText(it.title)
 
                 if (it.placeId != null && it.placeName != null) {
