@@ -35,7 +35,7 @@ class PlaceAutoCompleteAdapter(val recyclerView: RecyclerView):
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.cell_place_autocomplete,
                      parent,
@@ -44,8 +44,8 @@ class PlaceAutoCompleteAdapter(val recyclerView: RecyclerView):
         return PlaceViewHolder(view)
     }
 
-    override fun doBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        (viewHolder as PlaceViewHolder).display(autoCompleteModels[position])
+    override fun doBindViewHolder(viewHolder: PlaceViewHolder, position: Int) {
+        viewHolder.display(autoCompleteModels[position])
     }
 }
 

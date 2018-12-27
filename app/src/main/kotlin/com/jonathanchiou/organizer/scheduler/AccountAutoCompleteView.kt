@@ -64,7 +64,7 @@ class AccountAutoCompleteAdapter(val recyclerView: RecyclerView,
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.cell_account_autocomplete,
                      parent,
@@ -73,9 +73,9 @@ class AccountAutoCompleteAdapter(val recyclerView: RecyclerView,
         return AccountViewHolder(view)
     }
 
-    override fun doBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    override fun doBindViewHolder(viewHolder: AccountViewHolder, position: Int) {
         val account = autoCompleteModels[position]
-        (viewHolder as AccountViewHolder).display(account, accountToIsSelectedMap[account])
+        viewHolder.display(account, accountToIsSelectedMap[account])
     }
 
     fun addSelectedAccounts(accounts: ArrayList<Account>,
