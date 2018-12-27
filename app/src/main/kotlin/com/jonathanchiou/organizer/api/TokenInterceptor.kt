@@ -70,7 +70,7 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
                                                  "Missing token.")
                 }
 
-                val now = System.currentTimeMillis() / 1000;
+                val now = System.currentTimeMillis() / 1000
 
                 if (now > jwtPayload!!.expirationTime) {
                     return createStubbedResponse(request,
@@ -100,7 +100,7 @@ class TokenInterceptor(sharedPreferences: SharedPreferences,
                                     this.token = freshToken
                                     this.jwtPayload = freshToken.toJwtPayload(jwtPayloadAdapter)
                                 } catch (e: Exception) {
-                                    Log.e("TokenInterceptor", "Failed to refresh token");
+                                    Log.e("TokenInterceptor", "Failed to refresh token")
                                 }
                             }
                         }

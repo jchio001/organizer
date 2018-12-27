@@ -26,7 +26,7 @@ import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
 abstract class AutoCompleteAdapter<MODEL, VIEWHOLDER>:
-    RecyclerView.Adapter<RecyclerView.ViewHolder>()
+    RecyclerView.Adapter<VIEWHOLDER>()
     where MODEL: Parcelable,
           VIEWHOLDER: ViewHolder {
 
@@ -45,9 +45,9 @@ abstract class AutoCompleteAdapter<MODEL, VIEWHOLDER>:
     }
 
     abstract override fun onCreateViewHolder(parent: ViewGroup,
-                                             viewType: Int): ViewHolder
+                                             viewType: Int): VIEWHOLDER
 
-    final override fun onBindViewHolder(viewHolder: ViewHolder,
+    final override fun onBindViewHolder(viewHolder: VIEWHOLDER,
                                         position: Int) {
         viewHolder.itemView.isClickable = isClickable
         if (isVisible) {
@@ -58,7 +58,7 @@ abstract class AutoCompleteAdapter<MODEL, VIEWHOLDER>:
         }
     }
 
-    abstract fun doBindViewHolder(viewHolder: ViewHolder,
+    abstract fun doBindViewHolder(viewHolder: VIEWHOLDER,
                                   position: Int)
 
     // This is to deal with some weird issue related to the recyclerview overlapping with a FAB

@@ -17,7 +17,7 @@ class Place(@Json(name = "place_id")
         if (other is String) {
             return name == other
         } else if (other == null || other !is Place) {
-            return false;
+            return false
         }
 
         return name == other.name

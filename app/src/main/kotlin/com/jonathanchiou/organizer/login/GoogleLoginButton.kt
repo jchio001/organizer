@@ -89,6 +89,6 @@ class GoogleLoginButton(context: Context, attrs: AttributeSet): FrameLayout(cont
     }
 
     companion object {
-        const val RC_SIGN_IN = 9001;
+        const val RC_SIGN_IN = 9001
     }
 }

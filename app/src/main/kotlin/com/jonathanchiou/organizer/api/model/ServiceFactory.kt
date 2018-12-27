@@ -24,7 +24,7 @@ class ServiceFactory(vararg interceptors: Interceptor) {
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
-            .build();
+            .build()
     }
 
     fun <T> create(clazz: Class<T>): T {
