@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:checkableBehavior="single">
 
+        <item
+            android:id="@+id/my_events"
+            android:title="My Events" />
         <item
             android:id="@+id/drafts"
             android:title="Drafts" />

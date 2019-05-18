@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jonathanchiou.organizer">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -48,6 +49,11 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".scheduler.AccountsSelectionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".events.MyEventsActivity"
+            android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
     </application>

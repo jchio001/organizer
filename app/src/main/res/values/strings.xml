@@ -8,6 +8,10 @@
     <!-- Login Activity -->
     <string name="connecting">Connecting&#8230;</string>
 
+    <!-- My Events Activity -->
+    <string name="my_events">My Events</string>
+    <string name="invited">Invited</string>
+
     <!-- Scheduler Activity -->
     <string name="sharing">Sharing&#8230;</string>
     <string name="invite_people">Invite people</string>

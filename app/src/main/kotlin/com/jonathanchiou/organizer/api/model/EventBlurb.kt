@@ -1,5 +1,6 @@
 package com.jonathanchiou.organizer.api.model
 
+import com.jonathanchiou.organizer.events.MyEventModel
 import com.jonathanchiou.organizer.main.MainFeedModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -89,4 +90,6 @@ fun createPastEventBlurbs(): List<EventBlurb> {
 data class EventBlurb(@Json(name = "id") val id: Int,
                       @Json(name = "title") val title: String,
                       @Json(name = "scheduled_time") val date: Long,
-                      @Json(name = "creator") val creator: Account): MainFeedModel
+                      @Json(name = "creator") val creator: Account,
+                      @Json(name = "response") val response: EventResponse? = null):
+    MainFeedModel, MyEventModel

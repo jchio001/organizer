@@ -17,6 +17,7 @@ import com.jonathanchiou.organizer.R
 import com.jonathanchiou.organizer.api.ClientManager
 import com.jonathanchiou.organizer.api.model.ApiUIModel
 import com.jonathanchiou.organizer.drafts.DraftsActivity
+import com.jonathanchiou.organizer.events.MyEventsActivity
 import com.jonathanchiou.organizer.settings.SettingsActivity
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
@@ -57,10 +58,21 @@ class MainActivity: AppCompatActivity() {
 
         debouncedDrawerLayout.itemSelectedConsumer = Consumer { selectedItemId ->
             when (selectedItemId) {
-                R.id.settings -> startActivity(Intent(this@MainActivity,
-                                                      SettingsActivity::class.java))
-                R.id.drafts -> startActivity(Intent(this@MainActivity,
-                                                    DraftsActivity::class.java))
+                R.id.my_events ->
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            MyEventsActivity::class.java))
+                R.id.drafts ->
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            DraftsActivity::class.java))
+                R.id.settings ->
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            SettingsActivity::class.java))
             }
         }
 
